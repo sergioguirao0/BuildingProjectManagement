@@ -17,6 +17,7 @@ namespace BuildingProjectManagement.Views
     public partial class LoginWindow : Window
     {
         private bool passwordVisible = false;
+        static RegisterWindow? registerWindow;
 
         public LoginWindow()
         {
@@ -62,6 +63,13 @@ namespace BuildingProjectManagement.Views
         }
 
         private void btRegister_Click(object sender, RoutedEventArgs e)
+        {
+            registerWindow = new RegisterWindow();
+            registerWindow.Show();
+            this.Close();
+        }
+
+        private void btLogin_Click(object sender, RoutedEventArgs e)
         {
 
         }
