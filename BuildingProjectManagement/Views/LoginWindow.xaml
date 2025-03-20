@@ -62,7 +62,7 @@
                 <TextBlock Text="CONTRASEÑA" Style="{StaticResource userTextBlock}" Margin="0,10,0,0"/>
                 <Grid>
                     <PasswordBox x:Name="pbPassword" Margin="0,3,0,0" Padding="22,0,0,0"/>
-                    <TextBox x:Name="tbPassword" Margin="0,3,0,0" Visibility="Collapsed"/>
+                    <TextBox x:Name="tbPassword" Margin="0,3,0,0" Visibility="Collapsed" Padding="22,0,0,0"/>
                     <Image Source="/Resources/Images/padlock.png" Width="18" Height="18" HorizontalAlignment="Left"/>
                     <Button x:Name="btVisibility" Width="25" Height="25" Background="Transparent" HorizontalAlignment="Right"
                             Style="{StaticResource VisibilityButton}" Click="btVisibility_Click" Cursor="Hand">
