@@ -361,3 +361,32 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Archivos de compilación y binarios
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+
+# Configuración de usuario en visual studio
+.vs/
+*.user
+*.suo
+*.cache
+*.pdb
+
+# Configuración de IDEs
+.vscode/
+.idea/
+
+# Archivos de caché
+*.pidb
+*.sdf
+*.sln.docstates
+
+# Dependencias y paquetes de NuGet
+packages/
+*.nupkg
+project.lock.json
+project.assets.json
