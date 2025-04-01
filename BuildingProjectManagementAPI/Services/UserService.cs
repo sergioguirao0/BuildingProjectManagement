@@ -1,31 +1,28 @@
-﻿using BuildingProjectManagementAPI.Model.DTO;
-using Microsoft.AspNetCore.Authorization;
+﻿using BuildingProjectManagementAPI.Model.Dao;
+using BuildingProjectManagementAPI.Model.DTO;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace BuildingProjectManagementAPI.Controllers
+namespace BuildingProjectManagementAPI.Services
 {
-    [ApiController]
-    [Route("api/usuarios")]
-    [Authorize]
-    public class UsuariosController : ControllerBase
+    public class UserService : IUserDao
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly IConfiguration configuration;
 
-        public UsuariosController(UserManager<IdentityUser> userManager, IConfiguration configuration)
+        public UserService(UserManager<IdentityUser> userManager, IConfiguration configuration)
         {
             this.userManager = userManager;
             this.configuration = configuration;
         }
 
-        [HttpPost("registro")]
-        [AllowAnonymous]
-        public async Task<ActionResult<AuthenticationResponseDTO>> RegisterUser(UserCredentialsDTO userCredentialsDTO)
+        public async Task<IdentityResult> RegisterUser(UserCredentialsDTO userCredentialsDTO)
         {
             var user = new IdentityUser
             {
@@ -34,24 +31,10 @@ namespace BuildingProjectManagementAPI.Controllers
             };
 
             var result = await userManager.CreateAsync(user, userCredentialsDTO.Password);
-
-            if (result.Succeeded)
-            {
-                var authenticationResponse = await BuildToken(userCredentialsDTO);
-                return authenticationResponse;
-            }
-            else
-            {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-
-                return ValidationProblem();
-            }
+            return result;
         }
 
-        private async Task<AuthenticationResponseDTO> BuildToken(UserCredentialsDTO userCredentialsDTO)
+        public async Task<AuthenticationResponseDTO> BuildToken(UserCredentialsDTO userCredentialsDTO)
         {
             var claims = new List<Claim>
             {
@@ -68,7 +51,7 @@ namespace BuildingProjectManagementAPI.Controllers
 
             var expirationTime = DateTime.UtcNow.AddDays(1);
 
-            var securityToken = new JwtSecurityToken(issuer: null, audience: null, claims: claims, 
+            var securityToken = new JwtSecurityToken(issuer: null, audience: null, claims: claims,
                 expires: expirationTime, signingCredentials: credentials);
 
             var token = new JwtSecurityTokenHandler().WriteToken(securityToken);

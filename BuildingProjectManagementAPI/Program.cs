@@ -1,4 +1,6 @@
 using BuildingProjectManagementAPI.Data;
+using BuildingProjectManagementAPI.Model.Dao;
+using BuildingProjectManagementAPI.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -18,6 +20,8 @@ builder.Services.AddIdentityCore<IdentityUser>()        // Agrega el sistema de 
 builder.Services.AddScoped<UserManager<IdentityUser>>();    // Gestiona los usuarios
 builder.Services.AddScoped<SignInManager<IdentityUser>>();  // Gestiona la autenticación de usuarios
 builder.Services.AddHttpContextAccessor();                  // Permite acceder al contexto Http actual
+
+builder.Services.AddScoped<IUserDao, UserService>();
 
 builder.Services.AddAuthentication().AddJwtBearer(options => // Agrega la autenticación por tokens JWT
 {
