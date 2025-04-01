@@ -37,5 +37,10 @@ builder.Services.AddAuthentication().AddJwtBearer(options => // Agrega la autent
     };
 });
 
+builder.Services.AddControllers();
+
 var app = builder.Build();
+
+app.MapControllers();
+
 app.Run();
