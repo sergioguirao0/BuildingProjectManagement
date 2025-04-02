@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using BuildingProjectManagementAPI.Model.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BuildingProjectManagementAPI.Data
@@ -13,5 +14,7 @@ namespace BuildingProjectManagementAPI.Data
         {
             base.OnModelCreating(builder);
         }
+
+        public DbSet<UserEntity> Usuarios { get; set; }
     }
 }

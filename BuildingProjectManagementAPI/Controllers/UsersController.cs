@@ -1,5 +1,7 @@
 ﻿using BuildingProjectManagementAPI.Model.Dao;
+using BuildingProjectManagementAPI.Model.Dto;
 using BuildingProjectManagementAPI.Model.DTO;
+using BuildingProjectManagementAPI.Model.Entities;
 using BuildingProjectManagementAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -16,22 +18,22 @@ namespace BuildingProjectManagementAPI.Controllers
     [Authorize]
     public class UsersController : ControllerBase
     {
-        private readonly IUserDao userService;
+        private readonly IUserRepository userService;
 
-        public UsersController(IUserDao userService)
+        public UsersController(IUserRepository userService)
         {
             this.userService = userService;
         }
 
         [HttpPost("registro")]
         [AllowAnonymous]
-        public async Task<ActionResult<AuthenticationResponseDTO>> RegisterUser(UserCredentialsDTO userCredentialsDTO)
+        public async Task<ActionResult<AuthenticationResponseDTO>> RegisterUser(UserRegistrationEntity userRegistrationEntity)
         {
-            var result = await userService.RegisterUser(userCredentialsDTO);
+            var result = await userService.RegisterUser(userRegistrationEntity);
 
             if (result.Succeeded)
             {
-                var authenticationResponse = await userService.BuildToken(userCredentialsDTO);
+                var authenticationResponse = await userService.BuildToken(userRegistrationEntity.userCredentialsDTO!);
                 return authenticationResponse;
             }
             else

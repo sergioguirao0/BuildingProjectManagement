@@ -13,6 +13,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(10, 4, 32))));
 
+builder.Services.AddAutoMapper(typeof(Program));
+
 builder.Services.AddIdentityCore<IdentityUser>()        // Agrega el sistema de usuario con IdentityUser
     .AddEntityFrameworkStores<ApplicationDbContext>()   // Configura EFC como el almacenamiento de datos de usuarios con ApplicationDbContext
     .AddDefaultTokenProviders();                        // Habilita la generación de tokens
@@ -21,7 +23,7 @@ builder.Services.AddScoped<UserManager<IdentityUser>>();    // Gestiona los usua
 builder.Services.AddScoped<SignInManager<IdentityUser>>();  // Gestiona la autenticación de usuarios
 builder.Services.AddHttpContextAccessor();                  // Permite acceder al contexto Http actual
 
-builder.Services.AddScoped<IUserDao, UserService>();
+builder.Services.AddScoped<IUserRepository, UserService>();
 
 builder.Services.AddAuthentication().AddJwtBearer(options => // Agrega la autenticación por tokens JWT
 {
@@ -37,10 +39,21 @@ builder.Services.AddAuthentication().AddJwtBearer(options => // Agrega la autent
     };
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddControllers();
 
 var app = builder.Build();
 
+app.UseCors();
 app.MapControllers();
 
 app.Run();

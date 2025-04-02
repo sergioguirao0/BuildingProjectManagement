@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BuildingProjectManagement.Model;
+using BuildingProjectManagement.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +20,7 @@ namespace BuildingProjectManagement.Views
     {
         private bool passwordVisible = false;
         static LoginWindow? loginWindow;
+        static UserViewModel userViewModel = new UserViewModel();
 
         public RegisterWindow()
         {
@@ -51,9 +54,17 @@ namespace BuildingProjectManagement.Views
             this.Close();
         }
 
-        private void btAccept_Click(object sender, RoutedEventArgs e)
+        private async void btAccept_Click(object sender, RoutedEventArgs e)
         {
+            var userCredentials = new UserCredentialsDTO(tbEmail.Text, pbPassword.Password);
+            var userRegister = new UserRegisterDTO(tbName.Text, tbSurname.Text, tbDni.Text, tbEmail.Text);
 
+            var user = new User(userCredentials, userRegister);
+
+            await userViewModel.Register(user);
+            loginWindow = new LoginWindow();
+            loginWindow.Show();
+            this.Close();
         }
 
         private void btVisibility_Click(object sender, RoutedEventArgs e)
