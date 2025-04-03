@@ -37,5 +37,18 @@ namespace BuildingProjectManagement.ViewModel
                 Console.WriteLine(ex.Message);
             }
         }
+
+        public void ChangeFirstChar(string text)
+        {
+            if (text.Contains(" "))
+            {
+                string[] words = text.Split(" ");
+
+                foreach (string word in words)
+                {
+                    Console.WriteLine(word);
+                }
+            }
+        }
     }
 }
