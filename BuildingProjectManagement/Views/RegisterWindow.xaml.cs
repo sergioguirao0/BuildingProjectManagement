@@ -25,6 +25,7 @@ namespace BuildingProjectManagement.Views
         public RegisterWindow()
         {
             InitializeComponent();
+            DataContext = userViewModel;
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
