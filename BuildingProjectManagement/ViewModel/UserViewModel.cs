@@ -7,22 +7,37 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BuildingProjectManagement.ViewModel
 {
     public class UserViewModel : ViewModelBase
     {
-        private string? _message;
-        public string? Message
+        private string? _registerMessage;
+        public string? RegisterMessage
         {
-            get => _message;
+            get => _registerMessage;
             set
             {
-                if (_message != value)
+                if (_registerMessage != value)
                 {
-                    _message = value;
-                    OnPropertyChanged(nameof(Message));
+                    _registerMessage = value;
+                    OnPropertyChanged(nameof(RegisterMessage));
+                }
+            }
+        }
+
+        private string? _checkMessage;
+        public string? CheckMessage
+        {
+            get => _checkMessage;
+            set
+            {
+                if (_checkMessage != value)
+                {
+                    _checkMessage = value;
+                    OnPropertyChanged(nameof(RegisterMessage));
                 }
             }
         }
@@ -41,49 +56,68 @@ namespace BuildingProjectManagement.ViewModel
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Message = AppStrings.RegisterSuccess;
+                    RegisterMessage = AppStrings.RegisterSuccess;
                 }
                 else
                 {
-                    Message = AppStrings.RegisterFail;
+                    RegisterMessage = AppStrings.RegisterFail;
                 }
             }
             catch (Exception ex)
             {
-                Message = ex.Message;
+                RegisterMessage = ex.Message;
             }
         }
 
         private string ChangeFirstChar(string text)
         {
-            string resultado = "";
+            string[] words = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            StringBuilder result = new StringBuilder();
 
-            if (!string.IsNullOrEmpty(text))
+            for (int i = 0; i < words.Length; i++)
             {
-                if (text.Contains(" "))
+                string word = words[i];
+                if (word.Length > 0)
                 {
-                    string[] words = text.Split(" ");
-
-                    for (int i = 0; i < words.Length; i++)
-                    {
-                        resultado += char.ToUpper(words[i][0]) + words[i].Substring(1);
-
-                        if (i != words.Length - 1)
-                        {
-                            resultado += " ";
-                        }
-                    }
+                    result.Append(char.ToUpper(word[0]) + word.Substring(1));
                 }
-                else
+
+                if (i != word.Length - 1)
                 {
-                    resultado += char.ToUpper(text[0]) + text.Substring(1);
+                    result.Append(' ');
                 }
             }
 
-            return resultado;
+            return result.ToString();
+        }
+
+        private bool CheckName(string name)
+        {
+            return !string.IsNullOrEmpty(name);
         }
 
         private bool CheckDni(string dni)
+        {
+            if (dni.Length != 9)
+            {
+                return false;
+            }
+            else
+            {
+                string regexDni = "^\\d{8}[A-Z]$";
+                string regexNie = "^[XYZ]\\d{7}[A-Z]$";
+
+                return Regex.IsMatch(dni, regexDni) || Regex.IsMatch(dni, regexNie);
+            }
+        }
+
+        private bool CheckEmail(string email)
+        {
+            string regexEmail = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+            return Regex.IsMatch(email, regexEmail);
+        }
+
+        private bool CheckPassword(string password)
         {
             return false;
         }
