@@ -37,7 +37,7 @@ namespace BuildingProjectManagement.ViewModel
                 if (_checkMessage != value)
                 {
                     _checkMessage = value;
-                    OnPropertyChanged(nameof(RegisterMessage));
+                    OnPropertyChanged(nameof(CheckMessage));
                 }
             }
         }
@@ -69,7 +69,7 @@ namespace BuildingProjectManagement.ViewModel
             }
         }
 
-        private string ChangeFirstChar(string text)
+        public string ChangeFirstChar(string text)
         {
             string[] words = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             StringBuilder result = new StringBuilder();
@@ -119,7 +119,45 @@ namespace BuildingProjectManagement.ViewModel
 
         private bool CheckPassword(string password)
         {
-            return false;
+            string regexPassword = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[\\W_]).{8,}$";
+            return Regex.IsMatch(password, regexPassword);
+        }
+
+        public bool CheckUserData(string name, string surname, string dni, string email, string password, string repeatPassword)
+        {
+            bool checks;
+
+            if (!CheckName(name) || !CheckName(surname))
+            {
+                CheckMessage = AppStrings.CheckName;
+                checks = false;
+            }
+            else if (!CheckDni(dni))
+            {
+                CheckMessage = AppStrings.CheckDni;
+                checks = false;
+            }
+            else if (!CheckEmail(email))
+            {
+                CheckMessage = AppStrings.CheckEmail;
+                checks = false;
+            }
+            else if (!CheckPassword(password))
+            {
+                CheckMessage = AppStrings.CheckPasswordFormat;
+                checks = false;
+            }
+            else if (password != repeatPassword)
+            {
+                CheckMessage = AppStrings.CheckPassword;
+                checks = false;
+            }
+            else
+            {
+                checks = true;
+            }
+
+            return checks;
         }
     }
 }

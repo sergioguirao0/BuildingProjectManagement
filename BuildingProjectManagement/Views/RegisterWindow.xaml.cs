@@ -57,15 +57,24 @@ namespace BuildingProjectManagement.Views
 
         private async void btAccept_Click(object sender, RoutedEventArgs e)
         {
-            var userCredentials = new UserCredentialsDTO(tbEmail.Text, pbPassword.Password);
-            var userRegister = new UserRegisterDTO(tbName.Text, tbSurname.Text, tbDni.Text, tbEmail.Text);
+            bool checkData = userViewModel.CheckUserData(tbName.Text, tbSurname.Text, tbDni.Text,
+                tbEmail.Text, pbPassword.Password, pbRepPassword.Password);
 
-            var user = new User(userCredentials, userRegister);
+            if (checkData)
+            {
+                /*string name = userViewModel.ChangeFirstChar(tbName.Text);
+                string surname = userViewModel.ChangeFirstChar(tbSurname.Text);
 
-            await userViewModel.Register(user);
-            loginWindow = new LoginWindow();
-            loginWindow.Show();
-            this.Close();
+                var userCredentials = new UserCredentialsDTO(tbEmail.Text, pbPassword.Password);
+                var userRegister = new UserRegisterDTO(name, surname, tbDni.Text, tbEmail.Text);
+
+                var user = new User(userCredentials, userRegister);
+
+                await userViewModel.Register(user);*/
+                loginWindow = new LoginWindow();
+                loginWindow.Show();
+                this.Close();
+            }
         }
 
         private void btVisibility_Click(object sender, RoutedEventArgs e)
@@ -74,11 +83,9 @@ namespace BuildingProjectManagement.Views
 
             if (passwordVisible)
             {
-                tbPassword.Text = pbPassword.Password;
                 tbPassword.Visibility = Visibility.Visible;
                 pbPassword.Visibility = Visibility.Collapsed;
 
-                tbRepPassword.Text = pbRepPassword.Password;
                 tbRepPassword.Visibility = Visibility.Visible;
                 pbRepPassword.Visibility = Visibility.Collapsed;
 
@@ -86,15 +93,45 @@ namespace BuildingProjectManagement.Views
             }
             else
             {
-                pbPassword.Password = tbPassword.Text;
                 pbPassword.Visibility = Visibility.Visible;
                 tbPassword.Visibility = Visibility.Collapsed;
 
-                pbRepPassword.Password = tbRepPassword.Text;
                 pbRepPassword.Visibility = Visibility.Visible;
                 tbRepPassword.Visibility = Visibility.Collapsed;
 
                 iconVisibility.Source = new BitmapImage(new Uri("/Resources/Images/eye.png", UriKind.Relative));
+            }
+        }
+
+        private void pbPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (pbPassword.Password != tbPassword.Text)
+            {
+                tbPassword.Text = pbPassword.Password;
+            }
+        }
+
+        private void tbPassword_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (pbPassword.Password != tbPassword.Text)
+            {
+                pbPassword.Password = tbPassword.Text;
+            }
+        }
+
+        private void pbRepPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (pbRepPassword.Password != tbRepPassword.Text)
+            {
+                tbRepPassword.Text = pbRepPassword.Password;
+            }
+        }
+
+        private void tbRepPassword_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (pbRepPassword.Password != tbRepPassword.Text)
+            {
+                pbRepPassword.Password = tbRepPassword.Text;
             }
         }
     }

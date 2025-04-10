@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BuildingProjectManagement.Views"
+        xmlns:ViewModel="clr-namespace:BuildingProjectManagement.ViewModel"
         mc:Ignorable="d"
         Title="RegisterWindow" Height="600" Width="400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
         WindowStyle="None" MouseDown="Window_MouseDown" AllowsTransparency="True" Background="Transparent">
@@ -14,6 +15,9 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    <Window.DataContext>
+        <ViewModel:UserViewModel/>
+    </Window.DataContext>
     <Border CornerRadius="10" BorderThickness="5">
         <Border.BorderBrush>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -63,8 +67,9 @@
 
                 <TextBlock Text="CONTRASEÑA" Style="{StaticResource userTextBlock}" Margin="0,20,0,0"/>
                 <Grid>
-                    <PasswordBox x:Name="pbPassword" Margin="0,3,0,0"/>
-                    <TextBox x:Name="tbPassword" Margin="0,3,0,0" Visibility="Collapsed"/>
+                    <PasswordBox x:Name="pbPassword" Margin="0,3,0,0" PasswordChanged="pbPassword_PasswordChanged"/>
+                    <TextBox x:Name="tbPassword" Margin="0,3,0,0" Visibility="Collapsed" 
+                             TextChanged="tbPassword_TextChanged"/>
                     <Button x:Name="btVisibility" Width="25" Height="25" Background="Transparent" HorizontalAlignment="Right"
                             Style="{StaticResource VisibilityButton}" Click="btVisibility_Click" Cursor="Hand">
                         <Image x:Name="iconVisibility" Source="/Resources/Images/eye.png"/>
@@ -73,12 +78,16 @@
                 
                 <TextBlock Text="REPETIR CONTRASEÑA" Style="{StaticResource userTextBlock}" Margin="0,20,0,0"/>
                 <Grid>
-                    <PasswordBox x:Name="pbRepPassword" Margin="0,3,0,0"/>
-                    <TextBox x:Name="tbRepPassword" Margin="0,3,0,0" Visibility="Collapsed"/>
+                    <PasswordBox x:Name="pbRepPassword" Margin="0,3,0,0" PasswordChanged="pbRepPassword_PasswordChanged"/>
+                    <TextBox x:Name="tbRepPassword" Margin="0,3,0,0" Visibility="Collapsed"
+                             TextChanged="tbRepPassword_TextChanged"/>
                 </Grid>
 
+                <TextBlock Text="{Binding CheckMessage}" Style="{StaticResource checkTextBlock}"
+                           HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Height="30"/>
+
                 <Button x:Name="btAccept" Style="{StaticResource LoginButton}" Content="ACEPTAR" Foreground="White"
-                        Background="#FF2B2B2B" Margin="0,30,0,0" Click="btAccept_Click" Cursor="Hand"/>
+                        Background="#FF2B2B2B" Margin="0,15,0,0" Click="btAccept_Click" Cursor="Hand"/>
                 <Button x:Name="btCancel" Style="{StaticResource LoginButton}" Content="CANCELAR" Foreground="White"
                         Background="#FF585858" Margin="0,10,0,0" Click="btCancel_Click" Cursor="Hand"/>
             </StackPanel>
