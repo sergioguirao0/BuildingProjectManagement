@@ -38,7 +38,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Cursor="">
+            <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="25"/>
@@ -83,7 +83,7 @@
                              TextChanged="tbRepPassword_TextChanged"/>
                 </Grid>
 
-                <TextBlock Text="{Binding CheckMessage}" Style="{StaticResource checkTextBlock}"
+                <TextBlock Text="{Binding CheckMessage}" Style="{StaticResource checkTextBlock}" TextAlignment="Center"
                            HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Height="30"/>
 
                 <Button x:Name="btAccept" Style="{StaticResource LoginButton}" Content="ACEPTAR" Foreground="White"

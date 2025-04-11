@@ -16,7 +16,9 @@ namespace BuildingProjectManagement.Resources.Strings
 
         // Mensajes de error o confirmación
         public const string RegisterSuccess = "Registro completado con éxito";
-        public const string RegisterFail = "Registro fallido";
+        public const string RegisterFail = "Registro fallido: Usuario ya registrado en la base de datos";
+        public const string ConfirmationMessage = "Confirmación";
+        public const string ErrorMessage = "Error";
         public const string CheckName = "El campo Nombre/Apellidos no puede estar vacío";
         public const string CheckDni = "DNI/NIE no válido";
         public const string CheckEmail = "Email no válido";

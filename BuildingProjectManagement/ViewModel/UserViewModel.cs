@@ -42,6 +42,20 @@ namespace BuildingProjectManagement.ViewModel
             }
         }
 
+        private string? _confirmationMessage;
+        public string? ConfirmationMessage
+        {
+            get => _confirmationMessage;
+            set
+            {
+                if (_confirmationMessage != value)
+                {
+                    _confirmationMessage = value;
+                    OnPropertyChanged(nameof(ConfirmationMessage));
+                }
+            }
+        }
+
         public async Task Register(User user)
         {
             try
@@ -56,10 +70,12 @@ namespace BuildingProjectManagement.ViewModel
 
                 if (response.IsSuccessStatusCode)
                 {
+                    ConfirmationMessage = AppStrings.ConfirmationMessage;
                     RegisterMessage = AppStrings.RegisterSuccess;
                 }
                 else
                 {
+                    ConfirmationMessage = AppStrings.ErrorMessage;
                     RegisterMessage = AppStrings.RegisterFail;
                 }
             }

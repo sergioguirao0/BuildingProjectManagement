@@ -20,11 +20,13 @@ namespace BuildingProjectManagement.Views
     {
         private bool passwordVisible = false;
         static LoginWindow? loginWindow;
-        static UserViewModel userViewModel = new UserViewModel();
+        static RegisterConfirmationWindow? registerConfirmationWindow;
+        UserViewModel userViewModel;
 
         public RegisterWindow()
         {
             InitializeComponent();
+            userViewModel = new UserViewModel();
             DataContext = userViewModel;
         }
 
@@ -45,14 +47,14 @@ namespace BuildingProjectManagement.Views
         {
             loginWindow = new LoginWindow();
             loginWindow.Show();
-            this.Close();
+            Close();
         }
 
         private void btCancel_Click(object sender, RoutedEventArgs e)
         {
             loginWindow = new LoginWindow();
             loginWindow.Show();
-            this.Close();
+            Close();
         }
 
         private async void btAccept_Click(object sender, RoutedEventArgs e)
@@ -62,7 +64,7 @@ namespace BuildingProjectManagement.Views
 
             if (checkData)
             {
-                /*string name = userViewModel.ChangeFirstChar(tbName.Text);
+                string name = userViewModel.ChangeFirstChar(tbName.Text);
                 string surname = userViewModel.ChangeFirstChar(tbSurname.Text);
 
                 var userCredentials = new UserCredentialsDTO(tbEmail.Text, pbPassword.Password);
@@ -70,10 +72,14 @@ namespace BuildingProjectManagement.Views
 
                 var user = new User(userCredentials, userRegister);
 
-                await userViewModel.Register(user);*/
+                await userViewModel.Register(user);
+
+                registerConfirmationWindow = new RegisterConfirmationWindow(userViewModel);
+                registerConfirmationWindow.ShowDialog();
                 loginWindow = new LoginWindow();
                 loginWindow.Show();
-                this.Close();
+
+                Close();
             }
         }
 
