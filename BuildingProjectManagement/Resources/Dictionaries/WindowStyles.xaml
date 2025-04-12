@@ -1,0 +1,140 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Style TargetType="{x:Type Button}" x:Key="TopBarButton">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="btBorder" Background="{TemplateBinding Background}" Height="22" Width="22" 
+                            CornerRadius="11">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="btBorder" Property="Background" Value="#FF7B7B7B"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Button}" x:Key="VisibilityButton">
+        <Setter Property="BorderThickness" Value="0,0,0,0"/>
+        <Setter Property="Width" Value="25"/>
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="btBackground" Background="{TemplateBinding Background}" 
+                            Height="{TemplateBinding Height}" Width="{TemplateBinding Width}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="btBackground" Property="Background" Value="Transparent"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Button}" x:Key="LoginButton">
+        <Setter Property="Width" Value="150"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="btLogin" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" 
+                            CornerRadius="15" Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="btLogin" Property="Background" Value="#FF7B7B7B"/>
+                            <Setter TargetName="btLogin" Property="BorderBrush" Value="#FF7B7B7B"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type TextBlock}" x:Key="userTextBlock">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="#FF2B2B2B"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+
+    <Style TargetType="{x:Type TextBlock}" x:Key="checkTextBlock">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="Red"/>
+    </Style>
+
+    <Style TargetType="{x:Type TextBox}">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="BorderBrush" Value="#FF2B2B2B"/>
+        <Setter Property="BorderThickness" Value="0,0,0,2"/>
+        <Setter Property="MaxLength" Value="25"/>
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border Name="tbBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="tbBorder" Property="BorderBrush" Value="#FF7B7B7B"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="tbBorder" Property="BorderBrush" Value="#FF7B7B7B"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type PasswordBox}">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="BorderBrush" Value="#FF2B2B2B"/>
+        <Setter Property="BorderThickness" Value="0,0,0,2"/>
+        <Setter Property="MaxLength" Value="25"/>
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="PasswordBox">
+                    <Border Name="pbBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="pbBorder" Property="BorderBrush" Value="#FF7B7B7B"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="pbBorder" Property="BorderBrush" Value="#FF7B7B7B"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

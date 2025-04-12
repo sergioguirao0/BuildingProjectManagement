@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Images\eye.png" />
+    <None Remove="Resources\Images\hidden.png" />
+    <None Remove="Resources\Images\logo.png" />
+    <None Remove="Resources\Images\padlock.png" />
+    <None Remove="Resources\Images\user.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\eye.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\hidden.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\logo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\padlock.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\user.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+</Project>
