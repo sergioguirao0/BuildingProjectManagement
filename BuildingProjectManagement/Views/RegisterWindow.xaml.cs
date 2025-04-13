@@ -18,7 +18,7 @@ namespace BuildingProjectManagement.Views
 {
     public partial class RegisterWindow : Window
     {
-        private bool passwordVisible = false;
+        private bool _passwordVisible = false;
         static LoginWindow? loginWindow;
         static RegisterConfirmationWindow? registerConfirmationWindow;
         UserViewModel userViewModel;
@@ -85,9 +85,9 @@ namespace BuildingProjectManagement.Views
 
         private void btVisibility_Click(object sender, RoutedEventArgs e)
         {
-            passwordVisible = !passwordVisible;
+            _passwordVisible = !_passwordVisible;
 
-            if (passwordVisible)
+            if (_passwordVisible)
             {
                 tbPassword.Visibility = Visibility.Visible;
                 pbPassword.Visibility = Visibility.Collapsed;

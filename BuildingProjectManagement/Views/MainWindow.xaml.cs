@@ -14,14 +14,51 @@ using System.Windows.Shapes;
 
 namespace BuildingProjectManagement.Views
 {
-    /// <summary>
-    /// Lógica de interacción para MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        static ContactsWindow? contactsWindow;
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void BtMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void BtMaximize_Click(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
+            {
+                WindowState = WindowState.Normal;
+                BtMaximize.Content = "\uE922";
+            }
+            else
+            {
+                WindowState = WindowState.Maximized;
+                BtMaximize.Content = "\uE923";
+            }
+        }
+
+        private void BtClose_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void MoveWindow(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
+        private void BtContacts_Click(object sender, RoutedEventArgs e)
+        {
+            contactsWindow = new ContactsWindow();
+            contactsWindow.ShowDialog();
         }
     }
 }

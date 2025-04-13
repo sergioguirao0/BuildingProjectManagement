@@ -14,7 +14,7 @@ using System.Text;
 namespace BuildingProjectManagementAPI.Controllers
 {
     [ApiController]
-    [Route("api/usuarios")]
+    [Route("api/users")]
     [Authorize]
     public class UsersController : ControllerBase
     {
@@ -25,7 +25,7 @@ namespace BuildingProjectManagementAPI.Controllers
             this.userService = userService;
         }
 
-        [HttpPost("registro")]
+        [HttpPost("register")]
         [AllowAnonymous]
         public async Task<ActionResult<AuthenticationResponseDTO>> RegisterUser(UserRegistrationEntity userRegistrationEntity)
         {
@@ -45,6 +45,35 @@ namespace BuildingProjectManagementAPI.Controllers
 
                 return ValidationProblem();
             }
+        }
+
+        [HttpPost("login")]
+        [AllowAnonymous]
+        public async Task<ActionResult<AuthenticationResponseDTO>> Login(UserCredentialsDTO userCredentialsDTO)
+        {
+            var user = await userService.FindUserByEmail(userCredentialsDTO);
+
+            if (user is null)
+            {
+                return ReturnIncorrectLogin();
+            }
+
+            var result = await userService.CheckPassword(user, userCredentialsDTO);
+
+            if (result.Succeeded)
+            {
+                return await userService.BuildToken(userCredentialsDTO);
+            }
+            else
+            {
+                return ReturnIncorrectLogin();
+            }
+        }
+
+        private ActionResult ReturnIncorrectLogin()
+        {
+            ModelState.AddModelError(string.Empty, "Login incorrecto");
+            return ValidationProblem();
         }
     }
 }

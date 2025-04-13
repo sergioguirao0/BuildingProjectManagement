@@ -18,22 +18,8 @@
     <Window.DataContext>
         <ViewModel:UserViewModel/>
     </Window.DataContext>
-    
-    <Border CornerRadius="10" BorderThickness="5">
-        <Border.BorderBrush>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="Black" Offset="0"/>
-                <GradientStop Color="#FF2B2B2B" Offset="0.75"/>
-                <GradientStop Color="#FF585858" Offset="1"/>
-            </LinearGradientBrush>
-        </Border.BorderBrush>
-        <Border.Background>
-            <LinearGradientBrush>
-                <GradientStop Color="White" Offset="0"/>
-                <GradientStop Color="LightGray" Offset="0.75"/>
-            </LinearGradientBrush>
-        </Border.Background>
-        
+
+    <Border CornerRadius="10" BorderThickness="5" Style="{StaticResource BorderStyle}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
@@ -47,8 +33,7 @@
                     <ColumnDefinition Width="5"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Text="{Binding ConfirmationMessage}" FontSize="14" VerticalAlignment="Center"
-                           Margin="10,0,0,0" FontWeight="SemiBold"/>
+                <TextBlock Grid.Column="0" Text="{Binding ConfirmationMessage}" Style="{StaticResource topBarText}"/>
                 <Button x:Name="btClose" Grid.Column="1" Background="#FF2B2B2B" Content="X" 
                         Style="{StaticResource TopBarButton}" Click="btClose_Click"/>
             </Grid>
@@ -56,8 +41,8 @@
                 <TextBlock Text="{Binding RegisterMessage}" Style="{StaticResource userTextBlock}" Margin="30,30,30,0"
                            Height="40" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center"
                            FontSize="14"/>
-                <Button x:Name="btAccept" Style="{StaticResource LoginButton}" Content="ACEPTAR" Foreground="White"
-                        Background="#FF2B2B2B" Margin="0,25,0,0" Click="btAccept_Click" Cursor="Hand"/>
+                <Button x:Name="btAccept" Style="{StaticResource ControlButton}" Content="ACEPTAR"
+                        Margin="0,25,0,0" Click="btAccept_Click" Cursor="Hand"/>
             </StackPanel>
         </Grid>
     </Border>

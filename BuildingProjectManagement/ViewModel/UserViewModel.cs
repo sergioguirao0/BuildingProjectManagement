@@ -175,5 +175,27 @@ namespace BuildingProjectManagement.ViewModel
 
             return checks;
         }
+
+        public async Task<HttpResponseMessage> LoginUser(UserCredentialsDTO userCredentialsDTO)
+        {
+            try
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(AppStrings.ApiBaseUrl);
+
+                var json = JsonSerializer.Serialize(userCredentialsDTO);
+                var content = new StringContent(json, Encoding.UTF8, AppStrings.ApplicationJson);
+
+                return await client.PostAsync(AppStrings.LoginEndpoint, content);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent("Error: " + ex.Message)
+                };
+                return errorResponse;
+            }
+        }
     }
 }

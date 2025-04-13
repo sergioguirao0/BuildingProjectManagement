@@ -10,7 +10,8 @@ namespace BuildingProjectManagement.Resources.Strings
     {
         // Rutas
         public const string ApiBaseUrl = "https://localhost:7269/";
-        public const string RegisterEndpoint = "api/usuarios/registro";
+        public const string RegisterEndpoint = "api/users/register";
+        public const string LoginEndpoint = "api/users/login";
 
         public const string ApplicationJson = "application/json";
 
@@ -24,5 +25,6 @@ namespace BuildingProjectManagement.Resources.Strings
         public const string CheckEmail = "Email no válido";
         public const string CheckPasswordFormat = "La contraseña debe incluir un número, una letra minúscula, una letra mayúscula y un símbolo";
         public const string CheckPassword = "Los dos campos contraseña no coinciden";
+        public const string LoginError = "Correo electrónico o contraseña incorrectos";
     }
 }

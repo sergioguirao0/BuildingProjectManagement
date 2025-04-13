@@ -13,6 +13,8 @@ using BuildingProjectManagementAPI.Data;
 using AutoMapper;
 using BuildingProjectManagementAPI.Model.Dto;
 using BuildingProjectManagementAPI.Model.Entities;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Threading.Tasks;
 
 namespace BuildingProjectManagementAPI.Services
 {
@@ -22,13 +24,16 @@ namespace BuildingProjectManagementAPI.Services
         private readonly IConfiguration configuration;
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+        private readonly SignInManager<IdentityUser> signInManager;
 
-        public UserService(UserManager<IdentityUser> userManager, IConfiguration configuration, ApplicationDbContext context, IMapper mapper)
+        public UserService(UserManager<IdentityUser> userManager, IConfiguration configuration, ApplicationDbContext context, IMapper mapper,
+            SignInManager<IdentityUser> signInManager)
         {
             this.userManager = userManager;
             this.configuration = configuration;
             this.context = context;
             this.mapper = mapper;
+            this.signInManager = signInManager;
         }
 
         public async Task<IdentityResult> RegisterUser(UserRegistrationEntity userRegistrationEntity)
@@ -82,6 +87,16 @@ namespace BuildingProjectManagementAPI.Services
                 Token = token,
                 ExpirationTime = expirationTime
             };
+        }
+
+        public async Task<IdentityUser?> FindUserByEmail(UserCredentialsDTO userCredentialsDTO)
+        {
+            return await userManager.FindByEmailAsync(userCredentialsDTO.Email);
+        }
+
+        public async Task<Microsoft.AspNetCore.Identity.SignInResult> CheckPassword(IdentityUser user, UserCredentialsDTO userCredentialsDTO)
+        {
+            return await signInManager.CheckPasswordSignInAsync(user, userCredentialsDTO.Password!, lockoutOnFailure: false);
         }
     }
 }
