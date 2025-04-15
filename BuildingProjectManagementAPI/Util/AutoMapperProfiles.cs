@@ -13,7 +13,8 @@ namespace BuildingProjectManagementAPI.Util
                 .ForMember(ent => ent.Nombre, options => options.MapFrom(user => user.Name))
                 .ForMember(ent => ent.Apellidos, options => options.MapFrom(user => user.Surname))
                 .ForMember(ent => ent.Dni, options => options.MapFrom(user => user.Dni))
-                .ForMember(ent => ent.Email, options => options.MapFrom(user => user.Email));
+                .ForMember(ent => ent.Email, options => options.MapFrom(user => user.Email))
+                .ReverseMap();
         }
     }
 }

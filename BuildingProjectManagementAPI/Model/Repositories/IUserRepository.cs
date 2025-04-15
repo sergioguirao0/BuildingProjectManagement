@@ -13,5 +13,6 @@ namespace BuildingProjectManagementAPI.Model.Dao
         Task<AuthenticationResponseDTO> BuildToken(UserCredentialsDTO userCredentialsDTO);
         Task<IdentityUser?> FindUserByEmail(UserCredentialsDTO userCredentialsDTO);
         Task<SignInResult> CheckPassword(IdentityUser user, UserCredentialsDTO userCredentialsDTO);
+        Task<UserRegisterDTO?> GetLoggedInUser();
     }
 }

@@ -15,6 +15,7 @@ using BuildingProjectManagementAPI.Model.Dto;
 using BuildingProjectManagementAPI.Model.Entities;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BuildingProjectManagementAPI.Services
 {
@@ -25,15 +26,17 @@ namespace BuildingProjectManagementAPI.Services
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
         private readonly SignInManager<IdentityUser> signInManager;
+        private readonly IHttpContextAccessor contextAccessor;
 
         public UserService(UserManager<IdentityUser> userManager, IConfiguration configuration, ApplicationDbContext context, IMapper mapper,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager, IHttpContextAccessor contextAccessor)
         {
             this.userManager = userManager;
             this.configuration = configuration;
             this.context = context;
             this.mapper = mapper;
             this.signInManager = signInManager;
+            this.contextAccessor = contextAccessor;
         }
 
         public async Task<IdentityResult> RegisterUser(UserRegistrationEntity userRegistrationEntity)
@@ -97,6 +100,22 @@ namespace BuildingProjectManagementAPI.Services
         public async Task<Microsoft.AspNetCore.Identity.SignInResult> CheckPassword(IdentityUser user, UserCredentialsDTO userCredentialsDTO)
         {
             return await signInManager.CheckPasswordSignInAsync(user, userCredentialsDTO.Password!, lockoutOnFailure: false);
+        }
+
+        public async Task<UserRegisterDTO?> GetLoggedInUser()
+        {
+            var emailClaim = contextAccessor.HttpContext!.User.Claims.Where(c => c.Type == "email")
+                .FirstOrDefault();
+
+            if (emailClaim is null)
+            {
+                return null;
+            }
+
+            var email = emailClaim.Value;
+            var user = await context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+
+            return mapper.Map<UserRegisterDTO>(user);
         }
     }
 }

@@ -92,14 +92,29 @@ namespace BuildingProjectManagement.Views
 
         private async void btLogin_Click(object sender, RoutedEventArgs e)
         {
-            var user = new UserCredentialsDTO(TbUser.Text, PbPassword.Password);
-            var response = await userViewModel.LoginUser(user);
+            var userLogin = new UserCredentialsDTO(TbUser.Text, PbPassword.Password);
+            var response = await userViewModel.LoginUser(userLogin);
 
             if (response.IsSuccessStatusCode)
             {
-                mainWindow = new MainWindow();
-                mainWindow.Show();
-                Close();
+                var token = await userViewModel.GetToken(response);
+                var sessionResponse = await userViewModel.GetLoggedInUser(token);
+
+                if (sessionResponse.IsSuccessStatusCode)
+                {
+                    var user = await userViewModel.GetUser(sessionResponse);
+
+                    ActualSession.Session.Token = token;
+                    ActualSession.Session.LoggedInUser = user;
+
+                    mainWindow = new MainWindow(userViewModel);
+                    mainWindow.Show();
+                    Close();
+                }
+                else
+                {
+                    ErrorTextLabel.Text = AppStrings.LoginError;
+                }
             }
             else
             {

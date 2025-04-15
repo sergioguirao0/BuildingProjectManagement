@@ -12,6 +12,7 @@ namespace BuildingProjectManagement.Resources.Strings
         public const string ApiBaseUrl = "https://localhost:7269/";
         public const string RegisterEndpoint = "api/users/register";
         public const string LoginEndpoint = "api/users/login";
+        public const string GetUserEndpoint = "api/users/loggedInUser";
 
         public const string ApplicationJson = "application/json";
 

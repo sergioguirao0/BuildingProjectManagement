@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -196,6 +197,49 @@ namespace BuildingProjectManagement.ViewModel
                 };
                 return errorResponse;
             }
+        }
+
+        public async Task<HttpResponseMessage> GetLoggedInUser(string token)
+        {
+            try
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(AppStrings.ApiBaseUrl);
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                return await client.GetAsync(AppStrings.GetUserEndpoint);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent("Error: " + ex.Message)
+                };
+                return errorResponse;
+            }
+        }
+
+        public async Task<string> GetToken(HttpResponseMessage response)
+        {
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var loginResult = JsonSerializer.Deserialize<LoginResponse>(responseBody, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            return loginResult?.Token!;
+        }
+
+        public async Task<UserRegisterDTO> GetUser(HttpResponseMessage response)
+        {
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var user = JsonSerializer.Deserialize<UserRegisterDTO>(responseBody, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            return user!;
         }
     }
 }

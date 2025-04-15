@@ -75,5 +75,18 @@ namespace BuildingProjectManagementAPI.Controllers
             ModelState.AddModelError(string.Empty, "Login incorrecto");
             return ValidationProblem();
         }
+
+        [HttpGet("loggedInUser")]
+        public async Task<IActionResult> GetUser()
+        {
+            var user = await userService.GetLoggedInUser();
+
+            if (user is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
+        }
     }
 }

@@ -32,7 +32,7 @@
                     <ColumnDefinition Width="5"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Column="0">
-                    <TextBlock Text="Building Project Management - Sesión iniciada como: " Grid.Column="1" 
+                    <TextBlock x:Name="LabelTitle" Text="Building Project Management - Sesión iniciada como: " Grid.Column="1" 
                                Style="{StaticResource topBarText}"/>
                 </StackPanel>
                 <Button x:Name="BtMinimize" Grid.Column="1" Content="-" Background="#FF585858" 

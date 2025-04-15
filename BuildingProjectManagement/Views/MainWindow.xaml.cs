@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BuildingProjectManagement.Model;
+using BuildingProjectManagement.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,10 +19,15 @@ namespace BuildingProjectManagement.Views
     public partial class MainWindow : Window
     {
         static ContactsWindow? contactsWindow;
+        UserViewModel userViewModel;
 
-        public MainWindow()
+        public MainWindow(UserViewModel userViewModel)
         {
             InitializeComponent();
+            this.userViewModel = userViewModel;
+            DataContext = userViewModel;
+            LabelTitle.Text = LabelTitle.Text + ActualSession.Session.LoggedInUser?.Name + 
+                ActualSession.Session.LoggedInUser?.Surname;
         }
 
         private void BtMinimize_Click(object sender, RoutedEventArgs e)
