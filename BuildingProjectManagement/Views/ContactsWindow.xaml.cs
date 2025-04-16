@@ -14,14 +14,44 @@ using System.Windows.Shapes;
 
 namespace BuildingProjectManagement.Views
 {
-    /// <summary>
-    /// Lógica de interacción para ContactsWindow.xaml
-    /// </summary>
     public partial class ContactsWindow : Window
     {
         public ContactsWindow()
         {
             InitializeComponent();
+        }
+
+        private void btClose_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void btMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void MoveWindow(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
+        private void BtSave_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtDelete_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtClear_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

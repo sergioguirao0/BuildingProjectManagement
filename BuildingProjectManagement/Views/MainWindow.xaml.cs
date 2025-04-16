@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -24,6 +25,8 @@ namespace BuildingProjectManagement.Views
         public MainWindow(UserViewModel userViewModel)
         {
             InitializeComponent();
+            this.MaxHeight = SystemParameters.WorkArea.Height + 14;
+            this.MaxWidth = SystemParameters.WorkArea.Width + 14;
             this.userViewModel = userViewModel;
             DataContext = userViewModel;
             LabelTitle.Text = LabelTitle.Text + ActualSession.Session.LoggedInUser?.Name + 

@@ -39,19 +39,19 @@
                         Style="{StaticResource TopBarButton}" Click="btClose_Click"/>
             </Grid>
             <StackPanel Grid.Row="1" Width="300">
-                <TextBlock Text="NOMBRE" Style="{StaticResource userTextBlock}" Margin="0,25,0,0"/>
+                <TextBlock Text="NOMBRE" Margin="0,25,0,0"/>
                 <TextBox x:Name="tbName" Margin="0,3,0,0"/>
 
-                <TextBlock Text="APELLIDOS" Style="{StaticResource userTextBlock}" Margin="0,20,0,0"/>
+                <TextBlock Text="APELLIDOS" Margin="0,20,0,0"/>
                 <TextBox x:Name="tbSurname" Margin="0,3,0,0"/>
 
-                <TextBlock Text="DNI" Style="{StaticResource userTextBlock}" Margin="0,20,0,0"/>
+                <TextBlock Text="DNI" Margin="0,20,0,0"/>
                 <TextBox x:Name="tbDni" Margin="0,3,0,0"/>
 
-                <TextBlock Text="CORREO ELECTRÓNICO" Style="{StaticResource userTextBlock}" Margin="0,20,0,0"/>
+                <TextBlock Text="CORREO ELECTRÓNICO" Margin="0,20,0,0"/>
                 <TextBox x:Name="tbEmail" Margin="0,3,0,0"/>
 
-                <TextBlock Text="CONTRASEÑA" Style="{StaticResource userTextBlock}" Margin="0,20,0,0"/>
+                <TextBlock Text="CONTRASEÑA" Margin="0,20,0,0"/>
                 <Grid>
                     <PasswordBox x:Name="pbPassword" Margin="0,3,0,0" PasswordChanged="pbPassword_PasswordChanged"/>
                     <TextBox x:Name="tbPassword" Margin="0,3,0,0" Visibility="Collapsed" 
@@ -62,7 +62,7 @@
                     </Button>
                 </Grid>
                 
-                <TextBlock Text="REPETIR CONTRASEÑA" Style="{StaticResource userTextBlock}" Margin="0,20,0,0"/>
+                <TextBlock Text="REPETIR CONTRASEÑA" Margin="0,20,0,0"/>
                 <Grid>
                     <PasswordBox x:Name="pbRepPassword" Margin="0,3,0,0" PasswordChanged="pbRepPassword_PasswordChanged"/>
                     <TextBox x:Name="tbRepPassword" Margin="0,3,0,0" Visibility="Collapsed"
