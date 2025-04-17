@@ -117,5 +117,19 @@ namespace BuildingProjectManagementAPI.Services
 
             return mapper.Map<UserRegisterDTO>(user);
         }
+
+        public async Task<IdentityUser?> GetUser()
+        {
+            var emailClaim = contextAccessor.HttpContext!.User.Claims.Where(c => c.Type == "email")
+                .FirstOrDefault();
+
+            if (emailClaim is null)
+            {
+                return null;
+            }
+
+            var email = emailClaim.Value;
+            return await userManager.FindByEmailAsync(email);
+        }
     }
 }

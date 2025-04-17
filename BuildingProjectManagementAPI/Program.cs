@@ -1,5 +1,6 @@
 using BuildingProjectManagementAPI.Data;
 using BuildingProjectManagementAPI.Model.Dao;
+using BuildingProjectManagementAPI.Model.Repositories;
 using BuildingProjectManagementAPI.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,10 @@ builder.Services.AddIdentityCore<IdentityUser>()        // Agrega el sistema de 
 
 builder.Services.AddScoped<UserManager<IdentityUser>>();    // Gestiona los usuarios
 builder.Services.AddScoped<SignInManager<IdentityUser>>();  // Gestiona la autenticación de usuarios
+
 builder.Services.AddTransient<IUserRepository, UserService>();
+builder.Services.AddTransient<IContactRepository, ContactService>();
+
 builder.Services.AddHttpContextAccessor();                  // Permite acceder al contexto Http actual
 
 builder.Services.AddScoped<IUserRepository, UserService>();
