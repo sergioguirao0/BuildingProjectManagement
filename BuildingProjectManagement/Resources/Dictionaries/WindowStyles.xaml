@@ -237,9 +237,35 @@
 
     <Style TargetType="{x:Type ListBox}">
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="FontSize" Value="12"/>
         <Setter Property="BorderBrush" Value="#FF2B2B2B"/>
         <Setter Property="BorderThickness" Value="0,0,0.7,0"/>
+        <Setter Property="Padding" Value="10,0,10,0"/>
+    </Style>
+
+    <Style TargetType="{x:Type ListBoxItem}" x:Key="ItemList">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}">
+                        <TextBlock Text="{Binding}" FontSize="{TemplateBinding FontSize}" 
+                                   FontWeight="{TemplateBinding FontWeight}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#FF7B7B7B"/>
+                            <Setter TargetName="Bd" Property="CornerRadius" Value="3"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#FF7B7B7B"/>
+                            <Setter TargetName="Bd" Property="CornerRadius" Value="3"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="{x:Type Window}">
