@@ -1,4 +1,5 @@
 ﻿using BuildingProjectManagement.Model;
+using BuildingProjectManagement.Resources.Strings;
 using BuildingProjectManagement.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -19,36 +20,21 @@ namespace BuildingProjectManagement.Views
 {
     public partial class ContactsWindow : Window
     {
-        public ObservableCollection<Contact> Contacts { get; set; }
         ContactViewModel contactViewModel;
+        private bool deleteMode;
 
-        public ContactsWindow()
+        public ContactsWindow(ContactViewModel contactViewModel)
         {
             InitializeComponent();
-            contactViewModel = new ContactViewModel();
-            Contacts = new ObservableCollection<Contact>();
-            ListContacts.ItemsSource = Contacts;
+            this.contactViewModel = contactViewModel;
+            contactViewModel.Contacts = new ObservableCollection<Contact>();
+            ListContacts.ItemsSource = contactViewModel.Contacts;
+            DataContext = this.contactViewModel;
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            await ShowContacts();
-        }
-
-        private async Task ShowContacts()
-        {
-            var response = await contactViewModel.GetContactResponse(ActualSession.Session.Token!);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var contacts = await contactViewModel.GetContacts(response);
-                Contacts.Clear();
-
-                foreach(var contact in contacts!)
-                {
-                    Contacts.Add(contact);
-                }
-            }
+            await contactViewModel.ShowContacts();
         }
 
         private void btClose_Click(object sender, RoutedEventArgs e)
@@ -69,19 +55,99 @@ namespace BuildingProjectManagement.Views
             }
         }
 
-        private void BtSave_Click(object sender, RoutedEventArgs e)
+        private async void BtSave_Click(object sender, RoutedEventArgs e)
         {
+            bool checks = contactViewModel.ContactChecks(TbName.Text, TbDni.Text, TbPhone.Text, TbEmail.Text, TbProfession.Text);
 
+            if (checks)
+            {
+                string name = contactViewModel.ChangeFirstChar(TbName.Text);
+
+                if (ListContacts.SelectedItem == null)
+                {
+                    Contact contact = new Contact(name, TbDni.Text, TbProfession.Text);
+                    contactViewModel.ValidateForm(contact, TbAddress.Text, TbTown.Text, TbProvince.Text, TbPhone.Text, TbEmail.Text);
+                    var response = await contactViewModel.PostContact(contact);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ClearForm();
+                        await contactViewModel.ShowContacts();
+                    }
+                    else
+                    {
+                        contactViewModel.CheckMessage = AppStrings.ContactCreateError;
+                    }
+                }
+                else
+                {
+                    deleteMode = false;
+                    Contact contact = (Contact)ListContacts.SelectedItem;
+                    contact.Name = name;
+                    contactViewModel.ValidateForm(contact, TbAddress.Text, TbTown.Text, TbProvince.Text, TbPhone.Text, TbEmail.Text);
+                    ConfirmationWindow confirmationWindow = new ConfirmationWindow(contactViewModel, contact, deleteMode);
+                    contactViewModel.ConfirmationWindowTitle = AppStrings.ConfirmationWindowUpdateTitle;
+                    contactViewModel.ConfirmationWindowValidation = AppStrings.ConfirmationWindowUpdateMessage;
+                    confirmationWindow.ShowDialog();
+                    await contactViewModel.ShowContacts();
+                    ClearForm();
+                }
+            }
         }
 
-        private void BtDelete_Click(object sender, RoutedEventArgs e)
+        private async void BtDelete_Click(object sender, RoutedEventArgs e)
         {
-
+            if (ListContacts.SelectedItem == null)
+            {
+                contactViewModel.CheckMessage = AppStrings.ContactDeleteErrorSelection;
+            }
+            else
+            {
+                deleteMode = true;
+                Contact contact = (Contact)ListContacts.SelectedItem;
+                ConfirmationWindow confirmationWindow = new ConfirmationWindow(contactViewModel, contact, deleteMode);
+                contactViewModel.ConfirmationWindowTitle = AppStrings.ConfirmationWindowDeleteTitle;
+                contactViewModel.ConfirmationWindowValidation = AppStrings.ConfirmationWindowDeleteMessage;
+                confirmationWindow.ShowDialog();
+                await contactViewModel.ShowContacts();
+                ClearForm();
+            }   
         }
 
         private void BtClear_Click(object sender, RoutedEventArgs e)
         {
+            ClearForm();
+        }
 
+        private void ClearForm()
+        {
+            TbName.Clear();
+            TbDni.Clear();
+            TbAddress.Clear();
+            TbTown.Clear();
+            TbProvince.Clear();
+            TbPhone.Clear();
+            TbEmail.Clear();
+            TbProfession.Clear();
+            ListContacts.SelectedItem = null;
+            contactViewModel.CheckMessage = string.Empty;
+        }
+
+        private void ListContacts_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ListContacts.SelectedIndex > -1)
+            {
+                Contact contact = (Contact)ListContacts.SelectedItem;
+                TbName.Text = contact.Name;
+                TbDni.Text = contact.Dni;
+                TbAddress.Text = contact.Address;
+                TbTown.Text = contact.Town;
+                TbProvince.Text = contact.Province;
+                TbPhone.Text = contact.Phone;
+                TbEmail.Text = contact.Email;
+                TbProfession.Text = contact.Profession;
+                contactViewModel.CheckMessage = string.Empty;
+            }
         }
     }
 }

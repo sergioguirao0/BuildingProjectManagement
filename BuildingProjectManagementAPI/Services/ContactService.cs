@@ -74,7 +74,7 @@ namespace BuildingProjectManagementAPI.Services
             var contacts = await context.Contactos
                 .Include(contact => contact.User)
                 .Where(contact => contact.UserId == user!.Id)
-                .OrderByDescending(contact => contact.Profession)
+                .OrderBy(contact => contact.Profession)
                 .ToListAsync();
 
             return mapper.Map<List<ContactDto>>(contacts);

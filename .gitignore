@@ -392,3 +392,4 @@ project.lock.json
 project.assets.json
 
 appsettings.Development.json
+appsettings.json

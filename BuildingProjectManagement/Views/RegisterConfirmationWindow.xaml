@@ -38,9 +38,8 @@
                         Style="{StaticResource TopBarButton}" Click="btClose_Click"/>
             </Grid>
             <StackPanel Orientation="Vertical" Grid.Row="1">
-                <TextBlock Text="{Binding RegisterMessage}" Style="{StaticResource userTextBlock}" Margin="30,30,30,0"
-                           Height="40" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center"
-                           FontSize="14"/>
+                <TextBlock Text="{Binding RegisterMessage}" Margin="30,30,30,0" Height="40" TextWrapping="Wrap" 
+                           TextAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
                 <Button x:Name="btAccept" Style="{StaticResource ControlButton}" Content="ACEPTAR"
                         Margin="0,25,0,0" Click="btAccept_Click" Cursor="Hand"/>
             </StackPanel>

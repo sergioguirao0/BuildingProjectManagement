@@ -29,20 +29,6 @@ namespace BuildingProjectManagement.ViewModel
             }
         }
 
-        private string? _checkMessage;
-        public string? CheckMessage
-        {
-            get => _checkMessage;
-            set
-            {
-                if (_checkMessage != value)
-                {
-                    _checkMessage = value;
-                    OnPropertyChanged(nameof(CheckMessage));
-                }
-            }
-        }
-
         private string? _confirmationMessage;
         public string? ConfirmationMessage
         {
@@ -86,54 +72,6 @@ namespace BuildingProjectManagement.ViewModel
             }
         }
 
-        public string ChangeFirstChar(string text)
-        {
-            string[] words = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            StringBuilder result = new StringBuilder();
-
-            for (int i = 0; i < words.Length; i++)
-            {
-                string word = words[i];
-                if (word.Length > 0)
-                {
-                    result.Append(char.ToUpper(word[0]) + word.Substring(1));
-                }
-
-                if (i != word.Length - 1)
-                {
-                    result.Append(' ');
-                }
-            }
-
-            return result.ToString();
-        }
-
-        private bool CheckName(string name)
-        {
-            return !string.IsNullOrEmpty(name);
-        }
-
-        private bool CheckDni(string dni)
-        {
-            if (dni.Length != 9)
-            {
-                return false;
-            }
-            else
-            {
-                string regexDni = "^\\d{8}[A-Z]$";
-                string regexNie = "^[XYZ]\\d{7}[A-Z]$";
-
-                return Regex.IsMatch(dni, regexDni) || Regex.IsMatch(dni, regexNie);
-            }
-        }
-
-        private bool CheckEmail(string email)
-        {
-            string regexEmail = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-            return Regex.IsMatch(email, regexEmail);
-        }
-
         private bool CheckPassword(string password)
         {
             string regexPassword = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[\\W_]).{8,}$";
@@ -144,12 +82,17 @@ namespace BuildingProjectManagement.ViewModel
         {
             bool checks;
 
-            if (!CheckName(name) || !CheckName(surname))
+            if (!CheckName(name))
             {
                 CheckMessage = AppStrings.CheckName;
                 checks = false;
             }
-            else if (!CheckDni(dni))
+            else if (!CheckName(surname))
+            {
+                CheckMessage = AppStrings.CheckSurname;
+                checks = false;
+            }
+            else if (!CheckIdentification(dni))
             {
                 CheckMessage = AppStrings.CheckDni;
                 checks = false;

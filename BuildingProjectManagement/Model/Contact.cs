@@ -8,6 +8,7 @@ namespace BuildingProjectManagement.Model
 {
     public class Contact
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Dni { get; set; }
         public string? Address { get; set; }
@@ -26,7 +27,7 @@ namespace BuildingProjectManagement.Model
 
         public override string ToString()
         {
-            return Profession + " - " + Name;
+            return Name + " - " + Profession;
         }
     }
 }

@@ -25,11 +25,26 @@ namespace BuildingProjectManagement.Resources.Strings
         public const string RegisterFail = "Registro fallido: Usuario ya registrado en la base de datos";
         public const string ConfirmationMessage = "Confirmación";
         public const string ErrorMessage = "Error";
-        public const string CheckName = "El campo Nombre/Apellidos no puede estar vacío";
+        public const string LoginError = "Correo electrónico o contraseña incorrectos";
+
+        public const string CheckName = "El campo Nombre no puede estar vacío";
+        public const string CheckSurname = "El campo Apellidos no puede estar vacío";
         public const string CheckDni = "DNI/NIE no válido";
+        public const string CheckDniContact = "DNI/CIF no válido";
         public const string CheckEmail = "Email no válido";
+        public const string CheckPhone = "Número de teléfono no válido";
+        public const string CheckProfession = "El campo Profesión no puede estar vacío";
         public const string CheckPasswordFormat = "La contraseña debe incluir un número, una letra minúscula, una letra mayúscula y un símbolo";
         public const string CheckPassword = "Los dos campos contraseña no coinciden";
-        public const string LoginError = "Correo electrónico o contraseña incorrectos";
+        
+        public const string ContactCreateError = "Error al crear el contacto";
+        public const string ContactUpdateError = "Error al actualizar el contacto";
+        public const string ContactDeleteError = "Error al borrar el contacto";
+        public const string ContactDeleteErrorSelection = "No hay ningún contacto seleccionado";
+
+        public const string ConfirmationWindowUpdateTitle = "Actualizar contacto";
+        public const string ConfirmationWindowDeleteTitle = "Eliminar contacto";
+        public const string ConfirmationWindowUpdateMessage = "Se va a actualizar el contacto: ";
+        public const string ConfirmationWindowDeleteMessage = "Se va a eliminar el contacto: ";
     }
 }

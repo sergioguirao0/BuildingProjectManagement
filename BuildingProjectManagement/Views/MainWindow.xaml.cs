@@ -21,6 +21,7 @@ namespace BuildingProjectManagement.Views
     {
         static ContactsWindow? contactsWindow;
         UserViewModel userViewModel;
+        ContactViewModel contactViewModel;
 
         public MainWindow(UserViewModel userViewModel)
         {
@@ -28,6 +29,7 @@ namespace BuildingProjectManagement.Views
             this.MaxHeight = SystemParameters.WorkArea.Height + 14;
             this.MaxWidth = SystemParameters.WorkArea.Width + 14;
             this.userViewModel = userViewModel;
+            this.contactViewModel = new ContactViewModel();
             DataContext = userViewModel;
             LabelTitle.Text = LabelTitle.Text + ActualSession.Session.LoggedInUser?.Name + 
                 ActualSession.Session.LoggedInUser?.Surname;
@@ -67,8 +69,15 @@ namespace BuildingProjectManagement.Views
 
         private void BtContacts_Click(object sender, RoutedEventArgs e)
         {
-            contactsWindow = new ContactsWindow();
+            contactsWindow = new ContactsWindow(contactViewModel);
             contactsWindow.ShowDialog();
+        }
+
+        private void BtCloseSession_Click(object sender, RoutedEventArgs e)
+        {
+            LoginWindow loginWindow = new LoginWindow();
+            loginWindow.Show();
+            Close();
         }
     }
 }
