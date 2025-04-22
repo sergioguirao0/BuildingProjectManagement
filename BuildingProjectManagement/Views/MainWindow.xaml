@@ -46,8 +46,8 @@
             </Grid>
             
             <StackPanel Orientation="Horizontal" Grid.Row="1">
-                <Button x:Name="BtNewProject" Content="NUEVO PROYECTO" Style="{StaticResource ControlButton}"
-                        Background="#FF2B2B2B" Margin="10,0,0,0"/>
+                <Button x:Name="BtProject" Content="NUEVO PROYECTO" Style="{StaticResource ControlButton}"
+                        Background="#FF2B2B2B" Margin="10,0,0,0" Click="BtProject_Click"/>
                 <Button x:Name="BtContacts" Content="CONTACTOS" Style="{StaticResource ControlButton}"
                         Background="#FF2B2B2B" Margin="5,0,0,0" Click="BtContacts_Click"/>
                 <Button x:Name="BtCloseSession" Content="CERRAR SESIÓN" Style="{StaticResource ControlButton}"

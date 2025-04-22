@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BuildingProjectManagementAPI.Controllers
 {
     [ApiController]
-    [Route("api/contacts")]
+    [Route(ApiStrings.ContactRoute)]
     [Authorize]
     public class ContactsController : ControllerBase
     {

@@ -38,6 +38,8 @@ namespace BuildingProjectManagementAPI.Model.Entities
         [StringLength(100, ErrorMessage = ApiStrings.StringLengthMessage)]
         public required string Profession { get; set; }
 
+        public List<ProjectContactEntity> Projects { get; set; } = new List<ProjectContactEntity>();
+
         [Required]
         public required string UserId { get; set; }
 

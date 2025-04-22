@@ -75,9 +75,21 @@ namespace BuildingProjectManagement.Views
 
         private void BtCloseSession_Click(object sender, RoutedEventArgs e)
         {
-            LoginWindow loginWindow = new LoginWindow();
-            loginWindow.Show();
-            Close();
+            CloseSessionConfirmation closeSessionConfirmation = new CloseSessionConfirmation();
+            bool? result = closeSessionConfirmation.ShowDialog();
+
+            if (result == true)
+            {
+                LoginWindow loginWindow = new LoginWindow();
+                loginWindow.Show();
+                Close();
+            }
+        }
+
+        private void BtProject_Click(object sender, RoutedEventArgs e)
+        {
+            ProjectsWindow projectsWindow = new ProjectsWindow();
+            projectsWindow.Show();
         }
     }
 }

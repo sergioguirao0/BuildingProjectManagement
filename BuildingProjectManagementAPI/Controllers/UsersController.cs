@@ -2,6 +2,7 @@
 using BuildingProjectManagementAPI.Model.Dto;
 using BuildingProjectManagementAPI.Model.DTO;
 using BuildingProjectManagementAPI.Model.Entities;
+using BuildingProjectManagementAPI.Resources;
 using BuildingProjectManagementAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,7 +15,7 @@ using System.Text;
 namespace BuildingProjectManagementAPI.Controllers
 {
     [ApiController]
-    [Route("api/users")]
+    [Route(ApiStrings.UserRoute)]
     [Authorize]
     public class UsersController : ControllerBase
     {
