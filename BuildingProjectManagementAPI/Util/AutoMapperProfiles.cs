@@ -31,6 +31,26 @@ namespace BuildingProjectManagementAPI.Util
             CreateMap<ContactEntity, ContactDto>()
                 .ForMember(ent => ent.UserEmail, options => options.MapFrom(user => user.User!.Email))
                 .ReverseMap();
+
+            CreateMap<ProjectCreationDto, ProjectEntity>()
+                .ForMember(ent => ent.Contacts, options => 
+                    options.MapFrom(dto => dto.ContactsIds.Select(id => new ProjectContactEntity { ContactId = id })));
+
+            CreateMap<ProjectEntity, ProjectDto>()
+                .ForMember(dto => dto.UserEmail, options => options.MapFrom(project => project.User!.Email));
+
+            CreateMap<ProjectContactEntity, ContactDto>()
+                .ForMember(dto => dto.Id, options => options.MapFrom(ent => ent.ContactId))
+                .ForMember(dto => dto.Name, options => options.MapFrom(ent => ent.Contact!.Name))
+                .ForMember(dto => dto.Dni, options => options.MapFrom(ent => ent.Contact!.Dni))
+                .ForMember(dto => dto.Address, options => options.MapFrom(ent => ent.Contact!.Address))
+                .ForMember(dto => dto.Town, options => options.MapFrom(ent => ent.Contact!.Town))
+                .ForMember(dto => dto.Province, options => options.MapFrom(ent => ent.Contact!.Province))
+                .ForMember(dto => dto.Phone, options => options.MapFrom(ent => ent.Contact!.Phone))
+                .ForMember(dto => dto.Email, options => options.MapFrom(ent => ent.Contact!.Email))
+                .ForMember(dto => dto.Profession, options => options.MapFrom(ent => ent.Contact!.Profession));
+
+            CreateMap<ProjectEntity, ProjectPatchDto>().ReverseMap();
         }
     }
 }

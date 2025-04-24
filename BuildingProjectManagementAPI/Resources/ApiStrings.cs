@@ -16,5 +16,9 @@
         public const string ContactUpdateError = "Error al actualizar el contacto";
         public const string ContactDeleteError = "Error al borrar el contacto";
         public const string ContactDeleted = "Contacto eliminado correctamente";
+
+        public const string ProjectContactExist = "Se ha seleccionado un contacto que no existe";
+        public const string ProjectCreationError = "Error al crear el proyecto";
+        public const string ProjectCreated = "Proyecto creado correctamente";
     }
 }

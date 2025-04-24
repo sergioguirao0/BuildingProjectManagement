@@ -12,6 +12,8 @@ namespace BuildingProjectManagementAPI.Model.Dto
         public string? JobType { get; set; }
         public string? Description { get; set; }
         public required string State { get; set; }
+        public List<ContactDto>? Contacts { get; set; }
         public required string UserId { get; set; }
+        public required string UserEmail { get; set; }
     }
 }
