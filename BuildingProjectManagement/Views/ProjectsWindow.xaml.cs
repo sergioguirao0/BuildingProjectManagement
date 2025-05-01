@@ -1,5 +1,8 @@
-﻿using System;
+﻿using BuildingProjectManagement.Model;
+using BuildingProjectManagement.ViewModel;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,9 +19,15 @@ namespace BuildingProjectManagement.Views
 {
     public partial class ProjectsWindow : Window
     {
-        public ProjectsWindow()
+        ContactViewModel contactViewModel;
+        ProjectViewModel projectViewModel;
+
+        public ProjectsWindow(ContactViewModel contactViewModel, ProjectViewModel projectViewModel)
         {
             InitializeComponent();
+            this.contactViewModel = contactViewModel;
+            this.projectViewModel = projectViewModel;
+            DataContext = contactViewModel;
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)
@@ -29,6 +38,12 @@ namespace BuildingProjectManagement.Views
             }
         }
 
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            checkMessage.DataContext = projectViewModel;
+            await contactViewModel.ShowContacts();
+        }
+
         private void btMinimize_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
@@ -37,6 +52,31 @@ namespace BuildingProjectManagement.Views
         private void btClose_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void BtAdd_Click(object sender, RoutedEventArgs e)
+        {
+            projectViewModel.ProjectChecksMessage = "Prueba de contenido del mensaje";
+        }
+
+        private void BtDelete_Click(object sender, RoutedEventArgs e)
+        {
+            projectViewModel.ProjectChecksMessage = "Otra prueba de contenido del mensaje";
+        }
+
+        private void BtSave_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtCancel_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtClear_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

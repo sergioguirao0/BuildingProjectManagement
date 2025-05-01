@@ -8,7 +8,7 @@
         xmlns:ViewModel="clr-namespace:BuildingProjectManagement.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="720" Width="1280" WindowStartupLocation="CenterScreen" WindowStyle="None" 
-        ResizeMode="CanResize" Background="Transparent" AllowsTransparency="True">
+        ResizeMode="CanResize" Background="Transparent" AllowsTransparency="True" Loaded="Window_Loaded">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

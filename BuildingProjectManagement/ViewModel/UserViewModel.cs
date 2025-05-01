@@ -47,23 +47,25 @@ namespace BuildingProjectManagement.ViewModel
         {
             try
             {
-                var client = new HttpClient();
-                client.BaseAddress = new Uri(AppStrings.ApiBaseUrl);
-
-                var json = JsonSerializer.Serialize(user);
-                var content = new StringContent(json, Encoding.UTF8, AppStrings.ApplicationJson);
-
-                var response = await client.PostAsync(AppStrings.RegisterEndpoint, content);
-
-                if (response.IsSuccessStatusCode)
+                using (var client = new HttpClient())
                 {
-                    ConfirmationMessage = AppStrings.ConfirmationMessage;
-                    RegisterMessage = AppStrings.RegisterSuccess;
-                }
-                else
-                {
-                    ConfirmationMessage = AppStrings.ErrorMessage;
-                    RegisterMessage = AppStrings.RegisterFail;
+                    client.BaseAddress = new Uri(AppStrings.ApiBaseUrl);
+
+                    var json = JsonSerializer.Serialize(user);
+                    var content = new StringContent(json, Encoding.UTF8, AppStrings.ApplicationJson);
+
+                    var response = await client.PostAsync(AppStrings.RegisterEndpoint, content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ConfirmationMessage = AppStrings.ConfirmationMessage;
+                        RegisterMessage = AppStrings.RegisterSuccess;
+                    }
+                    else
+                    {
+                        ConfirmationMessage = AppStrings.ErrorMessage;
+                        RegisterMessage = AppStrings.RegisterFail;
+                    }
                 }
             }
             catch (Exception ex)
@@ -124,13 +126,15 @@ namespace BuildingProjectManagement.ViewModel
         {
             try
             {
-                var client = new HttpClient();
-                client.BaseAddress = new Uri(AppStrings.ApiBaseUrl);
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(AppStrings.ApiBaseUrl);
 
-                var json = JsonSerializer.Serialize(userCredentialsDTO);
-                var content = new StringContent(json, Encoding.UTF8, AppStrings.ApplicationJson);
+                    var json = JsonSerializer.Serialize(userCredentialsDTO);
+                    var content = new StringContent(json, Encoding.UTF8, AppStrings.ApplicationJson);
 
-                return await client.PostAsync(AppStrings.LoginEndpoint, content);
+                    return await client.PostAsync(AppStrings.LoginEndpoint, content);
+                } 
             }
             catch (Exception ex)
             {
@@ -146,12 +150,14 @@ namespace BuildingProjectManagement.ViewModel
         {
             try
             {
-                var client = new HttpClient();
-                client.BaseAddress = new Uri(AppStrings.ApiBaseUrl);
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(AppStrings.ApiBaseUrl);
 
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                return await client.GetAsync(AppStrings.GetUserEndpoint);
+                    return await client.GetAsync(AppStrings.GetUserEndpoint);
+                }
             }
             catch (Exception ex)
             {

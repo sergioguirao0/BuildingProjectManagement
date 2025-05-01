@@ -142,5 +142,20 @@ namespace BuildingProjectManagementAPI.Services
 
             return false;
         }
+
+        public async Task<bool> DeleteProject(ProjectEntity project)
+        {
+            try
+            {
+                context.Remove(project);
+                await context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return false;
+            }
+        }
     }
 }

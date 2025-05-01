@@ -6,13 +6,14 @@
         xmlns:local="clr-namespace:BuildingProjectManagement.Views"
         xmlns:ViewModel="clr-namespace:BuildingProjectManagement.ViewModel"
         mc:Ignorable="d"
-        Title="ProjectsWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        AllowsTransparency="True" Background="Transparent" WindowStyle="None">
+        Title="ProjectsWindow" Height="440" Width="750" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        AllowsTransparency="True" Background="Transparent" WindowStyle="None" Loaded="Window_Loaded">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Dictionaries/WindowStyles.xaml"/>
-                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries>
+            <ViewModel:ProjectViewModel x:Key="projectViewModel"/>
         </ResourceDictionary>
     </Window.Resources>
     <Border CornerRadius="10" BorderThickness="5" Style="{StaticResource BorderStyle}">
@@ -29,7 +30,7 @@
                     <ColumnDefinition Width="25"/>
                     <ColumnDefinition Width="5"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="Gestión de proyectos" Style="{StaticResource topBarText}"/>
+                <TextBlock Grid.Column="0" Text="Nuevo proyecto" Style="{StaticResource topBarText}"/>
                 <Button x:Name="BtMinimize" Grid.Column="1" Content="-" Background="#FF585858" 
                         Style="{StaticResource TopBarButton}" Click="btMinimize_Click" Cursor="Hand"/>
                 <Button x:Name="BtClose" Grid.Column="2" Background="#FF2B2B2B" Content="X" 
@@ -44,24 +45,59 @@
                     <RowDefinition Height="5"/>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="5"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="5"/>
                     <RowDefinition Height="30"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="60"/>
                     <RowDefinition Height="5"/>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="5"/>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="5"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="160"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Text="*NOMBRE DEL PROYECTO:" Grid.Row="0" Style="{StaticResource formTextBlock}"/>
                 <TextBlock Text="*EMPLAZAMIENTO:" Grid.Row="2" Style="{StaticResource formTextBlock}"/>
                 <TextBlock Text="*TIPO DE TRABAJO:" Grid.Row="4" Style="{StaticResource formTextBlock}"/>
-                <TextBlock Text="DESCRIPCIÓN:" Grid.Row="6" Style="{StaticResource formTextBlock}"/>
+                <TextBlock Text="DESCRIPCIÓN:" Grid.Row="6" Style="{StaticResource formTextBlock}" VerticalAlignment="Top"
+                           Margin="0,5,0,0"/>
                 <TextBlock Text="CONTACTOS:" Grid.Row="8" Style="{StaticResource formTextBlock}"/>
-                <TextBlock Text="*ESTADO:" Grid.Row="10" Style="{StaticResource formTextBlock}"/>
+                <TextBlock Text="*ESTADO:" Grid.Row="12" Style="{StaticResource formTextBlock}"/>
+
+                <TextBox x:Name="TbName" Grid.Row="0" Grid.Column="1" Style="{StaticResource formTextBox}"/>
+                <TextBox x:Name="TbSite" Grid.Row="2" Grid.Column="1" Style="{StaticResource formTextBox}"/>
+                <TextBox x:Name="TbJobType" Grid.Row="4" Grid.Column="1" Style="{StaticResource formTextBox}"/>
+                <TextBox x:Name="TbDescription" Grid.Row="6" Grid.Column="1" Style="{StaticResource formTextBox}"
+                         Height="55" TextWrapping="Wrap" VerticalContentAlignment="Top"/>
+                <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal">
+                    <ComboBox x:Name="CbContacts" ItemsSource="{Binding Contacts}"/>
+                    <Button x:Name="BtAdd" Style="{StaticResource FormControlButton}" Content="AÑADIR"
+                            Grid.Row="16" Margin="10,0,0,0" Click="BtAdd_Click"/>
+                    <Button x:Name="BtDelete" Style="{StaticResource FormControlButton}" Content="ELIMINAR"
+                            Grid.Row="16" Margin="10,0,0,0" Click="BtDelete_Click" Background="#FF585858"/>
+                </StackPanel>
+                <ListBox x:Name="LbContacts" Grid.Row="10" Grid.Column="1" BorderThickness="0,0,0,1"/>
+                <ComboBox x:Name="CbState" Grid.Row="12" Grid.Column="1"/>
+                
+                <TextBlock x:Name="checkMessage" Style="{StaticResource checkTextBlock}" DataContext="{StaticResource projectViewModel}" 
+                           Grid.Row="14" Grid.Column="0" Grid.ColumnSpan="2" Height="25" Text="{Binding ProjectChecksMessage}" Margin="0,5,0,0"/>
+
+                <StackPanel Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center"
+                            VerticalAlignment="Top" Margin="0,5,0,0">
+                    <Button x:Name="BtSave" Style="{StaticResource FormControlButton}" Content="GUARDAR" Grid.Row="16"
+                            Margin="10,0,0,0" Click="BtSave_Click"/>
+                    <Button x:Name="BtCancel" Style="{StaticResource FormControlButton}" Content="CANCELAR"
+                            Margin="10,0,0,0" Click="BtCancel_Click" Background="#FF585858"/>
+                    <Button x:Name="BtClear" Style="{StaticResource FormControlButton}" Content="LIMPIAR CAMPOS"
+                            Margin="10,0,0,0" Click="BtClear_Click" Background="#FF585858"/>
+                </StackPanel>
             </Grid>
         </Grid>
     </Border>

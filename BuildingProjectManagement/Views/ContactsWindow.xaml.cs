@@ -27,7 +27,6 @@ namespace BuildingProjectManagement.Views
         {
             InitializeComponent();
             this.contactViewModel = contactViewModel;
-            contactViewModel.Contacts = new ObservableCollection<Contact>();
             ListContacts.ItemsSource = contactViewModel.Contacts;
             DataContext = this.contactViewModel;
         }

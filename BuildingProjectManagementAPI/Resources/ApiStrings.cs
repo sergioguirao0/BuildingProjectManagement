@@ -20,5 +20,8 @@
         public const string ProjectContactExist = "Se ha seleccionado un contacto que no existe";
         public const string ProjectCreationError = "Error al crear el proyecto";
         public const string ProjectCreated = "Proyecto creado correctamente";
+        public const string ProjectNotFound = "Proyecto no encontrado";
+        public const string ProjectDeleted = "Proyecto eliminado correctamente";
+        public const string ProjectDeleteError = "Error al borrar el proyecto";
     }
 }

@@ -63,7 +63,7 @@ namespace BuildingProjectManagementAPI.Controllers
 
             if (projectDb is null)
             {
-                return NotFound();
+                return NotFound(ApiStrings.ProjectNotFound);
             }
 
             var user = await userService.GetUser();
@@ -85,6 +85,36 @@ namespace BuildingProjectManagementAPI.Controllers
 
             await projectService.PatchProject(projectDb, projectPatchDto);
             return NoContent();
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var project = await projectService.GetProject(id);
+
+            if (project is null)
+            {
+                return NotFound(ApiStrings.ProjectNotFound);
+            }
+
+            var user = await userService.GetUser();
+            bool checkProjectContact = projectService.CheckUserProject(user!, project);
+
+            if (!checkProjectContact)
+            {
+                return Forbid();
+            }
+
+            bool canDelete = await projectService.DeleteProject(project);
+
+            if (canDelete)
+            {
+                return Ok(ApiStrings.ProjectDeleted);
+            }
+            else
+            {
+                return BadRequest(ApiStrings.ProjectDeleteError);
+            }
         }
     }
 }

@@ -14,5 +14,6 @@ namespace BuildingProjectManagementAPI.Model.Repositories
         ProjectPatchDto MapProject(ProjectEntity project);
         Task<bool> PatchProject(ProjectEntity project, ProjectPatchDto projectPatchDto);
         bool CheckUserProject(IdentityUser user, ProjectEntity? project);
+        Task<bool> DeleteProject(ProjectEntity project);
     }
 }

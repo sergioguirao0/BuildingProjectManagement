@@ -2,6 +2,7 @@
 using BuildingProjectManagement.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,8 +20,10 @@ namespace BuildingProjectManagement.Views
 {
     public partial class MainWindow : Window
     {
+        static ProjectsWindow? projectsWindow;
         static ContactsWindow? contactsWindow;
         UserViewModel userViewModel;
+        ProjectViewModel projectViewModel;
         ContactViewModel contactViewModel;
 
         public MainWindow(UserViewModel userViewModel)
@@ -30,9 +33,16 @@ namespace BuildingProjectManagement.Views
             this.MaxWidth = SystemParameters.WorkArea.Width + 14;
             this.userViewModel = userViewModel;
             this.contactViewModel = new ContactViewModel();
+            this.projectViewModel = new ProjectViewModel();
+            contactViewModel.Contacts = new ObservableCollection<Contact>();
             DataContext = userViewModel;
             LabelTitle.Text = LabelTitle.Text + ActualSession.Session.LoggedInUser?.Name + 
                 ActualSession.Session.LoggedInUser?.Surname;
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            await contactViewModel.ShowContacts();
         }
 
         private void BtMinimize_Click(object sender, RoutedEventArgs e)
@@ -88,7 +98,7 @@ namespace BuildingProjectManagement.Views
 
         private void BtProject_Click(object sender, RoutedEventArgs e)
         {
-            ProjectsWindow projectsWindow = new ProjectsWindow();
+            projectsWindow = new ProjectsWindow(contactViewModel, projectViewModel);
             projectsWindow.Show();
         }
     }

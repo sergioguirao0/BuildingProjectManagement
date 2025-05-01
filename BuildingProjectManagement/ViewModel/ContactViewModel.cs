@@ -3,10 +3,12 @@ using BuildingProjectManagement.Resources.Strings;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -50,12 +52,14 @@ namespace BuildingProjectManagement.ViewModel
         {
             try
             {
-                var client = new HttpClient();
-                client.BaseAddress = new Uri(AppStrings.ApiBaseUrl);
+                using (var client = GetHttpClient())
+                {
+                    client.BaseAddress = new Uri(AppStrings.ApiBaseUrl);
 
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                return await client.GetAsync(AppStrings.ContactsEndpoint);
+                    return await client.GetAsync(AppStrings.ContactsEndpoint);
+                }
             }
             catch(Exception ex)
             {
@@ -178,11 +182,12 @@ namespace BuildingProjectManagement.ViewModel
         {
             try
             {
-                var client = GetHttpClient();
-
-                var json = JsonSerializer.Serialize(contact);
-                var content = new StringContent(json, Encoding.UTF8, AppStrings.ApplicationJson);
-                return await client.PostAsync(AppStrings.ContactsEndpoint, content);
+                using (var client = GetHttpClient())
+                {
+                    var json = JsonSerializer.Serialize(contact);
+                    var content = new StringContent(json, Encoding.UTF8, AppStrings.ApplicationJson);
+                    return await client.PostAsync(AppStrings.ContactsEndpoint, content);
+                }
             }
             catch (Exception ex)
             {
@@ -198,10 +203,12 @@ namespace BuildingProjectManagement.ViewModel
         {
             try
             {
-                var client = GetHttpClient();
-                var json = JsonSerializer.Serialize(contact);
-                var content = new StringContent(json, Encoding.UTF8, AppStrings.ApplicationJson);
-                return await client.PutAsync(AppStrings.ContactsEndpoint + "/" + id, content);
+                using (var client = GetHttpClient())
+                {
+                    var json = JsonSerializer.Serialize(contact);
+                    var content = new StringContent(json, Encoding.UTF8, AppStrings.ApplicationJson);
+                    return await client.PutAsync(AppStrings.ContactsEndpoint + "/" + id, content);
+                }
             }
             catch (Exception ex)
             {
@@ -217,8 +224,10 @@ namespace BuildingProjectManagement.ViewModel
         {
             try
             {
-                var client = GetHttpClient();
-                return await client.DeleteAsync(AppStrings.ContactsEndpoint + "/" + id);
+                using (var client = GetHttpClient())
+                {
+                    return await client.DeleteAsync(AppStrings.ContactsEndpoint + "/" + id);
+                }  
             }
             catch (Exception ex)
             {
