@@ -7,7 +7,7 @@
         xmlns:ViewModel="clr-namespace:BuildingProjectManagement.ViewModel"
         mc:Ignorable="d"
         Title="ProjectsWindow" Height="440" Width="750" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        AllowsTransparency="True" Background="Transparent" WindowStyle="None" Loaded="Window_Loaded">
+        AllowsTransparency="True" Background="Transparent" WindowStyle="None" Loaded="Window_Loaded" Closed="Window_Closed">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -83,7 +83,7 @@
                     <Button x:Name="BtDelete" Style="{StaticResource FormControlButton}" Content="ELIMINAR"
                             Grid.Row="16" Margin="10,0,0,0" Click="BtDelete_Click" Background="#FF585858"/>
                 </StackPanel>
-                <ListBox x:Name="LbContacts" Grid.Row="10" Grid.Column="1" BorderThickness="0,0,0,1"/>
+                <ListBox x:Name="LbContacts" Grid.Row="10" Grid.Column="1" BorderThickness="0,0,0,1" ItemContainerStyle="{StaticResource ItemList}"/>
                 <ComboBox x:Name="CbState" Grid.Row="12" Grid.Column="1"/>
                 
                 <TextBlock x:Name="checkMessage" Style="{StaticResource checkTextBlock}" DataContext="{StaticResource projectViewModel}" 

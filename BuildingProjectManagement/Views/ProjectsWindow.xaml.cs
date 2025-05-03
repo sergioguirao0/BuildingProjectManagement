@@ -1,4 +1,5 @@
 ﻿using BuildingProjectManagement.Model;
+using BuildingProjectManagement.Resources.Strings;
 using BuildingProjectManagement.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace BuildingProjectManagement.Views
     {
         ContactViewModel contactViewModel;
         ProjectViewModel projectViewModel;
+        List<int> userContacts;
 
         public ProjectsWindow(ContactViewModel contactViewModel, ProjectViewModel projectViewModel)
         {
@@ -28,6 +30,14 @@ namespace BuildingProjectManagement.Views
             this.contactViewModel = contactViewModel;
             this.projectViewModel = projectViewModel;
             DataContext = contactViewModel;
+            userContacts = new List<int>();
+            
+            foreach (var state in AppStrings.StateItems)
+            {
+                CbState.Items.Add(state);
+            }
+
+            CbState.SelectedIndex = 0;
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)
@@ -51,32 +61,109 @@ namespace BuildingProjectManagement.Views
 
         private void btClose_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = false;
             Close();
         }
 
         private void BtAdd_Click(object sender, RoutedEventArgs e)
         {
-            projectViewModel.ProjectChecksMessage = "Prueba de contenido del mensaje";
+            if (CbContacts.SelectedIndex > -1)
+            {
+                if (!userContacts.Contains(((Contact)CbContacts.SelectedItem).Id))
+                {
+                    userContacts.Add(((Contact)CbContacts.SelectedItem).Id);
+                    LbContacts.Items.Add((Contact)CbContacts.SelectedItem);
+                }
+                else
+                {
+                    projectViewModel.ProjectChecksMessage = AppStrings.ContactInListError;
+                }
+            }
+            else
+            {
+                projectViewModel.ProjectChecksMessage = AppStrings.NoSelectedContactError;
+            }
         }
 
         private void BtDelete_Click(object sender, RoutedEventArgs e)
         {
-            projectViewModel.ProjectChecksMessage = "Otra prueba de contenido del mensaje";
+            if (LbContacts.Items.Count > 0)
+            {
+                if (LbContacts.SelectedItem is not null)
+                {
+                    userContacts.Remove(((Contact)LbContacts.SelectedItem).Id);
+                    LbContacts.Items.Remove((Contact)LbContacts.SelectedItem);
+                }
+                else
+                {
+                    projectViewModel.ProjectChecksMessage = AppStrings.NoSelectedContactError;
+                }
+            }
+            else
+            {
+                projectViewModel.ProjectChecksMessage = AppStrings.EmptyListError;
+            }
         }
 
-        private void BtSave_Click(object sender, RoutedEventArgs e)
+        private async void BtSave_Click(object sender, RoutedEventArgs e)
         {
+            bool projectChecks = projectViewModel.ProjectChecks(TbName.Text, TbSite.Text, TbJobType.Text);
+            
+            if (projectChecks)
+            {
+                if (CbState.SelectedIndex > -1)
+                { 
+                    Project project = new Project(TbName.Text, TbSite.Text, TbJobType.Text, CbState.SelectedItem.ToString()!);
+                    projectViewModel.ValidateProjectForm(project, TbDescription.Text);
+                    project.ContactsIds = userContacts;
+                    var response = await projectViewModel.PostProject(project);
 
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ClearForm();
+                        DialogResult = true;
+                        Close();
+                    }
+                    else
+                    {
+                        projectViewModel.CheckMessage = AppStrings.ProjectCreationError;
+                    }
+                }
+                else
+                {
+                    projectViewModel.CheckMessage = AppStrings.CheckState;
+                }   
+            }
         }
 
         private void BtCancel_Click(object sender, RoutedEventArgs e)
         {
-
+            DialogResult = false;
+            Close();
+            projectViewModel.CleanCheckMessage();
         }
 
         private void BtClear_Click(object sender, RoutedEventArgs e)
         {
+            ClearForm();
+        }
 
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            projectViewModel.CleanCheckMessage();
+        }
+
+        private void ClearForm()
+        {
+            TbName.Clear();
+            TbSite.Clear();
+            TbJobType.Clear();
+            TbDescription.Clear();
+            CbContacts.SelectedItem = null;
+            LbContacts.Items.Clear();
+            userContacts.Clear();
+            CbState.SelectedIndex = 0;
+            projectViewModel.CleanCheckMessage();
         }
     }
 }

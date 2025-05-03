@@ -14,6 +14,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Dictionaries/WindowStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <ViewModel:UserViewModel x:Key="userViewModel"/>
         </ResourceDictionary>
     </Window.Resources>
     <Border x:Name="MainGrid" CornerRadius="10" BorderThickness="5" Style="{StaticResource BorderStyle}">
@@ -34,7 +35,7 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Column="0">
                     <TextBlock x:Name="LabelTitle" Text="Building Project Management - Sesión iniciada como: " Grid.Column="1" 
-                               Style="{StaticResource topBarText}"/>
+                               DataContext="{StaticResource userViewModel}" Style="{StaticResource topBarText}"/>
                 </StackPanel>
                 <Button x:Name="BtMinimize" Grid.Column="1" Content="-" Background="#FF585858" 
                         Style="{StaticResource TopBarButton}" Click="BtMinimize_Click" Cursor="Hand"/>
@@ -59,13 +60,8 @@
                     <ColumnDefinition Width="350"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Border Grid.Column="0" BorderThickness="2" BorderBrush="Black">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" Background="#FF2B2B2B">
-                        <StackPanel Orientation="Vertical">
-
-                        </StackPanel>
-                    </ScrollViewer>
-                </Border>
+                <ListBox x:Name="LbProjects" Grid.Row="0" Grid.Column="0" ItemTemplate="{StaticResource ProjectCard}" ItemsSource="{Binding Projects}"
+                         HorizontalContentAlignment="Stretch" ItemContainerStyle="{StaticResource ProjectItemList}"/>
             </Grid>
         </Grid>
     </Border>

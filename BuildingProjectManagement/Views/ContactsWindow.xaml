@@ -7,7 +7,7 @@
         xmlns:ViewModel="clr-namespace:BuildingProjectManagement.ViewModel"
         mc:Ignorable="d"
         Title="ContactsWindow" Height="420" Width="720" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        WindowStyle="None" AllowsTransparency="True" Background="Transparent" Loaded="Window_Loaded">
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent" Loaded="Window_Loaded" Closed="Window_Closed">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

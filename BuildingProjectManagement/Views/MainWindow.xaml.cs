@@ -22,9 +22,9 @@ namespace BuildingProjectManagement.Views
     {
         static ProjectsWindow? projectsWindow;
         static ContactsWindow? contactsWindow;
-        UserViewModel userViewModel;
-        ProjectViewModel projectViewModel;
-        ContactViewModel contactViewModel;
+        readonly UserViewModel userViewModel;
+        readonly ProjectViewModel projectViewModel;
+        readonly ContactViewModel contactViewModel;
 
         public MainWindow(UserViewModel userViewModel)
         {
@@ -35,13 +35,14 @@ namespace BuildingProjectManagement.Views
             this.contactViewModel = new ContactViewModel();
             this.projectViewModel = new ProjectViewModel();
             contactViewModel.Contacts = new ObservableCollection<Contact>();
-            DataContext = userViewModel;
+            DataContext = projectViewModel;
             LabelTitle.Text = LabelTitle.Text + ActualSession.Session.LoggedInUser?.Name + 
                 ActualSession.Session.LoggedInUser?.Surname;
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            await projectViewModel.ShowProjects();
             await contactViewModel.ShowContacts();
         }
 
@@ -96,10 +97,15 @@ namespace BuildingProjectManagement.Views
             }
         }
 
-        private void BtProject_Click(object sender, RoutedEventArgs e)
+        private async void BtProject_Click(object sender, RoutedEventArgs e)
         {
             projectsWindow = new ProjectsWindow(contactViewModel, projectViewModel);
-            projectsWindow.Show();
+            projectsWindow.ShowDialog();
+
+            if (projectsWindow.DialogResult == true)
+            {
+                await projectViewModel.ShowProjects();
+            }
         }
     }
 }

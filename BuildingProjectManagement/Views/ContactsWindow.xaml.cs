@@ -65,7 +65,7 @@ namespace BuildingProjectManagement.Views
                 if (ListContacts.SelectedItem == null)
                 {
                     Contact contact = new Contact(name, TbDni.Text, TbProfession.Text);
-                    contactViewModel.ValidateForm(contact, TbAddress.Text, TbTown.Text, TbProvince.Text, TbPhone.Text, TbEmail.Text);
+                    contactViewModel.ValidateContactForm(contact, TbAddress.Text, TbTown.Text, TbProvince.Text, TbPhone.Text, TbEmail.Text);
                     var response = await contactViewModel.PostContact(contact);
 
                     if (response.IsSuccessStatusCode)
@@ -83,7 +83,7 @@ namespace BuildingProjectManagement.Views
                     deleteMode = false;
                     Contact contact = (Contact)ListContacts.SelectedItem;
                     contact.Name = name;
-                    contactViewModel.ValidateForm(contact, TbAddress.Text, TbTown.Text, TbProvince.Text, TbPhone.Text, TbEmail.Text);
+                    contactViewModel.ValidateContactForm(contact, TbAddress.Text, TbTown.Text, TbProvince.Text, TbPhone.Text, TbEmail.Text);
                     ConfirmationWindow confirmationWindow = new ConfirmationWindow(contactViewModel, contact, deleteMode);
                     contactViewModel.ConfirmationWindowTitle = AppStrings.ConfirmationWindowUpdateTitle;
                     contactViewModel.ConfirmationWindowValidation = AppStrings.ConfirmationWindowUpdateMessage;
@@ -129,7 +129,7 @@ namespace BuildingProjectManagement.Views
             TbEmail.Clear();
             TbProfession.Clear();
             ListContacts.SelectedItem = null;
-            contactViewModel.CheckMessage = string.Empty;
+            contactViewModel.CleanCheckMessage();
         }
 
         private void ListContacts_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -145,8 +145,13 @@ namespace BuildingProjectManagement.Views
                 TbPhone.Text = contact.Phone;
                 TbEmail.Text = contact.Email;
                 TbProfession.Text = contact.Profession;
-                contactViewModel.CheckMessage = string.Empty;
+                contactViewModel.CleanCheckMessage();
             }
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            contactViewModel.CleanCheckMessage();
         }
     }
 }

@@ -282,6 +282,30 @@
         </Setter>
     </Style>
 
+    <Style TargetType="{x:Type ListBoxItem}" x:Key="ProjectItemList">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Margin" Value="0,2.5,0,2.5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}">
+                        <ContentPresenter/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#FF7B7B7B"/>
+                            <Setter TargetName="Bd" Property="CornerRadius" Value="5"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#FF7B7B7B"/>
+                            <Setter TargetName="Bd" Property="CornerRadius" Value="5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="{x:Type Window}">
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
@@ -293,4 +317,18 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <DataTemplate x:Key="ProjectCard">
+        <Border BorderBrush="#FF2B2B2B" BorderThickness="1" CornerRadius="5" Background="Transparent" 
+                HorizontalAlignment="Stretch" Padding="5">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="14"/>
+                    <TextBlock Text="{Binding JobType}" FontSize="12"/>
+                    <TextBlock Text="{Binding Site}" FontSize="12"/>
+                    <TextBlock Text="{Binding State}" FontSize="12"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </DataTemplate>
 </ResourceDictionary>

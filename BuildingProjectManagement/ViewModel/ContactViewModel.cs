@@ -48,16 +48,12 @@ namespace BuildingProjectManagement.ViewModel
             }
         }
 
-        public async Task<HttpResponseMessage> GetContactResponse(string token)
+        public async Task<HttpResponseMessage> GetContactResponse()
         {
             try
             {
                 using (var client = GetHttpClient())
                 {
-                    client.BaseAddress = new Uri(AppStrings.ApiBaseUrl);
-
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
                     return await client.GetAsync(AppStrings.ContactsEndpoint);
                 }
             }
@@ -84,7 +80,7 @@ namespace BuildingProjectManagement.ViewModel
 
         public async Task ShowContacts()
         {
-            var response = await GetContactResponse(ActualSession.Session.Token!);
+            var response = await GetContactResponse();
 
             if (response.IsSuccessStatusCode)
             {
@@ -154,13 +150,19 @@ namespace BuildingProjectManagement.ViewModel
             }
             else
             {
+                CleanCheckMessage();
                 checks = true;
             }
 
             return checks;
         }
 
-        public void ValidateForm(Contact contact, string address, string town, string province, string phone, string email)
+        public void CleanCheckMessage()
+        {
+            CheckMessage = string.Empty;
+        }
+
+        public void ValidateContactForm(Contact contact, string address, string town, string province, string phone, string email)
         {
             if (!string.IsNullOrEmpty(address))
                 contact.Address = address;
@@ -174,7 +176,7 @@ namespace BuildingProjectManagement.ViewModel
             if (!string.IsNullOrEmpty(phone) && CheckPhone(phone))
                 contact.Phone = phone;
 
-            if (!string.IsNullOrEmpty(address) && CheckEmail(email))
+            if (!string.IsNullOrEmpty(email) && CheckEmail(email))
                 contact.Email = email;
         }
 
