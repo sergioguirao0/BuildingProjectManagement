@@ -42,6 +42,22 @@ namespace BuildingProjectManagement.ViewModel
             }
         }
 
+        private Project? _selectedProject;
+        public Project? SelectedProject
+        {
+            get => _selectedProject;
+            set
+            {
+                if (_selectedProject != value)
+                {
+                    _selectedProject = value;
+                    OnPropertyChanged(nameof(SelectedProject));
+                }
+            }
+        }
+
+        public ObservableCollection<Contact>? ProjectContacts { get; set; }
+
         public bool ProjectChecks(string name, string site, string jobType)
         {
             bool checks;
@@ -75,13 +91,13 @@ namespace BuildingProjectManagement.ViewModel
             ProjectChecksMessage = string.Empty;
         }
 
-        public void ValidateProjectForm(Project project, string description)
+        public void ValidateProjectForm(ProjectPost project, string description)
         {
             if (!string.IsNullOrEmpty(description))
                 project.Description = description;
         }
 
-        public async Task<HttpResponseMessage> PostProject(Project project)
+        public async Task<HttpResponseMessage> PostProject(ProjectPost project)
         {
             try
             {

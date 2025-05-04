@@ -81,10 +81,10 @@ namespace BuildingProjectManagement.Views
                 else
                 {
                     deleteMode = false;
-                    Contact contact = (Contact)ListContacts.SelectedItem;
-                    contact.Name = name;
-                    contactViewModel.ValidateContactForm(contact, TbAddress.Text, TbTown.Text, TbProvince.Text, TbPhone.Text, TbEmail.Text);
-                    ConfirmationWindow confirmationWindow = new ConfirmationWindow(contactViewModel, contact, deleteMode);
+                    contactViewModel.SelectedContact!.Name = name;
+                    contactViewModel.ValidateContactForm(contactViewModel.SelectedContact, TbAddress.Text, TbTown.Text, TbProvince.Text, 
+                        TbPhone.Text, TbEmail.Text);
+                    ConfirmationWindow confirmationWindow = new ConfirmationWindow(contactViewModel, contactViewModel.SelectedContact, deleteMode);
                     contactViewModel.ConfirmationWindowTitle = AppStrings.ConfirmationWindowUpdateTitle;
                     contactViewModel.ConfirmationWindowValidation = AppStrings.ConfirmationWindowUpdateMessage;
                     confirmationWindow.ShowDialog();
@@ -103,8 +103,7 @@ namespace BuildingProjectManagement.Views
             else
             {
                 deleteMode = true;
-                Contact contact = (Contact)ListContacts.SelectedItem;
-                ConfirmationWindow confirmationWindow = new ConfirmationWindow(contactViewModel, contact, deleteMode);
+                ConfirmationWindow confirmationWindow = new ConfirmationWindow(contactViewModel, contactViewModel.SelectedContact!, deleteMode);
                 contactViewModel.ConfirmationWindowTitle = AppStrings.ConfirmationWindowDeleteTitle;
                 contactViewModel.ConfirmationWindowValidation = AppStrings.ConfirmationWindowDeleteMessage;
                 confirmationWindow.ShowDialog();
@@ -136,15 +135,15 @@ namespace BuildingProjectManagement.Views
         {
             if (ListContacts.SelectedIndex > -1)
             {
-                Contact contact = (Contact)ListContacts.SelectedItem;
-                TbName.Text = contact.Name;
-                TbDni.Text = contact.Dni;
-                TbAddress.Text = contact.Address;
-                TbTown.Text = contact.Town;
-                TbProvince.Text = contact.Province;
-                TbPhone.Text = contact.Phone;
-                TbEmail.Text = contact.Email;
-                TbProfession.Text = contact.Profession;
+                contactViewModel.SelectedContact = (Contact)ListContacts.SelectedItem;
+                TbName.Text = contactViewModel.SelectedContact.Name;
+                TbDni.Text = contactViewModel.SelectedContact.Dni;
+                TbAddress.Text = contactViewModel.SelectedContact.Address;
+                TbTown.Text = contactViewModel.SelectedContact.Town;
+                TbProvince.Text = contactViewModel.SelectedContact.Province;
+                TbPhone.Text = contactViewModel.SelectedContact.Phone;
+                TbEmail.Text = contactViewModel.SelectedContact.Email;
+                TbProfession.Text = contactViewModel.SelectedContact.Profession;
                 contactViewModel.CleanCheckMessage();
             }
         }

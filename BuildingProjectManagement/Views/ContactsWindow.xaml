@@ -42,7 +42,7 @@
                     <ColumnDefinition Width="270"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <ListBox x:Name="ListContacts" ItemsSource="{Binding Contacts}" ItemContainerStyle="{StaticResource ItemList}"
+                <ListBox x:Name="ListContacts" ItemContainerStyle="{StaticResource ItemList}"
                          SelectionChanged="ListContacts_SelectionChanged"/>
 
                 <Grid Grid.Column="1">

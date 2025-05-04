@@ -113,7 +113,7 @@ namespace BuildingProjectManagement.Views
             {
                 if (CbState.SelectedIndex > -1)
                 { 
-                    Project project = new Project(TbName.Text, TbSite.Text, TbJobType.Text, CbState.SelectedItem.ToString()!);
+                    ProjectPost project = new ProjectPost(TbName.Text, TbSite.Text, TbJobType.Text, CbState.SelectedItem.ToString()!);
                     projectViewModel.ValidateProjectForm(project, TbDescription.Text);
                     project.ContactsIds = userContacts;
                     var response = await projectViewModel.PostProject(project);

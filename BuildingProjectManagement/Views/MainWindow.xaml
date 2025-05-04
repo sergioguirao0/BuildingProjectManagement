@@ -15,6 +15,7 @@
                 <ResourceDictionary Source="/Resources/Dictionaries/WindowStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <ViewModel:UserViewModel x:Key="userViewModel"/>
+            <ViewModel:ContactViewModel x:Key="contactViewModel"/>
         </ResourceDictionary>
     </Window.Resources>
     <Border x:Name="MainGrid" CornerRadius="10" BorderThickness="5" Style="{StaticResource BorderStyle}">
@@ -61,7 +62,100 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <ListBox x:Name="LbProjects" Grid.Row="0" Grid.Column="0" ItemTemplate="{StaticResource ProjectCard}" ItemsSource="{Binding Projects}"
-                         HorizontalContentAlignment="Stretch" ItemContainerStyle="{StaticResource ProjectItemList}"/>
+                         HorizontalContentAlignment="Stretch" ItemContainerStyle="{StaticResource ProjectItemList}" BorderThickness="0,0,0,0"
+                         SelectionChanged="LbProjects_SelectionChanged" IsEnabled="True"/>
+                <TabControl Grid.Column="1">
+                    <TabItem x:Name="TabData" Header="Datos generales">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="2.5*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="0.5*"/>
+                                <RowDefinition Height="1.5*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="3.5*"/>
+                                <ColumnDefinition Width="0.25*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Datos generales del proyecto" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontSize="20"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBlock Text="*NOMBRE DEL PROYECTO:" Grid.Row="1" Style="{StaticResource formTextBlock}"/>
+                            <TextBlock Text="*EMPLAZAMIENTO:" Grid.Row="2" Style="{StaticResource formTextBlock}"/>
+                            <TextBlock Text="*TIPO DE TRABAJO:" Grid.Row="3" Style="{StaticResource formTextBlock}"/>
+                            <TextBlock Text="DESCRIPCIÓN:" Grid.Row="4" Style="{StaticResource formTextBlock}" VerticalAlignment="Top"
+                                       Margin="0,15,0,0"/>
+                            <TextBlock Text="CONTACTOS:" Grid.Row="5" Style="{StaticResource formTextBlock}" VerticalAlignment="Top"
+                                       Margin="0,5,0,0"/>
+                            <TextBlock Text="*ESTADO:" Grid.Row="6" Style="{StaticResource formTextBlock}"/>
+
+                            <TextBox x:Name="TbName" Grid.Row="1" Grid.Column="1" Style="{StaticResource formTextBox}" IsReadOnly="True"/>
+                            <TextBox x:Name="TbSite" Grid.Row="2" Grid.Column="1" Style="{StaticResource formTextBox}" IsReadOnly="True"/>
+                            <TextBox x:Name="TbJobType" Grid.Row="3" Grid.Column="1" Style="{StaticResource formTextBox}" IsReadOnly="True"/>
+                            <TextBox x:Name="TbDescription" Grid.Row="4" Grid.Column="1" Style="{StaticResource formTextBox}"
+                                     Height="60" TextWrapping="Wrap" VerticalContentAlignment="Top" VerticalAlignment="Top"
+                                     Margin="0,12.5,0,0" IsReadOnly="True"/>
+                            <Grid Grid.Row="5" Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid x:Name="EditContactsPanel" Grid.Row="0" Visibility="Collapsed">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="10"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ComboBox x:Name="CbContacts" ItemsSource="{Binding Contacts}" Grid.Column="0" HorizontalAlignment="Stretch" 
+                                              Width="Auto" DataContext="{StaticResource contactViewModel}"/>
+                                    <Button x:Name="BtAddContact" Style="{StaticResource FormControlButton}" Content="AÑADIR"
+                                            Grid.Row="16" Margin="0,0,0,0" Click="BtAddContact_Click" Grid.Column="2"/>
+                                    <Button x:Name="BtDeleteContact" Style="{StaticResource FormControlButton}" Content="ELIMINAR"
+                                            Grid.Row="16" Margin="0,0,0,0" Click="BtDeleteContact_Click" Background="#FF585858" Grid.Column="4"/>
+                                </Grid>
+                                <ListBox x:Name="LbContacts" VerticalAlignment="Stretch" BorderThickness="0,0,0,1" Grid.Row="1" Height="Auto"
+                                         ItemTemplate="{StaticResource ProjectContact}" ItemContainerStyle="{StaticResource ItemList}" Grid.RowSpan="2"
+                                         ItemsSource="{Binding ProjectContacts}"/>
+                            </Grid>
+                            
+                            <ComboBox x:Name="CbState" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" Width="Auto" IsEnabled="False"/>
+
+                            <TextBlock x:Name="checkMessage" Style="{StaticResource checkTextBlock}" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" 
+                                       Height="25" Text="{Binding ProjectChecksMessage}"/>
+
+                            <Grid Grid.Column="1" Grid.Row="8" VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="130"/>
+                                </Grid.ColumnDefinitions>
+                                <Button x:Name="BtUpdate" Style="{StaticResource FormControlButton}" Content="ACTUALIZAR"
+                                        Margin="0,0,0,0" Click="BtUpdate_Click" Grid.Column="1" Visibility="Visible"/>
+                                <Button x:Name="BtDeleteProject" Style="{StaticResource FormControlButton}" Content="BORRAR PROYECTO"
+                                        Margin="0,0,0,0" Click="BtDeleteProject_Click" Background="#FF585858" Grid.Column="3"
+                                        Visibility="Visible"/>
+                                <Button x:Name="BtSaveChanges" Style="{StaticResource FormControlButton}" Content="GUARDAR CAMBIOS"
+                                        Margin="0,0,0,0" Click="BtSaveChanges_Click" Grid.Column="1" Visibility="Collapsed"/>
+                                <Button x:Name="BtCancelChanges" Style="{StaticResource FormControlButton}" Content="CANCELAR"
+                                        Margin="0,0,0,0" Click="BtCancelChanges_Click" Background="#FF585858" Grid.Column="3"
+                                        Visibility="Collapsed"/>
+                            </Grid>
+                        </Grid>
+                    </TabItem>
+                    <TabItem x:Name="TabDocuments" Header="Documentación"/>
+                    <TabItem x:Name="TabOrders" Header="Órdenes"/>
+                    <TabItem x:Name="TabIncidents" Header="Incidencias"/>
+                </TabControl>
             </Grid>
         </Grid>
     </Border>

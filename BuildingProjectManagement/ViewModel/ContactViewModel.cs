@@ -48,6 +48,20 @@ namespace BuildingProjectManagement.ViewModel
             }
         }
 
+        private Contact? _selectedContact;
+        public Contact? SelectedContact
+        {
+            get => _selectedContact;
+            set
+            {
+                if (_selectedContact != value)
+                {
+                    _selectedContact = value;
+                    OnPropertyChanged(nameof(SelectedContact));
+                }
+            }
+        }
+
         public async Task<HttpResponseMessage> GetContactResponse()
         {
             try

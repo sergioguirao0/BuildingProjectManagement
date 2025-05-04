@@ -1,4 +1,5 @@
 ﻿using BuildingProjectManagement.Model;
+using BuildingProjectManagement.Resources.Strings;
 using BuildingProjectManagement.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace BuildingProjectManagement.Views
         readonly UserViewModel userViewModel;
         readonly ProjectViewModel projectViewModel;
         readonly ContactViewModel contactViewModel;
+        bool updateMode = false;
 
         public MainWindow(UserViewModel userViewModel)
         {
@@ -35,15 +37,22 @@ namespace BuildingProjectManagement.Views
             this.contactViewModel = new ContactViewModel();
             this.projectViewModel = new ProjectViewModel();
             contactViewModel.Contacts = new ObservableCollection<Contact>();
+            projectViewModel.ProjectContacts = new ObservableCollection<Contact>();
             DataContext = projectViewModel;
             LabelTitle.Text = LabelTitle.Text + ActualSession.Session.LoggedInUser?.Name + 
                 ActualSession.Session.LoggedInUser?.Surname;
+
+            foreach (var state in AppStrings.StateItems)
+            {
+                CbState.Items.Add(state);
+            }
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             await projectViewModel.ShowProjects();
             await contactViewModel.ShowContacts();
+            CbContacts.DataContext = contactViewModel;
         }
 
         private void BtMinimize_Click(object sender, RoutedEventArgs e)
@@ -106,6 +115,134 @@ namespace BuildingProjectManagement.Views
             {
                 await projectViewModel.ShowProjects();
             }
+        }
+
+        private void BtAddContact_Click(object sender, RoutedEventArgs e)
+        {
+            if (CbContacts.SelectedIndex > -1)
+            {
+                if (!projectViewModel.ProjectContacts!.Contains((Contact)CbContacts.SelectedItem))
+                {
+                    projectViewModel.ProjectContacts.Add((Contact)CbContacts.SelectedItem);
+                }
+                else
+                {
+                    projectViewModel.ProjectChecksMessage = AppStrings.ContactInListError;
+                }
+            }
+            else
+            {
+                projectViewModel.ProjectChecksMessage = AppStrings.NoSelectedContactError;
+            }
+        }
+
+        private void BtDeleteContact_Click(object sender, RoutedEventArgs e)
+        {
+            if (LbContacts.Items.Count > 0)
+            {
+                if (LbContacts.SelectedItem is not null)
+                {
+                    projectViewModel.ProjectContacts!.Remove((Contact)LbContacts.SelectedItem);
+                }
+                else
+                {
+                    projectViewModel.ProjectChecksMessage = AppStrings.NoSelectedContactError;
+                }
+            }
+            else
+            {
+                projectViewModel.ProjectChecksMessage = AppStrings.EmptyListError;
+            }
+        }
+
+        private void LbProjects_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (LbProjects.SelectedItem is not null)
+            {
+                projectViewModel.SelectedProject = (Project)LbProjects.SelectedItem;
+                projectViewModel.ProjectContacts!.Clear();
+
+                foreach (var contact in projectViewModel.SelectedProject.Contacts)
+                {
+                    projectViewModel.ProjectContacts.Add(contact);
+                }
+
+                SeeProjectData();
+            }
+        }
+
+        private void SeeProjectData()
+        {
+            TbName.Text = projectViewModel.SelectedProject!.Name;
+            TbSite.Text = projectViewModel.SelectedProject.Site;
+            TbJobType.Text = projectViewModel.SelectedProject.JobType;
+            TbDescription.Text = projectViewModel.SelectedProject.Description;
+            LbContacts.ItemsSource = projectViewModel.SelectedProject.Contacts;
+            CbState.Text = projectViewModel.SelectedProject.State.ToString();
+        }
+
+        private void BtUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            if (LbProjects.SelectedItem is not null)
+            {
+                updateMode = true;
+
+                EditContactsPanelVisibility(updateMode);
+                ChangeItemsVisibility();
+                BtUpdate.Visibility = Visibility.Collapsed;
+                BtDeleteProject.Visibility = Visibility.Collapsed;
+                BtSaveChanges.Visibility = Visibility.Visible;
+                BtCancelChanges.Visibility = Visibility.Visible;
+                LbContacts.ItemsSource = projectViewModel.ProjectContacts;
+            }
+        }
+
+        private void BtDeleteProject_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtSaveChanges_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtCancelChanges_Click(object sender, RoutedEventArgs e)
+        {
+            updateMode = false;
+
+            EditContactsPanelVisibility(updateMode);
+            ChangeItemsVisibility();
+            BtUpdate.Visibility = Visibility.Visible;
+            BtDeleteProject.Visibility = Visibility.Visible;
+            BtSaveChanges.Visibility = Visibility.Collapsed;
+            BtCancelChanges.Visibility = Visibility.Collapsed;
+            SeeProjectData();
+            projectViewModel.CleanCheckMessage();
+        }
+
+        private void EditContactsPanelVisibility(bool visible)
+        {
+            if (visible)
+            {
+                EditContactsPanel.Visibility = Visibility.Visible;
+                LbContacts.SetValue(Grid.RowSpanProperty, 1);
+            }
+            else
+            {
+                EditContactsPanel.Visibility = Visibility.Collapsed;
+                LbContacts.SetValue(Grid.RowSpanProperty, 2);
+            }
+        }
+
+        private void ChangeItemsVisibility()
+        {
+            TbName.IsReadOnly = !TbName.IsReadOnly;
+            TbSite.IsReadOnly = !TbSite.IsReadOnly;
+            TbJobType.IsReadOnly = !TbJobType.IsReadOnly;
+            TbDescription.IsReadOnly = !TbDescription.IsReadOnly;
+            CbState.IsEnabled = !CbState.IsEnabled;
+            LbProjects.IsEnabled = !LbProjects.IsEnabled;
         }
     }
 }
