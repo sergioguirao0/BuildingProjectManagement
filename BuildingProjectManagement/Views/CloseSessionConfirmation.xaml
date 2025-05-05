@@ -28,8 +28,8 @@
                     <ColumnDefinition Width="5"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Text="Cerrar sesión" Style="{StaticResource topBarText}"/>
-                <Button x:Name="btClose" Grid.Column="1" Background="#FF2B2B2B" Content="X" 
-                    Style="{StaticResource TopBarButton}" Click="btClose_Click"/>
+                <Button x:Name="BtClose" Grid.Column="1" Background="#FF2B2B2B" Content="X" 
+                    Style="{StaticResource TopBarButton}" Click="BtClose_Click"/>
             </Grid>
 
             <Grid Grid.Row="1">
@@ -46,10 +46,10 @@
 
                 <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"
                         Margin="0,-15,0,0">
-                    <Button x:Name="btAccept" Style="{StaticResource ControlButton}" Content="ACEPTAR"
-                        Click="btAccept_Click" Cursor="Hand"/>
-                    <Button x:Name="btCancel" Style="{StaticResource ControlButton}" Content="CANCELAR"
-                        Margin="10,0,0,0" Click="btCancel_Click" Cursor="Hand" Background="#FF585858"/>
+                    <Button x:Name="BtAccept" Style="{StaticResource ControlButton}" Content="ACEPTAR"
+                        Click="BtAccept_Click" Cursor="Hand"/>
+                    <Button x:Name="BtCancel" Style="{StaticResource ControlButton}" Content="CANCELAR"
+                        Margin="10,0,0,0" Click="BtCancel_Click" Cursor="Hand" Background="#FF585858"/>
                 </StackPanel>
             </Grid>
         </Grid>

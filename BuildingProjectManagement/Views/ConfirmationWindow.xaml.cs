@@ -19,7 +19,7 @@ namespace BuildingProjectManagement.Views
 {
     public partial class ConfirmationWindow : Window
     {
-        ContactViewModel contactViewModel;
+        readonly ContactViewModel contactViewModel;
         Contact contact;
         private bool deleteMode;
 
@@ -41,12 +41,12 @@ namespace BuildingProjectManagement.Views
             }
         }
 
-        private void btClose_Click(object sender, RoutedEventArgs e)
+        private void BtClose_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
-        private async void btAccept_Click(object sender, RoutedEventArgs e)
+        private async void BtAccept_Click(object sender, RoutedEventArgs e)
         {
             int id = contact.Id;
 
@@ -70,7 +70,7 @@ namespace BuildingProjectManagement.Views
             }
         }
 
-        private void btCancel_Click(object sender, RoutedEventArgs e)
+        private void BtCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }

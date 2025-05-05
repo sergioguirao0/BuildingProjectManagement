@@ -1,6 +1,8 @@
 ﻿using BuildingProjectManagement.Model;
 using BuildingProjectManagement.Resources.Strings;
 using BuildingProjectManagement.Views;
+using Microsoft.AspNetCore.JsonPatch;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -56,6 +58,34 @@ namespace BuildingProjectManagement.ViewModel
             }
         }
 
+        private string? _confirmationTitle;
+        public string? ConfirmationTitle
+        {
+            get => _confirmationTitle;
+            set
+            {
+                if (_confirmationTitle != value)
+                {
+                    _confirmationTitle = value;
+                    OnPropertyChanged(nameof(ConfirmationTitle));
+                }
+            }
+        }
+
+        private string? _confirmationMessage;
+        public string? ConfirmationMessage
+        {
+            get => _confirmationMessage;
+            set
+            {
+                if (_confirmationMessage != value)
+                {
+                    _confirmationMessage = value;
+                    OnPropertyChanged(nameof(ConfirmationMessage));
+                }
+            }
+        }
+
         public ObservableCollection<Contact>? ProjectContacts { get; set; }
 
         public bool ProjectChecks(string name, string site, string jobType)
@@ -103,7 +133,7 @@ namespace BuildingProjectManagement.ViewModel
             {
                 using (var client = GetHttpClient())
                 {
-                    var json = JsonSerializer.Serialize(project);
+                    var json = System.Text.Json.JsonSerializer.Serialize(project);
                     var content = new StringContent(json, Encoding.UTF8, AppStrings.ApplicationJson);
                     return await client.PostAsync(AppStrings.ProjectEndpoint, content);
                 }
@@ -140,7 +170,7 @@ namespace BuildingProjectManagement.ViewModel
         public async Task<List<Project>?> GetProjects(HttpResponseMessage response)
         {
             var responseBody = await response.Content.ReadAsStringAsync();
-            var projects = JsonSerializer.Deserialize<List<Project>>(responseBody, new JsonSerializerOptions
+            var projects = System.Text.Json.JsonSerializer.Deserialize<List<Project>>(responseBody, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             });
@@ -172,6 +202,88 @@ namespace BuildingProjectManagement.ViewModel
                 {
                     Projects = new ObservableCollection<Project>();
                 }
+            }
+        }
+
+        public async Task<HttpResponseMessage> DeleteProject(int id)
+        {
+            try
+            {
+                using (var client = GetHttpClient())
+                {
+                    return await client.DeleteAsync(AppStrings.ProjectEndpoint + "/" + id);
+                }
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent("Error: " + ex.Message)
+                };
+                return errorResponse;
+            }
+        }
+
+        public List<int> GetListContactsIds(List<Contact> contacts)
+        {
+            List<int> contactsIds = new List<int>();
+
+            foreach (var contact in contacts)
+            {
+                contactsIds.Add(contact.Id);
+            }
+
+            return contactsIds;
+        }
+
+        public JsonPatchDocument GetPatchDoc(Project originalProject, Project updatedProject)
+        {
+            var patchDoc = new JsonPatchDocument();
+
+            if (updatedProject.Name != originalProject.Name)
+                patchDoc.Replace("/name", updatedProject.Name);
+
+            if (updatedProject.Site != originalProject.Site)
+                patchDoc.Replace("/site", updatedProject.Site);
+
+            if (updatedProject.JobType != originalProject.JobType)
+                patchDoc.Replace("/jobType", updatedProject.JobType);
+
+            if (updatedProject.Description != originalProject.Description)
+                patchDoc.Replace("/description", updatedProject.Description);
+
+            if (!Enumerable.SequenceEqual(originalProject.Contacts ?? new(), updatedProject.Contacts ?? new()))
+            {
+                List<int> contactsIds = GetListContactsIds(updatedProject.Contacts!);
+                patchDoc.Replace("/contactsIds", contactsIds);
+            }
+
+            if (updatedProject.State != originalProject.State)
+                patchDoc.Replace("/state", updatedProject.State);
+
+            return patchDoc;
+        }
+
+        public async Task<HttpResponseMessage> PatchProject(int id, Project original, Project updated)
+        {
+            try
+            {
+                using (var client = GetHttpClient())
+                {
+                    var patchDoc = GetPatchDoc(original, updated);
+                    var json = JsonConvert.SerializeObject(patchDoc);
+                    var content = new StringContent(json, Encoding.UTF8, AppStrings.ApplicationJson);
+                    var request = new HttpRequestMessage(HttpMethod.Patch, AppStrings.ProjectEndpoint + "/" + id) { Content = content };
+                    return await client.SendAsync(request);
+                }
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent("Error: " + ex.Message)
+                };
+                return errorResponse;
             }
         }
     }

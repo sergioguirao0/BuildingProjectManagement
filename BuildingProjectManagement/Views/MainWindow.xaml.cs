@@ -186,7 +186,7 @@ namespace BuildingProjectManagement.Views
             if (LbProjects.SelectedItem is not null)
             {
                 updateMode = true;
-
+                projectViewModel.CleanCheckMessage();
                 EditContactsPanelVisibility(updateMode);
                 ChangeItemsVisibility();
                 BtUpdate.Visibility = Visibility.Collapsed;
@@ -197,9 +197,35 @@ namespace BuildingProjectManagement.Views
             }
         }
 
-        private void BtDeleteProject_Click(object sender, RoutedEventArgs e)
+        private async void BtDeleteProject_Click(object sender, RoutedEventArgs e)
         {
+            if (LbProjects.SelectedItem is null)
+            {
+                projectViewModel.ProjectChecksMessage = AppStrings.NoSelectedProject;
+            }
+            else
+            {
+                Project project = (Project)LbProjects.SelectedItem;
+                projectViewModel.ConfirmationTitle = AppStrings.ProjectDeleteTitle;
+                projectViewModel.ConfirmationMessage = AppStrings.ProjectDeleteMessage;
+                ProjectConfirmationWindow projectConfirmationWindow = new ProjectConfirmationWindow(projectViewModel);
+                projectConfirmationWindow.ShowDialog();
 
+                if (projectConfirmationWindow.DialogResult == true)
+                {
+                    var response = await projectViewModel.DeleteProject(project.Id);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        await projectViewModel.ShowProjects();
+                        LbProjects.SelectedItem = null;
+                    }
+                    else
+                    {
+                        projectViewModel.ProjectChecksMessage = AppStrings.DeleteProjectError;
+                    }
+                }
+            }
         }
 
         private void BtSaveChanges_Click(object sender, RoutedEventArgs e)

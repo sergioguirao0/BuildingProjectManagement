@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BuildingProjectManagement.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,11 +15,19 @@ using System.Windows.Shapes;
 
 namespace BuildingProjectManagement.Views
 {
-    public partial class CloseSessionConfirmation : Window
+    public partial class ProjectConfirmationWindow : Window
     {
-        public CloseSessionConfirmation()
+        readonly ProjectViewModel projectViewModel;
+
+        public ProjectConfirmationWindow(ProjectViewModel projectViewModel)
         {
             InitializeComponent();
+            this.projectViewModel = projectViewModel;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            DataContext = projectViewModel;
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
