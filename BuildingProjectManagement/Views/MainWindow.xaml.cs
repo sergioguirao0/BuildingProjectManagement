@@ -195,6 +195,10 @@ namespace BuildingProjectManagement.Views
                 BtCancelChanges.Visibility = Visibility.Visible;
                 LbContacts.ItemsSource = projectViewModel.ProjectContacts;
             }
+            else
+            {
+                projectViewModel.ProjectChecksMessage = AppStrings.NoSelectedProject;
+            }
         }
 
         private async void BtDeleteProject_Click(object sender, RoutedEventArgs e)
@@ -228,9 +232,44 @@ namespace BuildingProjectManagement.Views
             }
         }
 
-        private void BtSaveChanges_Click(object sender, RoutedEventArgs e)
+        private async void BtSaveChanges_Click(object sender, RoutedEventArgs e)
         {
+            bool projectChecks = projectViewModel.ProjectChecks(TbName.Text, TbSite.Text, TbJobType.Text);
+            int selectedProjectIndex = LbProjects.SelectedIndex;
 
+            if (projectChecks)
+            {
+                Project updatedProject = new Project(TbName.Text, TbSite.Text, TbJobType.Text, CbState.Text);
+                updatedProject.Description = TbDescription.Text;
+
+                List<Contact> contacts = projectViewModel.ProjectContacts!.ToList();
+
+                updatedProject.Contacts = contacts;
+
+                projectViewModel.ConfirmationTitle = AppStrings.ProjectUpdateTitle;
+                projectViewModel.ConfirmationMessage = AppStrings.ProjectUpdateMessage;
+                ProjectConfirmationWindow projectConfirmationWindow = new ProjectConfirmationWindow(projectViewModel);
+                projectConfirmationWindow.ShowDialog();
+
+                if (projectConfirmationWindow.DialogResult == true)
+                {
+                    var patchDoc = projectViewModel.GetPatchDoc(projectViewModel.SelectedProject!, updatedProject);
+                    var response = await projectViewModel.PatchProject(projectViewModel.SelectedProject!.Id, projectViewModel.SelectedProject!, updatedProject);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        updateMode = false;
+                        await projectViewModel.ShowProjects();
+                        LbProjects.SelectedIndex = selectedProjectIndex;
+                        EditContactsPanelVisibility(updateMode);
+                        ChangeItemsVisibility();
+                    }
+                    else
+                    {
+                        projectViewModel.ProjectChecksMessage = AppStrings.UpdateProjectError;
+                    }
+                }
+            }
         }
 
         private void BtCancelChanges_Click(object sender, RoutedEventArgs e)
@@ -239,10 +278,6 @@ namespace BuildingProjectManagement.Views
 
             EditContactsPanelVisibility(updateMode);
             ChangeItemsVisibility();
-            BtUpdate.Visibility = Visibility.Visible;
-            BtDeleteProject.Visibility = Visibility.Visible;
-            BtSaveChanges.Visibility = Visibility.Collapsed;
-            BtCancelChanges.Visibility = Visibility.Collapsed;
             SeeProjectData();
             projectViewModel.CleanCheckMessage();
         }
@@ -253,11 +288,19 @@ namespace BuildingProjectManagement.Views
             {
                 EditContactsPanel.Visibility = Visibility.Visible;
                 LbContacts.SetValue(Grid.RowSpanProperty, 1);
+                BtUpdate.Visibility = Visibility.Collapsed;
+                BtDeleteProject.Visibility = Visibility.Collapsed;
+                BtSaveChanges.Visibility = Visibility.Visible;
+                BtCancelChanges.Visibility = Visibility.Visible;
             }
             else
             {
                 EditContactsPanel.Visibility = Visibility.Collapsed;
                 LbContacts.SetValue(Grid.RowSpanProperty, 2);
+                BtSaveChanges.Visibility = Visibility.Collapsed;
+                BtCancelChanges.Visibility = Visibility.Collapsed;
+                BtUpdate.Visibility = Visibility.Visible;
+                BtDeleteProject.Visibility = Visibility.Visible;
             }
         }
 
@@ -269,6 +312,7 @@ namespace BuildingProjectManagement.Views
             TbDescription.IsReadOnly = !TbDescription.IsReadOnly;
             CbState.IsEnabled = !CbState.IsEnabled;
             LbProjects.IsEnabled = !LbProjects.IsEnabled;
+
         }
     }
 }

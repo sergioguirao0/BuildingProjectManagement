@@ -252,11 +252,8 @@ namespace BuildingProjectManagement.ViewModel
             if (updatedProject.Description != originalProject.Description)
                 patchDoc.Replace("/description", updatedProject.Description);
 
-            if (!Enumerable.SequenceEqual(originalProject.Contacts ?? new(), updatedProject.Contacts ?? new()))
-            {
-                List<int> contactsIds = GetListContactsIds(updatedProject.Contacts!);
-                patchDoc.Replace("/contactsIds", contactsIds);
-            }
+            List<int> contactsIds = GetListContactsIds(updatedProject.Contacts!);
+            patchDoc.Replace("/contactsIds", contactsIds);
 
             if (updatedProject.State != originalProject.State)
                 patchDoc.Replace("/state", updatedProject.State);

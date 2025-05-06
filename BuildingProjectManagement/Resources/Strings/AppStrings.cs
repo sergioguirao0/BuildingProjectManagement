@@ -51,7 +51,7 @@ namespace BuildingProjectManagement.Resources.Strings
         public const string ConfirmationWindowDeleteMessage = "Se va a eliminar el contacto: ";
 
         // Items combobox estados
-        public static string[] StateItems = { "No iniciada", "En ejecución", "Finalizada", "Cancelada" };
+        public static string[] StateItems = { "No iniciado", "En ejecución", "Finalizado", "Cancelado" };
 
         // Mensajes formulario proyectos
         public const string NoSelectedContactError = "No se ha seleccionado ningún contacto";
@@ -59,10 +59,11 @@ namespace BuildingProjectManagement.Resources.Strings
         public const string EmptyListError = "La lista de contactos está vacía";
         public const string ProjectCreationError = "Error al crear el proyecto";
         public const string ProjectDeleteTitle = "Borrar proyecto";
-        public const string UpdateDeleteTitle = "Actualizar proyecto";
+        public const string ProjectUpdateTitle = "Actualizar proyecto";
         public const string ProjectDeleteMessage = "Se va a borrar el proyecto seleccionado junto con todos sus documentos";
         public const string ProjectUpdateMessage = "Se va a actualizar el proyecto seleccionado";
         public const string NoSelectedProject = "No hay ningún proyecto de la lista seleccionado";
         public const string DeleteProjectError = "Error al borrar el proyecto";
+        public const string UpdateProjectError = "Error al actualizar el proyecto";
     }
 }
