@@ -52,6 +52,7 @@ namespace BuildingProjectManagement.Resources.Strings
 
         // Items combobox estados
         public static string[] StateItems = { "No iniciado", "En ejecución", "Finalizado", "Cancelado" };
+        public const string StateAllProjects = "Todos los proyectos";
 
         // Mensajes formulario proyectos
         public const string NoSelectedContactError = "No se ha seleccionado ningún contacto";

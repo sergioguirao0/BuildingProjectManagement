@@ -47,14 +47,24 @@
                         Style="{StaticResource TopBarButton}" Click="BtClose_Click"/>
             </Grid>
             
-            <StackPanel Orientation="Horizontal" Grid.Row="1">
-                <Button x:Name="BtProject" Content="NUEVO PROYECTO" Style="{StaticResource ControlButton}"
-                        Background="#FF2B2B2B" Margin="10,0,0,0" Click="BtProject_Click"/>
-                <Button x:Name="BtContacts" Content="CONTACTOS" Style="{StaticResource ControlButton}"
-                        Background="#FF2B2B2B" Margin="5,0,0,0" Click="BtContacts_Click"/>
-                <Button x:Name="BtCloseSession" Content="CERRAR SESIÓN" Style="{StaticResource ControlButton}"
-                        Background="#FF2B2B2B" Margin="5,0,0,0" Click="BtCloseSession_Click"/>
-            </StackPanel>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="160"/>
+                    <ColumnDefinition Width="160"/>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="160"/>
+                    <ColumnDefinition Width="180"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="BtProject" Content="NUEVO PROYECTO" Style="{StaticResource ControlButton}" Grid.Column="0"
+                        Margin="10,0,0,0" Click="BtProject_Click"/>
+                <Button x:Name="BtContacts" Content="CONTACTOS" Style="{StaticResource ControlButton}" Grid.Column="1"
+                        Margin="5,0,0,0" Click="BtContacts_Click"/>
+                <ComboBox x:Name="CbFilterStatus" Grid.Column="2" Width="280" HorizontalAlignment="Center" 
+                          SelectionChanged="CbFilterStatus_SelectionChanged"/>
+                <Button x:Name="BtCloseSession" Content="CERRAR SESIÓN" Style="{StaticResource ControlButton}" Grid.Column="5"
+                        Margin="5,0,0,0" Click="BtCloseSession_Click"/>
+            </Grid>
 
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>

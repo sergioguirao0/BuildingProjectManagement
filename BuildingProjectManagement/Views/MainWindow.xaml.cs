@@ -4,6 +4,7 @@ using BuildingProjectManagement.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,7 @@ namespace BuildingProjectManagement.Views
         readonly ProjectViewModel projectViewModel;
         readonly ContactViewModel contactViewModel;
         bool updateMode = false;
+        private ICollectionView? ProjectsView;
 
         public MainWindow(UserViewModel userViewModel)
         {
@@ -41,10 +43,14 @@ namespace BuildingProjectManagement.Views
             DataContext = projectViewModel;
             LabelTitle.Text = LabelTitle.Text + ActualSession.Session.LoggedInUser?.Name + 
                 ActualSession.Session.LoggedInUser?.Surname;
+            
+
+            CbFilterStatus.Items.Add(AppStrings.StateAllProjects);
 
             foreach (var state in AppStrings.StateItems)
             {
                 CbState.Items.Add(state);
+                CbFilterStatus.Items.Add(state);
             }
         }
 
@@ -53,6 +59,9 @@ namespace BuildingProjectManagement.Views
             await projectViewModel.ShowProjects();
             await contactViewModel.ShowContacts();
             CbContacts.DataContext = contactViewModel;
+            CbFilterStatus.SelectedIndex = 0;
+            ProjectsView = CollectionViewSource.GetDefaultView(projectViewModel.Projects);
+            LbProjects.ItemsSource = ProjectsView;
         }
 
         private void BtMinimize_Click(object sender, RoutedEventArgs e)
@@ -313,6 +322,19 @@ namespace BuildingProjectManagement.Views
             CbState.IsEnabled = !CbState.IsEnabled;
             LbProjects.IsEnabled = !LbProjects.IsEnabled;
 
+        }
+
+        private void CbFilterStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ProjectsView = CollectionViewSource.GetDefaultView(projectViewModel.Projects);
+
+            if (CbFilterStatus.SelectedIndex > 0)
+                ProjectsView.Filter = project => ((Project)project).State == CbFilterStatus.SelectedItem.ToString();
+            else
+                ProjectsView.Filter = null;
+
+            ProjectsView.Refresh();
+            LbProjects.ItemsSource = ProjectsView;
         }
     }
 }
