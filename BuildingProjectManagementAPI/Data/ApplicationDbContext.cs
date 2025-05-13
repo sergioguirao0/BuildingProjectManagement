@@ -19,5 +19,6 @@ namespace BuildingProjectManagementAPI.Data
         public DbSet<ContactEntity> Contactos { get; set; }
         public DbSet<ProjectEntity> Proyectos { get; set; }
         public DbSet<ProjectContactEntity> ProyectosContactos { get; set; }
+        public DbSet<DocumentEntity> Documentos { get; set; }
     }
 }

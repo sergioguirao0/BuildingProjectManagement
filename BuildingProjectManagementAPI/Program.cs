@@ -26,6 +26,7 @@ builder.Services.AddScoped<SignInManager<IdentityUser>>();  // Gestiona la auten
 builder.Services.AddTransient<IUserRepository, UserService>();
 builder.Services.AddTransient<IContactRepository, ContactService>();
 builder.Services.AddTransient<IProjectRepository, ProjectService>();
+builder.Services.AddTransient<IDocumentRepository, DocumentService>();
 
 builder.Services.AddHttpContextAccessor();                  // Permite acceder al contexto Http actual
 

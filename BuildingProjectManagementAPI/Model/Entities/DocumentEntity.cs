@@ -1,34 +1,30 @@
 ﻿using BuildingProjectManagementAPI.Resources;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BuildingProjectManagementAPI.Model.Entities
 {
-    public class ProjectEntity
+    public class DocumentEntity
     {
         [Key]
         public int Id { get; set; }
 
         [Required(ErrorMessage = ApiStrings.RequiredMessage)]
         [StringLength(200, ErrorMessage = ApiStrings.StringLengthMessage)]
-        public required string Name { get; set; }
+        public required string Title { get; set; }
 
         [Required(ErrorMessage = ApiStrings.RequiredMessage)]
         [StringLength(200, ErrorMessage = ApiStrings.StringLengthMessage)]
-        public required string Site { get; set; }
-
-        [StringLength(150, ErrorMessage = ApiStrings.StringLengthMessage)]
-        public string? JobType { get; set; }
-
-        public string? Description { get; set; }
-
-        public List<ProjectContactEntity> Contacts { get; set; } = new List<ProjectContactEntity>();
-        public List<DocumentEntity> Documents { get; set; } = new List<DocumentEntity>();
+        public required string Category { get; set; }
 
         [Required(ErrorMessage = ApiStrings.RequiredMessage)]
-        [StringLength(50, ErrorMessage = ApiStrings.StringLengthMessage)]
-        public required string State { get; set; }
+        [Unicode(false)]
+        public required string DocumentPath { get; set; }
+
+        [Required(ErrorMessage = ApiStrings.RequiredMessage)]
+        public int ProjectId { get; set; }
+        public ProjectEntity? Project { get; set; }
 
         [Required]
         public required string UserId { get; set; }

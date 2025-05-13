@@ -51,6 +51,9 @@ namespace BuildingProjectManagementAPI.Util
                 .ForMember(dto => dto.Profession, options => options.MapFrom(ent => ent.Contact!.Profession));
 
             CreateMap<ProjectEntity, ProjectPatchDto>().ReverseMap();
+
+            CreateMap<DocumentEntity, DocumentCreationDto>().ReverseMap();
+            CreateMap<DocumentEntity, DocumentDto>();
         }
     }
 }
