@@ -7,7 +7,7 @@ namespace BuildingProjectManagementAPI.Model.Repositories
 {
     public interface IContactRepository
     {
-        Task<bool> PostContact(int contactId, IdentityUser? user, ContactEntity contact);
+        Task<bool> PostContact(IdentityUser? user, ContactEntity contact);
         Task<bool> ContactExist(IdentityUser? user, ContactEntity contact);
         ContactEntity GetContact(ContactCreationDTO contactCreationDTO);
         Task<ContactEntity?> GetContactById(int id);

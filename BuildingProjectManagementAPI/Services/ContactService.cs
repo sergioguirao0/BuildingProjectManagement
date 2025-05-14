@@ -26,11 +26,10 @@ namespace BuildingProjectManagementAPI.Services
             this.userService = userService;
         }
 
-        public async Task<bool> PostContact(int contactId, IdentityUser? user, ContactEntity contact)
+        public async Task<bool> PostContact(IdentityUser? user, ContactEntity contact)
         {
             try
             {
-                contact.Id = contactId;
                 contact.UserId = user!.Id;
                 context.Add(contact);
                 await context.SaveChangesAsync();

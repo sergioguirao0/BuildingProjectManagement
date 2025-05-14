@@ -5,6 +5,7 @@
         public const string UserRoute = "api/users";
         public const string ContactRoute = "api/contacts";
         public const string ProjectRoute = "api/projects";
+        public const string DocumentRoute = "/documents";
 
         public const string StringLengthMessage = "El campo {0} debe tener {1} caracteres o menos";
         public const string RequiredMessage = "El campo {0} es obligatorio";
@@ -23,5 +24,9 @@
         public const string ProjectNotFound = "Proyecto no encontrado";
         public const string ProjectDeleted = "Proyecto eliminado correctamente";
         public const string ProjectDeleteError = "Error al borrar el proyecto";
+
+        public const string DocumentContainer = "documents";
+        public const string DocumentCreationError = "Error al guardar el documento";
+        public const string DocumentCreated = "Documento guardado correctamente";
     }
 }

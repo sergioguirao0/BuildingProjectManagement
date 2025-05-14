@@ -8,7 +8,7 @@ namespace BuildingProjectManagementAPI.Model.Dto
     {
         public required string Title { get; set; }
         public required string Category { get; set; }
-        public required string DocumentPath { get; set; }
+        public IFormFile? DocumentFile { get; set; }
         public int ProjectId { get; set; }
     }
 }

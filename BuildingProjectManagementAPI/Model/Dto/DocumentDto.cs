@@ -12,6 +12,5 @@ namespace BuildingProjectManagementAPI.Model.Dto
         public required string Category { get; set; }
         public required string DocumentPath { get; set; }
         public int ProjectId { get; set; }
-        public required string UserId { get; set; }
     }
 }

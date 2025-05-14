@@ -52,7 +52,8 @@ namespace BuildingProjectManagementAPI.Util
 
             CreateMap<ProjectEntity, ProjectPatchDto>().ReverseMap();
 
-            CreateMap<DocumentEntity, DocumentCreationDto>().ReverseMap();
+            CreateMap<DocumentCreationDto, DocumentEntity>()
+                .ForMember(ent => ent.DocumentPath, config => config.Ignore());
             CreateMap<DocumentEntity, DocumentDto>();
         }
     }

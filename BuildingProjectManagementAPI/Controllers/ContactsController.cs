@@ -29,7 +29,7 @@ namespace BuildingProjectManagementAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(int contactId, ContactCreationDTO contactCreationDTO)
+        public async Task<ActionResult> Post(ContactCreationDTO contactCreationDTO)
         {
             var user = await userService.GetUser();
             var contact = contactService.GetContact(contactCreationDTO);
@@ -41,7 +41,7 @@ namespace BuildingProjectManagementAPI.Controllers
                 return Conflict(ApiStrings.ContactExist);
             }
 
-            bool postContact = await contactService.PostContact(contactId, user, contact);
+            bool postContact = await contactService.PostContact(user, contact);
 
             if (!postContact)
             {
