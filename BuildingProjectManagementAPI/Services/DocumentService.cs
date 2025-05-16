@@ -2,10 +2,14 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using BuildingProjectManagementAPI.Data;
+using BuildingProjectManagementAPI.Model.Dao;
 using BuildingProjectManagementAPI.Model.Dto;
 using BuildingProjectManagementAPI.Model.Entities;
 using BuildingProjectManagementAPI.Model.Repositories;
+using BuildingProjectManagementAPI.Resources;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BuildingProjectManagementAPI.Services
 {
@@ -13,13 +17,15 @@ namespace BuildingProjectManagementAPI.Services
     {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+        private readonly IUserRepository userService;
         private readonly string connectionString;
 
-        public DocumentService(ApplicationDbContext context, IMapper mapper, IConfiguration configuration)
+        public DocumentService(ApplicationDbContext context, IMapper mapper, IConfiguration configuration, IUserRepository userService)
         {
             this.context = context;
             this.mapper = mapper;
-            this.connectionString = configuration.GetConnectionString("AzureStorageConnection")!;
+            this.userService = userService;
+            this.connectionString = configuration.GetConnectionString(ApiStrings.AzureConnectionString)!;
         }
 
         public async Task<bool> PostDocument(int projectId, IdentityUser user, DocumentEntity document)
@@ -79,6 +85,18 @@ namespace BuildingProjectManagementAPI.Services
             var nameFile = Path.GetFileName(path);
             var blob = client.GetBlobClient(nameFile);
             await blob.DeleteIfExistsAsync();
+        }
+
+        public async Task<ActionResult<List<DocumentDto>>> GetDocuments(int projectId)
+        {
+            var user = await userService.GetUser();
+
+            var documents = await context.Documentos
+                .Include(document => document.User)
+                .Where(document => document.UserId == user!.Id && document.ProjectId == projectId)
+                .ToListAsync();
+
+            return mapper.Map<List<DocumentDto>>(documents);
         }
     }
 }

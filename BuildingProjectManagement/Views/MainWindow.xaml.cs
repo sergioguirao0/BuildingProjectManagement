@@ -27,6 +27,7 @@ namespace BuildingProjectManagement.Views
         readonly UserViewModel userViewModel;
         readonly ProjectViewModel projectViewModel;
         readonly ContactViewModel contactViewModel;
+        readonly DocumentViewModel documentViewModel;
         bool updateMode = false;
         private ICollectionView? ProjectsView;
 
@@ -38,6 +39,7 @@ namespace BuildingProjectManagement.Views
             this.userViewModel = userViewModel;
             this.contactViewModel = new ContactViewModel();
             this.projectViewModel = new ProjectViewModel();
+            this.documentViewModel = new DocumentViewModel();
             contactViewModel.Contacts = new ObservableCollection<Contact>();
             projectViewModel.ProjectContacts = new ObservableCollection<Contact>();
             DataContext = projectViewModel;
@@ -62,6 +64,11 @@ namespace BuildingProjectManagement.Views
             CbFilterStatus.SelectedIndex = 0;
             ProjectsView = CollectionViewSource.GetDefaultView(projectViewModel.Projects);
             LbProjects.ItemsSource = ProjectsView;
+            LbProjectDocs.DataContext = documentViewModel;
+            LbPreviousDocs.DataContext = documentViewModel;
+            LbExecutionDocs.DataContext = documentViewModel;
+            LbFinalDocs.DataContext = documentViewModel;
+            LbOtherDocs.DataContext = documentViewModel;
         }
 
         private void BtMinimize_Click(object sender, RoutedEventArgs e)
@@ -164,7 +171,7 @@ namespace BuildingProjectManagement.Views
             }
         }
 
-        private void LbProjects_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void LbProjects_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (LbProjects.SelectedItem is not null)
             {
@@ -177,6 +184,16 @@ namespace BuildingProjectManagement.Views
                 }
 
                 SeeProjectData();
+
+                int projectId = projectViewModel.SelectedProject.Id;
+                var response = await documentViewModel.GetProjectDocumentsResponse(projectId);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var documents = await documentViewModel.GetProjectDocuments(response);
+                    documentViewModel.OrderDocuments(documents);
+                    
+                }
             }
         }
 
@@ -335,6 +352,21 @@ namespace BuildingProjectManagement.Views
 
             ProjectsView.Refresh();
             LbProjects.ItemsSource = ProjectsView;
+        }
+
+        private void BtUploadDocument_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtOpenDocument_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtDeleteDocument_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

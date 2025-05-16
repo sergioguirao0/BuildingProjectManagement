@@ -17,6 +17,7 @@ namespace BuildingProjectManagement.Resources.Strings
         public const string ProjectEndpoint = "api/projects";
         public const string ContactsEndpoint = "api/contacts";
         public const string ApplicationJson = "application/json";
+        public const string DocumentEndpoint = "/documents";
 
         // Mensajes de error o confirmación
         // Mensajes de usuario e inicio de sesión
@@ -50,9 +51,14 @@ namespace BuildingProjectManagement.Resources.Strings
         public const string ConfirmationWindowUpdateMessage = "Se va a actualizar el contacto: ";
         public const string ConfirmationWindowDeleteMessage = "Se va a eliminar el contacto: ";
 
-        // Items combobox estados
+        // Items strings de elementos
         public static string[] StateItems = { "No iniciado", "En ejecución", "Finalizado", "Cancelado" };
         public const string StateAllProjects = "Todos los proyectos";
+        public const string ProjectCategory = "Proyecto";
+        public const string StartingProjectCategory = "Documentos previos al inicio del proyecto";
+        public const string ExecutionProjectCategory = "Documentos relativos a la ejecución del proyecto";
+        public const string EndingProjectCategory = "Documentos relativos al final del proyecto";
+        public const string OtherDocumentsCategory = "Otros documentos";
 
         // Mensajes formulario proyectos
         public const string NoSelectedContactError = "No se ha seleccionado ningún contacto";

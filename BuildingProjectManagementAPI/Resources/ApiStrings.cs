@@ -2,6 +2,7 @@
 {
     public class ApiStrings
     {
+        public const string AzureConnectionString = "AzureStorageConnection";
         public const string UserRoute = "api/users";
         public const string ContactRoute = "api/contacts";
         public const string ProjectRoute = "api/projects";

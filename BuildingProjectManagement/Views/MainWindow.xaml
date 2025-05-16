@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         xmlns:local="clr-namespace:BuildingProjectManagement.Views"
+        xmlns:resources="clr-namespace:BuildingProjectManagement.Resources.Strings"
         xmlns:ViewModel="clr-namespace:BuildingProjectManagement.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="720" Width="1280" WindowStartupLocation="CenterScreen" WindowStyle="None" 
@@ -16,6 +17,7 @@
             </ResourceDictionary.MergedDictionaries>
             <ViewModel:UserViewModel x:Key="userViewModel"/>
             <ViewModel:ContactViewModel x:Key="contactViewModel"/>
+            <ViewModel:DocumentViewModel x:Key="documentViewModel"/>
         </ResourceDictionary>
     </Window.Resources>
     <Border x:Name="MainGrid" CornerRadius="10" BorderThickness="5" Style="{StaticResource BorderStyle}">
@@ -63,7 +65,7 @@
                 <ComboBox x:Name="CbFilterStatus" Grid.Column="2" Width="280" HorizontalAlignment="Center" 
                           SelectionChanged="CbFilterStatus_SelectionChanged"/>
                 <Button x:Name="BtCloseSession" Content="CERRAR SESIÓN" Style="{StaticResource ControlButton}" Grid.Column="5"
-                        Margin="5,0,0,0" Click="BtCloseSession_Click"/>
+                        Margin="5,0,0,0" Click="BtCloseSession_Click" Background="#FF585858"/>
             </Grid>
 
             <Grid Grid.Row="2">
@@ -162,7 +164,68 @@
                             </Grid>
                         </Grid>
                     </TabItem>
-                    <TabItem x:Name="TabDocuments" Header="Documentación"/>
+                    
+                    <TabItem x:Name="TabDocuments" Header="Documentación">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="7*"/>
+                                <RowDefinition Height="1.5*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Documentos del proyecto" Grid.Row="0" FontSize="20" HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Width="800" Grid.Column="1">
+                                    <TextBlock Text="{x:Static resources:AppStrings.ProjectCategory}" Style="{StaticResource subtitleText}"/>
+                                    <ListBox x:Name="LbProjectDocs" ItemContainerStyle="{StaticResource ItemList}"
+                                             ItemsSource="{Binding ProjectDocumentList}"/>
+                                    <TextBlock Text="{x:Static resources:AppStrings.StartingProjectCategory}" Margin="0,10,0,0" 
+                                               Style="{StaticResource subtitleText}"/>
+                                    <ListBox x:Name="LbPreviousDocs" ItemContainerStyle="{StaticResource ItemList}"
+                                             ItemsSource="{Binding StartingDocumentList}"/>
+                                    <TextBlock Text="{x:Static resources:AppStrings.ExecutionProjectCategory}" Margin="0,10,0,0" 
+                                               Style="{StaticResource subtitleText}"/>
+                                    <ListBox x:Name="LbExecutionDocs" ItemContainerStyle="{StaticResource ItemList}"
+                                             ItemsSource="{Binding ExecutionDocumentList}"/>
+                                    <TextBlock Text="{x:Static resources:AppStrings.EndingProjectCategory}" Margin="0,10,0,0" 
+                                               Style="{StaticResource subtitleText}"/>
+                                    <ListBox x:Name="LbFinalDocs" ItemContainerStyle="{StaticResource ItemList}"
+                                             ItemsSource="{Binding EndingDocumentList}"/>
+                                    <TextBlock Text="{x:Static resources:AppStrings.OtherDocumentsCategory}" Margin="0,10,0,0" 
+                                               Style="{StaticResource subtitleText}"/>
+                                    <ListBox x:Name="LbOtherDocs" ItemContainerStyle="{StaticResource ItemList}"
+                                             ItemsSource="{Binding OtherDocumentList}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+                                <Button x:Name="BtUploadDocument" Style="{StaticResource FormControlButton}" Content="SUBIR DOCUMENTO"
+                                        Margin="0,0,0,0" Click="BtUploadDocument_Click" Grid.Column="0"/>
+                                <Button x:Name="BtOpenDocument" Style="{StaticResource FormControlButton}" Content="ABRIR"
+                                        Margin="0,0,0,0" Click="BtOpenDocument_Click" Grid.Column="2"/>
+                                <Button x:Name="BtDeleteDocument" Style="{StaticResource FormControlButton}" Content="BORRAR"
+                                        Margin="0,0,0,0" Click="BtDeleteDocument_Click" Grid.Column="4" Background="#FF585858"/>
+                            </Grid>
+                            
+                        </Grid>
+                    </TabItem>
+                    
                     <TabItem x:Name="TabOrders" Header="Órdenes"/>
                     <TabItem x:Name="TabIncidents" Header="Incidencias"/>
                 </TabControl>

@@ -1,6 +1,7 @@
 ﻿using BuildingProjectManagementAPI.Model.Dto;
 using BuildingProjectManagementAPI.Model.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BuildingProjectManagementAPI.Model.Repositories
 {
@@ -10,5 +11,6 @@ namespace BuildingProjectManagementAPI.Model.Repositories
         Task<string> UploadDocument(string container, IFormFile file);
         Task DeleteDocument(string? path, string container);
         DocumentEntity GetDocumentByDto(DocumentCreationDto documentCreationDto);
+        Task<ActionResult<List<DocumentDto>>> GetDocuments(int projectId);
     }
 }

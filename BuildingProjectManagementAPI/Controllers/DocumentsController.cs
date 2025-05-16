@@ -43,5 +43,11 @@ namespace BuildingProjectManagementAPI.Controllers
 
             return Ok(ApiStrings.DocumentCreated);
         }
+
+        [HttpGet]
+        public async Task<ActionResult<List<DocumentDto>>> Get([FromRoute]int projectId)
+        {
+            return await documentService.GetDocuments(projectId);
+        }
     }
 }
