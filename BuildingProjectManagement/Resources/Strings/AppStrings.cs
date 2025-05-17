@@ -17,6 +17,7 @@ namespace BuildingProjectManagement.Resources.Strings
         public const string ProjectEndpoint = "api/projects";
         public const string ContactsEndpoint = "api/contacts";
         public const string ApplicationJson = "application/json";
+        public const string ApplicationPdf = "application/pdf";
         public const string DocumentEndpoint = "/documents";
 
         // Mensajes de error o confirmación
@@ -59,6 +60,9 @@ namespace BuildingProjectManagement.Resources.Strings
         public const string ExecutionProjectCategory = "Documentos relativos a la ejecución del proyecto";
         public const string EndingProjectCategory = "Documentos relativos al final del proyecto";
         public const string OtherDocumentsCategory = "Otros documentos";
+        public static string[] CategoryItems = {ProjectCategory, StartingProjectCategory, ExecutionProjectCategory,
+            EndingProjectCategory, OtherDocumentsCategory};
+        public const string PdfFilter = "Archivos PDF (*.pdf)|*.pdf";
 
         // Mensajes formulario proyectos
         public const string NoSelectedContactError = "No se ha seleccionado ningún contacto";
@@ -72,5 +76,13 @@ namespace BuildingProjectManagement.Resources.Strings
         public const string NoSelectedProject = "No hay ningún proyecto de la lista seleccionado";
         public const string DeleteProjectError = "Error al borrar el proyecto";
         public const string UpdateProjectError = "Error al actualizar el proyecto";
+
+        // Mensajes formulario documentos
+        public const string NoTitleError = "El campo Título no puede estar vacío";
+        public const string NoCategoryError = "El campo Categoría no puede estar vacío";
+        public const string NoFilePathError = "No se ha seleccionado ningún documento";
+        public const string UploadDocumentError = "Error al guardar el documento";
+        public const string DeleteDocumentError = "Error al borrar el documento";
+        public const string NoSelectedDocumentError = "No hay ningún documento seleccionado";
     }
 }

@@ -24,6 +24,7 @@ namespace BuildingProjectManagement.Views
     {
         static ProjectsWindow? projectsWindow;
         static ContactsWindow? contactsWindow;
+        static UploadDocumentWindow? uploadDocumentWindow;
         readonly UserViewModel userViewModel;
         readonly ProjectViewModel projectViewModel;
         readonly ContactViewModel contactViewModel;
@@ -171,10 +172,11 @@ namespace BuildingProjectManagement.Views
             }
         }
 
-        private async void LbProjects_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void LbProjects_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (LbProjects.SelectedItem is not null)
             {
+                TabControlProject.IsEnabled = true;
                 projectViewModel.SelectedProject = (Project)LbProjects.SelectedItem;
                 projectViewModel.ProjectContacts!.Clear();
 
@@ -186,14 +188,22 @@ namespace BuildingProjectManagement.Views
                 SeeProjectData();
 
                 int projectId = projectViewModel.SelectedProject.Id;
-                var response = await documentViewModel.GetProjectDocumentsResponse(projectId);
+                ShowDocuments(projectId);
+            }
+            else
+            {
+                TabControlProject.IsEnabled = false;
+            }
+        }
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var documents = await documentViewModel.GetProjectDocuments(response);
-                    documentViewModel.OrderDocuments(documents);
-                    
-                }
+        private async void ShowDocuments(int projectId)
+        {
+            var response = await documentViewModel.GetProjectDocumentsResponse(projectId);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var documents = await documentViewModel.GetProjectDocuments(response);
+                documentViewModel.OrderDocuments(documents);
             }
         }
 
@@ -249,6 +259,8 @@ namespace BuildingProjectManagement.Views
                     {
                         await projectViewModel.ShowProjects();
                         LbProjects.SelectedItem = null;
+                        ClearForm();
+                        LbContacts.ItemsSource = projectViewModel.ProjectContacts;
                     }
                     else
                     {
@@ -341,6 +353,16 @@ namespace BuildingProjectManagement.Views
 
         }
 
+        private void ClearForm()
+        {
+            TbName.Clear();
+            TbSite.Clear();
+            TbJobType.Clear();
+            TbDescription.Clear();
+            projectViewModel.ProjectContacts!.Clear();
+            CbContacts.SelectedIndex = 0;
+        }
+
         private void CbFilterStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ProjectsView = CollectionViewSource.GetDefaultView(projectViewModel.Projects);
@@ -354,9 +376,24 @@ namespace BuildingProjectManagement.Views
             LbProjects.ItemsSource = ProjectsView;
         }
 
-        private void BtUploadDocument_Click(object sender, RoutedEventArgs e)
+        private async void BtUploadDocument_Click(object sender, RoutedEventArgs e)
         {
+            if (LbProjects.SelectedIndex > -1)
+            {
+                uploadDocumentWindow = new UploadDocumentWindow(documentViewModel);
+                uploadDocumentWindow.ShowDialog();
 
+                if (uploadDocumentWindow.DialogResult == true)
+                {
+                    var project = documentViewModel.DocumentToUpload!;
+                    var response = await documentViewModel.PostDocument(project, projectViewModel.SelectedProject!.Id);
+
+                    if (response.IsSuccessStatusCode)
+                        ShowDocuments(projectViewModel.SelectedProject!.Id);
+                    else
+                        projectViewModel.ProjectDocumentMessage = AppStrings.UploadDocumentError;
+                }
+            }
         }
 
         private void BtOpenDocument_Click(object sender, RoutedEventArgs e)

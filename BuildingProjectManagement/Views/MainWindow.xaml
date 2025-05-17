@@ -76,7 +76,7 @@
                 <ListBox x:Name="LbProjects" Grid.Row="0" Grid.Column="0" ItemTemplate="{StaticResource ProjectCard}" ItemsSource="{Binding Projects}"
                          HorizontalContentAlignment="Stretch" ItemContainerStyle="{StaticResource ProjectItemList}" BorderThickness="0,0,0,0"
                          SelectionChanged="LbProjects_SelectionChanged" IsEnabled="True"/>
-                <TabControl Grid.Column="1">
+                <TabControl x:Name="TabControlProject" Grid.Column="1" IsEnabled="False">
                     <TabItem x:Name="TabData" Header="Datos generales">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -182,8 +182,12 @@
                                     <ColumnDefinition Width="10*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="30"/>
+                                </Grid.RowDefinitions>
 
-                                <StackPanel Width="800" Grid.Column="1">
+                                <StackPanel Width="800" Grid.Column="1" Grid.Row="0">
                                     <TextBlock Text="{x:Static resources:AppStrings.ProjectCategory}" Style="{StaticResource subtitleText}"/>
                                     <ListBox x:Name="LbProjectDocs" ItemContainerStyle="{StaticResource ItemList}"
                                              ItemsSource="{Binding ProjectDocumentList}"/>
@@ -204,6 +208,7 @@
                                     <ListBox x:Name="LbOtherDocs" ItemContainerStyle="{StaticResource ItemList}"
                                              ItemsSource="{Binding OtherDocumentList}"/>
                                 </StackPanel>
+                                <TextBlock Text="{Binding ProjectDocumentMessage}" Grid.Row="1" Grid.Column="1" Style="{StaticResource checkTextBlock}"/>
                             </Grid>
 
                             <Grid Grid.Row="2">

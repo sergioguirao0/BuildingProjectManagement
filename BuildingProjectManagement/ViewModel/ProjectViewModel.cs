@@ -30,6 +30,20 @@ namespace BuildingProjectManagement.ViewModel
             }
         }
 
+        private string? _projectDocumentMessage;
+        public string? ProjectDocumentMessage
+        {
+            get => _projectDocumentMessage;
+            set
+            {
+                if (_projectDocumentMessage != value)
+                {
+                    _projectDocumentMessage = value;
+                    OnPropertyChanged(nameof(ProjectDocumentMessage));
+                }
+            }
+        }
+
         private ObservableCollection<Project>? _projects;
         public ObservableCollection<Project>? Projects
         {
