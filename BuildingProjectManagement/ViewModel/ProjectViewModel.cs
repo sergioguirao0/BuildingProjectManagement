@@ -30,6 +30,20 @@ namespace BuildingProjectManagement.ViewModel
             }
         }
 
+        private string? _newProjectChecksMessage;
+        public string? NewProjectChecksMessage
+        {
+            get => _newProjectChecksMessage;
+            set
+            {
+                if (_newProjectChecksMessage != value)
+                {
+                    _newProjectChecksMessage = value;
+                    OnPropertyChanged(nameof(NewProjectChecksMessage));
+                }
+            }
+        }
+
         private string? _projectDocumentMessage;
         public string? ProjectDocumentMessage
         {
@@ -108,22 +122,22 @@ namespace BuildingProjectManagement.ViewModel
 
             if (string.IsNullOrEmpty(name))
             {
-                ProjectChecksMessage = AppStrings.CheckName;
+                NewProjectChecksMessage = AppStrings.CheckName;
                 checks = false;
             }
             else if (string.IsNullOrEmpty(site))
             {
-                ProjectChecksMessage = AppStrings.CheckSite;
+                NewProjectChecksMessage = AppStrings.CheckSite;
                 checks = false;
             }
             else if (string.IsNullOrEmpty(jobType))
             {
-                ProjectChecksMessage = AppStrings.CheckJobType;
+                NewProjectChecksMessage = AppStrings.CheckJobType;
                 checks = false;
             }
             else
             {
-                CleanCheckMessage();
+                NewProjectChecksMessage = string.Empty;
                 checks = true;
             }
             

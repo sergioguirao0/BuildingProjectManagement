@@ -275,11 +275,11 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="#FF7B7B7B"/>
+                            <Setter TargetName="Bd" Property="Background" Value="#bdbdbd"/>
                             <Setter TargetName="Bd" Property="CornerRadius" Value="3"/>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="#FF7B7B7B"/>
+                            <Setter TargetName="Bd" Property="Background" Value="#bdbdbd"/>
                             <Setter TargetName="Bd" Property="CornerRadius" Value="3"/>
                         </Trigger>
                     </ControlTemplate.Triggers>

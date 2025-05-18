@@ -72,6 +72,7 @@ namespace BuildingProjectManagementAPI.Services
                 .Include(project => project.User)
                 .Include(project => project.Contacts)
                     .ThenInclude(ent => ent.Contact)
+                .Include(project => project.Documents)
                 .Where(project => project.UserId == user!.Id)
                 .ToListAsync();
 
@@ -80,7 +81,9 @@ namespace BuildingProjectManagementAPI.Services
 
         public async Task<ProjectEntity?> GetProject(int id)
         {
-            return await context.Proyectos.FirstOrDefaultAsync(project => project.Id == id);
+            return await context.Proyectos
+                .Include(project => project.Documents)
+                .FirstOrDefaultAsync(project => project.Id == id);
         }
 
         public ProjectPatchDto MapProject(ProjectEntity project)

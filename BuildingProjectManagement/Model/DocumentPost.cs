@@ -12,14 +12,14 @@ namespace BuildingProjectManagement.Model
         public int Id { get; set; }
         public string Title { get; set; }
         public string Category { get; set; }
-        public string FilePath { get; set; }
+        public string DocumentPath { get; set; }
         public int? ProjectId { get; set; }
 
-        public DocumentPost(string title, string category, string filePath)
+        public DocumentPost(string title, string category, string documentPath)
         {
             Title = title;
             Category = category;
-            FilePath = filePath;
+            DocumentPath = documentPath;
         }
     }
 }

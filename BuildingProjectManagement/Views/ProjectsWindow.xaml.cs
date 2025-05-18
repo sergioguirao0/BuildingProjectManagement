@@ -126,12 +126,12 @@ namespace BuildingProjectManagement.Views
                     }
                     else
                     {
-                        projectViewModel.CheckMessage = AppStrings.ProjectCreationError;
+                        projectViewModel.NewProjectChecksMessage = AppStrings.ProjectCreationError;
                     }
                 }
                 else
                 {
-                    projectViewModel.CheckMessage = AppStrings.CheckState;
+                    projectViewModel.NewProjectChecksMessage = AppStrings.CheckState;
                 }   
             }
         }

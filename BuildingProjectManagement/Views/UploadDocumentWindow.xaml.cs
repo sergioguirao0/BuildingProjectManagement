@@ -59,7 +59,7 @@ namespace BuildingProjectManagement.Views
             {
                 documentViewModel.DocumentToUpload!.Title = TbTitle.Text;
                 documentViewModel.DocumentToUpload!.Category = CbCategory.Text;
-                documentViewModel.DocumentToUpload!.FilePath = filePath!;
+                documentViewModel.DocumentToUpload!.DocumentPath = filePath!;
                 DialogResult = true;
                 Close();
             }

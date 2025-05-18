@@ -73,7 +73,7 @@ namespace BuildingProjectManagementAPI.Services
             }
         }
 
-        public async Task DeleteDocument(string? path, string container)
+        public async Task DeleteDocFromServer(string? path, string container)
         {
             if (string.IsNullOrEmpty(path))
             {
@@ -97,6 +97,41 @@ namespace BuildingProjectManagementAPI.Services
                 .ToListAsync();
 
             return mapper.Map<List<DocumentDto>>(documents);
+        }
+
+        public async Task<DocumentEntity?> GetDocumentById(int id)
+        {
+            return await context.Documentos.FirstOrDefaultAsync(doc => doc.Id == id);
+        }
+
+        public async Task<bool> DeleteDocument(DocumentEntity document)
+        {
+            try
+            {
+                context.Remove(document);
+                await context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return false;
+            }
+        }
+
+        public bool CheckUserDocument(IdentityUser user, DocumentEntity? document)
+        {
+            if (document != null)
+            {
+                if (document.UserId != user.Id)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

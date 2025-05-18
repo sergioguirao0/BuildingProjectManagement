@@ -55,11 +55,11 @@ namespace BuildingProjectManagement.Resources.Strings
         // Items strings de elementos
         public static string[] StateItems = { "No iniciado", "En ejecución", "Finalizado", "Cancelado" };
         public const string StateAllProjects = "Todos los proyectos";
-        public const string ProjectCategory = "Proyecto";
-        public const string StartingProjectCategory = "Documentos previos al inicio del proyecto";
-        public const string ExecutionProjectCategory = "Documentos relativos a la ejecución del proyecto";
-        public const string EndingProjectCategory = "Documentos relativos al final del proyecto";
-        public const string OtherDocumentsCategory = "Otros documentos";
+        public const string ProjectCategory = "PROYECTO";
+        public const string StartingProjectCategory = "DOCUMENTOS PREVIOS AL INICIO DEL PROYECTO";
+        public const string ExecutionProjectCategory = "DOCUMENTOS RELATIVOS A LA EJECUCIÓN DEL PROYECTO";
+        public const string EndingProjectCategory = "DOCUMENTOS RELATIVOS AL FINAL DEL PROYECTO";
+        public const string OtherDocumentsCategory = "OTROS DOCUMENTOS";
         public static string[] CategoryItems = {ProjectCategory, StartingProjectCategory, ExecutionProjectCategory,
             EndingProjectCategory, OtherDocumentsCategory};
         public const string PdfFilter = "Archivos PDF (*.pdf)|*.pdf";
@@ -84,5 +84,8 @@ namespace BuildingProjectManagement.Resources.Strings
         public const string UploadDocumentError = "Error al guardar el documento";
         public const string DeleteDocumentError = "Error al borrar el documento";
         public const string NoSelectedDocumentError = "No hay ningún documento seleccionado";
+        public const string OpenDocumentError = "No se ha podido abrir el documento";
+        public const string DeleteDocumentConfirmationTitle = "Eliminar documento";
+        public const string DeleteDocumentConfirmationMessage = "Se va a eliminar el documento seleccionado";
     }
 }

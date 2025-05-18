@@ -50,6 +50,20 @@ namespace BuildingProjectManagement.ViewModel
             }
         }
 
+        private ProjectDocument? _selectedDocument;
+        public ProjectDocument? SelectedDocument
+        {
+            get => _selectedDocument;
+            set
+            {
+                if (_selectedDocument != value)
+                {
+                    _selectedDocument = value;
+                    OnPropertyChanged(nameof(SelectedDocument));
+                }
+            }
+        }
+
         public DocumentViewModel()
         {
             DocumentToUpload = new DocumentPost(string.Empty, string.Empty, string.Empty);
@@ -154,10 +168,10 @@ namespace BuildingProjectManagement.ViewModel
                 {
                     document.ProjectId = projectId;
                     var form = new MultipartFormDataContent();
-                    var fileStream = new FileStream(document.FilePath, FileMode.Open, FileAccess.Read);
+                    var fileStream = new FileStream(document.DocumentPath, FileMode.Open, FileAccess.Read);
                     var streamContent = new StreamContent(fileStream);
                     streamContent.Headers.ContentType = new MediaTypeHeaderValue(AppStrings.ApplicationPdf);
-                    var fileName = Path.GetFileName(document.FilePath);
+                    var fileName = Path.GetFileName(document.DocumentPath);
 
                     form.Add(new StringContent(document.Title), "Title");
                     form.Add(new StringContent(document.Category), "Category");
@@ -165,6 +179,25 @@ namespace BuildingProjectManagement.ViewModel
                     form.Add(new StringContent(document.ProjectId.ToString()!), "ProjectId");
 
                     return await client.PostAsync(AppStrings.ProjectEndpoint + "/" + projectId + AppStrings.DocumentEndpoint, form);
+                }
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent("Error: " + ex.Message)
+                };
+                return errorResponse;
+            }
+        }
+
+        public async Task<HttpResponseMessage> DeleteDocument(int documentId, int projectId)
+        {
+            try
+            {
+                using (var client = GetHttpClient())
+                {
+                    return await client.DeleteAsync(AppStrings.ProjectEndpoint + "/" + projectId + AppStrings.DocumentEndpoint + "/" + documentId);
                 }
             }
             catch (Exception ex)

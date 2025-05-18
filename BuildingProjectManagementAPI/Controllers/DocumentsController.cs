@@ -49,5 +49,36 @@ namespace BuildingProjectManagementAPI.Controllers
         {
             return await documentService.GetDocuments(projectId);
         }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var document = await documentService.GetDocumentById(id);
+
+            if (document is null)
+            {
+                return NotFound(ApiStrings.DocumentNotFound);
+            }
+
+            var user = await userService.GetUser();
+            bool checkUserDocument = documentService.CheckUserDocument(user!, document);
+
+            if (!checkUserDocument)
+            {
+                return Forbid();
+            }
+
+            bool canDelete = await documentService.DeleteDocument(document);
+
+            if (canDelete)
+            {
+                await documentService.DeleteDocFromServer(document.DocumentPath, container);
+                return Ok(ApiStrings.DocumentDeleted);
+            }
+            else
+            {
+                return BadRequest(ApiStrings.DocumentDeleteError);
+            }
+        }
     }
 }

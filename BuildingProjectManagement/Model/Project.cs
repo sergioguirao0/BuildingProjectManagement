@@ -14,6 +14,7 @@ namespace BuildingProjectManagement.Model
         public string JobType { get; set; }
         public string? Description { get; set; }
         public List<Contact> Contacts { get; set; }
+        public List<ProjectDocument>? Documents { get; set; } 
         public string State { get; set; }
 
         public Project(string name, string site, string jobType, string state)

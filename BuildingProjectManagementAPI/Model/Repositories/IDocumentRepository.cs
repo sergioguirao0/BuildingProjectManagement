@@ -9,8 +9,11 @@ namespace BuildingProjectManagementAPI.Model.Repositories
     {
         Task<bool> PostDocument(int projectId, IdentityUser user, DocumentEntity document);
         Task<string> UploadDocument(string container, IFormFile file);
-        Task DeleteDocument(string? path, string container);
+        Task DeleteDocFromServer(string? path, string container);
         DocumentEntity GetDocumentByDto(DocumentCreationDto documentCreationDto);
         Task<ActionResult<List<DocumentDto>>> GetDocuments(int projectId);
+        Task<bool> DeleteDocument(DocumentEntity document);
+        Task<DocumentEntity?> GetDocumentById(int id);
+        bool CheckUserDocument(IdentityUser user, DocumentEntity? document);
     }
 }

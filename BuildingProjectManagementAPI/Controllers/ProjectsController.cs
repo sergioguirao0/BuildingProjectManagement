@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BuildingProjectManagementAPI.Model.Dao;
 using BuildingProjectManagementAPI.Model.Dto;
+using BuildingProjectManagementAPI.Model.Entities;
 using BuildingProjectManagementAPI.Model.Repositories;
 using BuildingProjectManagementAPI.Resources;
 using Microsoft.AspNetCore.Authorization;
@@ -16,11 +17,14 @@ namespace BuildingProjectManagementAPI.Controllers
     {
         private readonly IUserRepository userService;
         private readonly IProjectRepository projectService;
+        private readonly IDocumentRepository documentService;
+        private const string container = ApiStrings.DocumentContainer;
 
-        public ProjectsController(IUserRepository userService, IProjectRepository projectService)
+        public ProjectsController(IUserRepository userService, IProjectRepository projectService, IDocumentRepository documentService)
         {
             this.userService = userService;
             this.projectService = projectService;
+            this.documentService = documentService;
         }
 
         [HttpGet]
@@ -103,6 +107,14 @@ namespace BuildingProjectManagementAPI.Controllers
             if (!checkProjectContact)
             {
                 return Forbid();
+            }
+
+            List<DocumentEntity> documents = project.Documents.ToList();
+
+            foreach (DocumentEntity document in documents)
+            {
+                await documentService.DeleteDocFromServer(document.DocumentPath, container);
+                await documentService.DeleteDocument(document);
             }
 
             bool canDelete = await projectService.DeleteProject(project);

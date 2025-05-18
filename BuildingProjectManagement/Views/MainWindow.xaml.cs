@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,7 @@ namespace BuildingProjectManagement.Views
         readonly DocumentViewModel documentViewModel;
         bool updateMode = false;
         private ICollectionView? ProjectsView;
+        private bool isSelectionActive = false;
 
         public MainWindow(UserViewModel userViewModel)
         {
@@ -138,9 +140,13 @@ namespace BuildingProjectManagement.Views
         {
             if (CbContacts.SelectedIndex > -1)
             {
-                if (!projectViewModel.ProjectContacts!.Contains((Contact)CbContacts.SelectedItem))
+                Contact selectedContact = (Contact)CbContacts.SelectedItem;
+                bool contactInList = projectViewModel.ProjectContacts!.Any(contact => contact.Id == selectedContact.Id);
+
+                if (!contactInList)
                 {
-                    projectViewModel.ProjectContacts.Add((Contact)CbContacts.SelectedItem);
+                    projectViewModel.ProjectContacts!.Add((Contact)CbContacts.SelectedItem);
+                    projectViewModel.CleanCheckMessage();
                 }
                 else
                 {
@@ -291,6 +297,7 @@ namespace BuildingProjectManagement.Views
 
                 if (projectConfirmationWindow.DialogResult == true)
                 {
+                    projectViewModel.CleanCheckMessage();
                     var patchDoc = projectViewModel.GetPatchDoc(projectViewModel.SelectedProject!, updatedProject);
                     var response = await projectViewModel.PatchProject(projectViewModel.SelectedProject!.Id, projectViewModel.SelectedProject!, updatedProject);
 
@@ -398,12 +405,139 @@ namespace BuildingProjectManagement.Views
 
         private void BtOpenDocument_Click(object sender, RoutedEventArgs e)
         {
+            if (documentViewModel.SelectedDocument is not null)
+            {
+                string url = documentViewModel.SelectedDocument.DocumentPath;
+                try
+                {
+                    ProcessStartInfo process = new ProcessStartInfo
+                    {
+                        FileName = url,
+                        UseShellExecute = true
+                    };
 
+                    Process.Start(process);
+                }
+                catch (Exception)
+                {
+                    projectViewModel.ProjectDocumentMessage = AppStrings.OpenDocumentError;
+                }
+            }
+            else
+            {
+                projectViewModel.ProjectDocumentMessage = AppStrings.NoSelectedDocumentError;
+            }
         }
 
-        private void BtDeleteDocument_Click(object sender, RoutedEventArgs e)
+        private async void BtDeleteDocument_Click(object sender, RoutedEventArgs e)
         {
+            if (documentViewModel.SelectedDocument is not null)
+            {
+                projectViewModel.ConfirmationTitle = AppStrings.DeleteDocumentConfirmationTitle;
+                projectViewModel.ConfirmationMessage = AppStrings.DeleteDocumentConfirmationMessage;
+                ProjectConfirmationWindow projectConfirmationWindow = new ProjectConfirmationWindow(projectViewModel);
+                projectConfirmationWindow.ShowDialog();
 
+                if (projectConfirmationWindow.DialogResult == true)
+                {
+                    int documentId = documentViewModel.SelectedDocument.Id;
+                    int projectId = projectViewModel.SelectedProject!.Id;
+                    var response = await documentViewModel.DeleteDocument(documentId, projectId);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ShowDocuments(projectId);
+                    }
+                    else
+                    {
+                        projectViewModel.ProjectDocumentMessage = AppStrings.DeleteDocumentError;
+                    }
+                }
+            }
+            else
+            {
+                projectViewModel.ProjectDocumentMessage = AppStrings.NoSelectedDocumentError;
+            }
+        }
+
+        private void LbProjectDocs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            projectViewModel.ProjectDocumentMessage = string.Empty;
+
+            if (isSelectionActive)
+                return;
+
+            isSelectionActive = true;
+            LbPreviousDocs.SelectedItem = null;
+            LbExecutionDocs.SelectedItem = null;
+            LbFinalDocs.SelectedItem = null;
+            LbOtherDocs.SelectedItem = null;
+            documentViewModel.SelectedDocument = (ProjectDocument)LbProjectDocs.SelectedItem;
+            isSelectionActive = false;
+        }
+
+        private void LbPreviousDocs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            projectViewModel.ProjectDocumentMessage = string.Empty;
+
+            if (isSelectionActive)
+                return;
+
+            isSelectionActive = true;
+            LbProjectDocs.SelectedItem = null;
+            LbExecutionDocs.SelectedItem = null;
+            LbFinalDocs.SelectedItem = null;
+            LbOtherDocs.SelectedItem = null;
+            documentViewModel.SelectedDocument = (ProjectDocument)LbPreviousDocs.SelectedItem;
+            isSelectionActive = false;
+        }
+
+        private void LbExecutionDocs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            projectViewModel.ProjectDocumentMessage = string.Empty;
+
+            if (isSelectionActive)
+                return;
+
+            isSelectionActive = true;
+            LbProjectDocs.SelectedItem = null;
+            LbPreviousDocs.SelectedItem = null;
+            LbFinalDocs.SelectedItem = null;
+            LbOtherDocs.SelectedItem = null;
+            documentViewModel.SelectedDocument = (ProjectDocument)LbExecutionDocs.SelectedItem;
+            isSelectionActive = false;
+        }
+
+        private void LbFinalDocs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            projectViewModel.ProjectDocumentMessage = string.Empty;
+
+            if (isSelectionActive)
+                return;
+
+            isSelectionActive = true;
+            LbProjectDocs.SelectedItem = null;
+            LbPreviousDocs.SelectedItem = null;
+            LbExecutionDocs.SelectedItem = null;
+            LbOtherDocs.SelectedItem = null;
+            documentViewModel.SelectedDocument = (ProjectDocument)LbFinalDocs.SelectedItem;
+            isSelectionActive = false;
+        }
+
+        private void LbOtherDocs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            projectViewModel.ProjectDocumentMessage = string.Empty;
+
+            if (isSelectionActive)
+                return;
+
+            isSelectionActive = true;
+            LbProjectDocs.SelectedItem = null;
+            LbPreviousDocs.SelectedItem = null;
+            LbExecutionDocs.SelectedItem = null;
+            LbFinalDocs.SelectedItem = null;
+            documentViewModel.SelectedDocument = (ProjectDocument)LbOtherDocs.SelectedItem;
+            isSelectionActive = false;
         }
     }
 }
