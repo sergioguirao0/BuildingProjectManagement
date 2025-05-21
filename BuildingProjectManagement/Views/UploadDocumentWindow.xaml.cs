@@ -40,6 +40,7 @@ namespace BuildingProjectManagement.Views
         private void btClose_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
+            documentViewModel.DocumentChecksMessage = string.Empty;
             Close();
         }
 
@@ -68,6 +69,7 @@ namespace BuildingProjectManagement.Views
         private void BtCancel_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
+            documentViewModel.DocumentChecksMessage = string.Empty;
             Close();
         }
 

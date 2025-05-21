@@ -144,6 +144,34 @@ namespace BuildingProjectManagement.ViewModel
             return checks;
         }
 
+        public bool UpdateProjectChecks(string name, string site, string jobType)
+        {
+            bool checks;
+
+            if (string.IsNullOrEmpty(name))
+            {
+                ProjectChecksMessage = AppStrings.CheckName;
+                checks = false;
+            }
+            else if (string.IsNullOrEmpty(site))
+            {
+                ProjectChecksMessage = AppStrings.CheckSite;
+                checks = false;
+            }
+            else if (string.IsNullOrEmpty(jobType))
+            {
+                ProjectChecksMessage = AppStrings.CheckJobType;
+                checks = false;
+            }
+            else
+            {
+                ProjectChecksMessage = string.Empty;
+                checks = true;
+            }
+
+            return checks;
+        }
+
         public void CleanCheckMessage()
         {
             ProjectChecksMessage = string.Empty;

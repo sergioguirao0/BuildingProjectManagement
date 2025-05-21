@@ -72,6 +72,7 @@ namespace BuildingProjectManagement.Views
             LbExecutionDocs.DataContext = documentViewModel;
             LbFinalDocs.DataContext = documentViewModel;
             LbOtherDocs.DataContext = documentViewModel;
+            LbOrders.DataContext = documentViewModel;
         }
 
         private void BtMinimize_Click(object sender, RoutedEventArgs e)
@@ -278,7 +279,7 @@ namespace BuildingProjectManagement.Views
 
         private async void BtSaveChanges_Click(object sender, RoutedEventArgs e)
         {
-            bool projectChecks = projectViewModel.ProjectChecks(TbName.Text, TbSite.Text, TbJobType.Text);
+            bool projectChecks = projectViewModel.UpdateProjectChecks(TbName.Text, TbSite.Text, TbJobType.Text);
             int selectedProjectIndex = LbProjects.SelectedIndex;
 
             if (projectChecks)
@@ -538,6 +539,21 @@ namespace BuildingProjectManagement.Views
             LbFinalDocs.SelectedItem = null;
             documentViewModel.SelectedDocument = (ProjectDocument)LbOtherDocs.SelectedItem;
             isSelectionActive = false;
+        }
+
+        private void BtUCreateOrder_Click(object sender, RoutedEventArgs e)
+        {
+            documentViewModel.CreateDocumentPdf(TbOrderContent.Text);
+        }
+
+        private void BtOpenOrder_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtDeleteOrder_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

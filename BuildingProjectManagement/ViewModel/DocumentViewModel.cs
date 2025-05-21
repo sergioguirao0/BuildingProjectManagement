@@ -1,9 +1,12 @@
 ﻿using BuildingProjectManagement.Model;
 using BuildingProjectManagement.Resources.Strings;
+using QuestPDF.Fluent;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
+using System.IO.Packaging;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -21,6 +24,9 @@ namespace BuildingProjectManagement.ViewModel
         public ObservableCollection<ProjectDocument> ExecutionDocumentList { get; set; } = new ObservableCollection<ProjectDocument>();
         public ObservableCollection<ProjectDocument> EndingDocumentList { get; set; } = new ObservableCollection<ProjectDocument>();
         public ObservableCollection<ProjectDocument> OtherDocumentList { get; set; } = new ObservableCollection<ProjectDocument>();
+
+        public ObservableCollection<ProjectDocument> ProjectOrdersDocumentList { get; set; } = new ObservableCollection<ProjectDocument>();
+        public ObservableCollection<ProjectDocument> ProjectIncidencesDocumentList { get; set; } = new ObservableCollection<ProjectDocument>();
 
         private DocumentPost? _documentToUpload;
         public DocumentPost? DocumentToUpload
@@ -207,6 +213,33 @@ namespace BuildingProjectManagement.ViewModel
                     Content = new StringContent("Error: " + ex.Message)
                 };
                 return errorResponse;
+            }
+        }
+
+        public void CreateDocumentPdf(string content)
+        {
+            string text = content;
+            string filePath = "Prueba.pdf";
+            QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
+
+            try
+            {
+                var document = Document.Create(container =>
+                {
+                    container.Page(page =>
+                    {
+                        page.Margin(40);
+                        page.Content().Text(text).FontSize(12).FontFamily("Arial");
+                    });
+                });
+
+                document.GeneratePdf(filePath);
+                MessageBox.Show("Pdf creado correctamente");
+                Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
             }
         }
     }

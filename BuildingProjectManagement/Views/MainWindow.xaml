@@ -48,7 +48,7 @@
                 <Button x:Name="BtClose" Grid.Column="3" Background="#FF2B2B2B" Content="X" 
                         Style="{StaticResource TopBarButton}" Click="BtClose_Click"/>
             </Grid>
-            
+
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="160"/>
@@ -91,29 +91,29 @@
                                 <RowDefinition Height="1.5*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="3.5*"/>
-                                <ColumnDefinition Width="0.25*"/>
+                                <ColumnDefinition Width="193*"/>
+                                <ColumnDefinition Width="673*"/>
+                                <ColumnDefinition Width="48*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="Datos generales del proyecto" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontSize="20"
-                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBlock Text="Datos generales del proyecto" Grid.Column="0" FontSize="20" Grid.ColumnSpan="3"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" Height="27"/>
                             <TextBlock Text="*NOMBRE DEL PROYECTO:" Grid.Row="1" Style="{StaticResource formTextBlock}"/>
                             <TextBlock Text="*EMPLAZAMIENTO:" Grid.Row="2" Style="{StaticResource formTextBlock}"/>
                             <TextBlock Text="*TIPO DE TRABAJO:" Grid.Row="3" Style="{StaticResource formTextBlock}"/>
                             <TextBlock Text="DESCRIPCIÓN:" Grid.Row="4" Style="{StaticResource formTextBlock}" VerticalAlignment="Top"
-                                       Margin="0,15,0,0"/>
+                                       Margin="0,15,0,0" Height="15" Width="82"/>
                             <TextBlock Text="CONTACTOS:" Grid.Row="5" Style="{StaticResource formTextBlock}" VerticalAlignment="Top"
-                                       Margin="0,5,0,0"/>
-                            <TextBlock Text="*ESTADO:" Grid.Row="6" Style="{StaticResource formTextBlock}"/>
+                                       Margin="0,5,0,0" Height="14" Width="75"/>
+                            <TextBlock Text="*ESTADO:" Grid.Row="6" Style="{StaticResource formTextBlock}" HorizontalAlignment="Left" Margin="134,0,0,0" Height="15" Width="58"/>
 
-                            <TextBox x:Name="TbName" Grid.Row="1" Grid.Column="1" Style="{StaticResource formTextBox}" IsReadOnly="True"/>
-                            <TextBox x:Name="TbSite" Grid.Row="2" Grid.Column="1" Style="{StaticResource formTextBox}" IsReadOnly="True"/>
-                            <TextBox x:Name="TbJobType" Grid.Row="3" Grid.Column="1" Style="{StaticResource formTextBox}" IsReadOnly="True"/>
+                            <TextBox x:Name="TbName" Grid.Row="1" Grid.Column="1" Style="{StaticResource formTextBox}" IsReadOnly="True" Margin="2,0,0,0" Height="25"/>
+                            <TextBox x:Name="TbSite" Grid.Row="2" Grid.Column="1" Style="{StaticResource formTextBox}" IsReadOnly="True" Margin="2,0,0,0" Height="25"/>
+                            <TextBox x:Name="TbJobType" Grid.Row="3" Grid.Column="1" Style="{StaticResource formTextBox}" IsReadOnly="True" Margin="2,0,0,0" Height="25"/>
                             <TextBox x:Name="TbDescription" Grid.Row="4" Grid.Column="1" Style="{StaticResource formTextBox}"
                                      Height="60" TextWrapping="Wrap" VerticalContentAlignment="Top" VerticalAlignment="Top"
-                                     Margin="0,12.5,0,0" IsReadOnly="True"/>
-                            <Grid Grid.Row="5" Grid.Column="1">
+                                     Margin="2,13,0,0" IsReadOnly="True"/>
+                            <Grid Grid.Row="5" Grid.Column="1" Margin="2,0,0,53" Grid.RowSpan="2">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
@@ -138,13 +138,14 @@
                                          ItemTemplate="{StaticResource ProjectContact}" ItemContainerStyle="{StaticResource ItemList}" Grid.RowSpan="2"
                                          ItemsSource="{Binding ProjectContacts}"/>
                             </Grid>
-                            
-                            <ComboBox x:Name="CbState" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" Width="Auto" IsEnabled="False"/>
 
-                            <TextBlock x:Name="checkMessage" Style="{StaticResource checkTextBlock}" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" 
-                                       Height="25" Text="{Binding ProjectChecksMessage}"/>
+                            <ComboBox x:Name="CbState" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" Width="Auto" IsEnabled="False" 
+                                      Margin="2,0,0,0" Height="25"/>
 
-                            <Grid Grid.Column="1" Grid.Row="8" VerticalAlignment="Center">
+                            <TextBlock x:Name="checkMessage" Style="{StaticResource checkTextBlock}" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3"
+                                       Text="{Binding ProjectChecksMessage}" HorizontalAlignment="Center" Height="25"/>
+
+                            <Grid Grid.Column="1" Grid.Row="8" VerticalAlignment="Center" Margin="2,0,0,0" Height="25">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="130"/>
@@ -164,7 +165,7 @@
                             </Grid>
                         </Grid>
                     </TabItem>
-                    
+
                     <TabItem x:Name="TabDocuments" Header="Documentación">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -192,22 +193,22 @@
                                     <Separator/>
                                     <ListBox x:Name="LbProjectDocs" ItemContainerStyle="{StaticResource ItemList}" BorderThickness="0,0,0,0"
                                              ItemsSource="{Binding ProjectDocumentList}" SelectionChanged="LbProjectDocs_SelectionChanged"/>
-                                    
+
                                     <TextBlock Text="{x:Static resources:AppStrings.StartingProjectCategory}" Margin="0,10,0,0"/>
                                     <Separator/>
                                     <ListBox x:Name="LbPreviousDocs" ItemContainerStyle="{StaticResource ItemList}" BorderThickness="0,0,0,0"
                                              ItemsSource="{Binding StartingDocumentList}" SelectionChanged="LbPreviousDocs_SelectionChanged"/>
-                                    
+
                                     <TextBlock Text="{x:Static resources:AppStrings.ExecutionProjectCategory}" Margin="0,10,0,0"/>
                                     <Separator/>
                                     <ListBox x:Name="LbExecutionDocs" ItemContainerStyle="{StaticResource ItemList}" BorderThickness="0,0,0,0"
                                              ItemsSource="{Binding ExecutionDocumentList}" SelectionChanged="LbExecutionDocs_SelectionChanged"/>
-                                    
+
                                     <TextBlock Text="{x:Static resources:AppStrings.EndingProjectCategory}" Margin="0,10,0,0"/>
                                     <Separator/>
                                     <ListBox x:Name="LbFinalDocs" ItemContainerStyle="{StaticResource ItemList}" BorderThickness="0,0,0,0"
                                              ItemsSource="{Binding EndingDocumentList}" SelectionChanged="LbFinalDocs_SelectionChanged"/>
-                                    
+
                                     <TextBlock Text="{x:Static resources:AppStrings.OtherDocumentsCategory}" Margin="0,10,0,0"/>
                                     <Separator/>
                                     <ListBox x:Name="LbOtherDocs" ItemContainerStyle="{StaticResource ItemList}" BorderThickness="0,0,0,0"
@@ -232,11 +233,79 @@
                                 <Button x:Name="BtDeleteDocument" Style="{StaticResource FormControlButton}" Content="BORRAR"
                                         Margin="0,0,0,0" Click="BtDeleteDocument_Click" Grid.Column="4" Background="#FF585858"/>
                             </Grid>
-                            
+
                         </Grid>
                     </TabItem>
-                    
-                    <TabItem x:Name="TabOrders" Header="Órdenes"/>
+
+                    <TabItem x:Name="TabOrders" Header="Órdenes">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="7*"/>
+                                <RowDefinition Height="1.5*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Órdenes" Grid.Row="0" FontSize="20" HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+
+                            <Grid Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="30"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Column="1" Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="3.5*"/>
+                                        <ColumnDefinition Width="0.25*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="40"/>
+                                        <RowDefinition Height="40"/>
+                                        <RowDefinition Height="120"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="CONTACTO:" Grid.Row="0" Style="{StaticResource formTextBlock}"/>
+                                    <TextBlock Text="*TÍTULO:" Grid.Row="1" Style="{StaticResource formTextBlock}"/>
+                                    <TextBlock Text="CONTENIDO:" Grid.Row="2" Style="{StaticResource formTextBlock}" VerticalAlignment="Top"
+                                               Margin="0,7,0,0"/>
+                                    <TextBlock Text="ÓRDENES GUARDADAS:" Grid.Row="3" Style="{StaticResource formTextBlock}" VerticalAlignment="Top"
+                                               Margin="0,7,0,0"/>
+
+                                    <ComboBox x:Name="CbOrderContact" Grid.Column="1" Grid.Row="0" Width="Auto" HorizontalAlignment="Stretch" 
+                                              Margin="2,0,0,0" ItemsSource="{Binding ProjectContacts}"/>
+                                    <TextBox x:Name="TbOrderTitle" Grid.Row="1" Grid.Column="1" Style="{StaticResource formTextBox}"
+                                             Margin="2,0,0,0" Height="25"/>
+                                    <TextBox x:Name="TbOrderContent" Grid.Row="2" Grid.Column="1" Style="{StaticResource formTextBox}" Margin="2,5,0,5"
+                                             Height="Auto" TextWrapping="Wrap" VerticalContentAlignment="Top" VerticalAlignment="Stretch"/>
+                                    <ListBox x:Name="LbOrders" ItemContainerStyle="{StaticResource ItemList}" BorderThickness="0,0,0,0"
+                                             ItemsSource="{Binding ProjectOrdersDocumentList}" Grid.Column="1" Grid.Row="3" Margin="5"/>
+
+
+                                </Grid>
+                                <TextBlock Text="{Binding ProjectDocumentMessage}" Grid.Row="1" Grid.Column="1" Style="{StaticResource checkTextBlock}"/>
+                            </Grid>
+
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button x:Name="BtCreateOrder" Style="{StaticResource FormControlButton}" Content="CREAR ORDEN"
+                                        Margin="0,0,0,0" Click="BtUCreateOrder_Click" Grid.Column="0"/>
+                                <Button x:Name="BtOpenOrder" Style="{StaticResource FormControlButton}" Content="ABRIR"
+                                        Margin="0,0,0,0" Click="BtOpenOrder_Click" Grid.Column="2"/>
+                                <Button x:Name="BtDeleteOrder" Style="{StaticResource FormControlButton}" Content="BORRAR"
+                                        Margin="0,0,0,0" Click="BtDeleteOrder_Click" Grid.Column="4" Background="#FF585858"/>
+                            </Grid>
+                        </Grid>
+                    </TabItem>
+
                     <TabItem x:Name="TabIncidents" Header="Incidencias"/>
                 </TabControl>
             </Grid>
