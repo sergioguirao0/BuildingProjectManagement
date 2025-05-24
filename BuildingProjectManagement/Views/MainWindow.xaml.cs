@@ -73,8 +73,12 @@ namespace BuildingProjectManagement.Views
             LbFinalDocs.DataContext = documentViewModel;
             LbOtherDocs.DataContext = documentViewModel;
             LbOrders.DataContext = documentViewModel;
+            LbIncidences.DataContext = documentViewModel;
+            LabelOrderChecks.DataContext = documentViewModel;
+            LabelIncidencesChecks.DataContext = documentViewModel;
         }
 
+        // Métodos ventana general
         private void BtMinimize_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
@@ -137,6 +141,52 @@ namespace BuildingProjectManagement.Views
             }
         }
 
+        private void LbProjects_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (LbProjects.SelectedItem is not null)
+            {
+                TabControlProject.IsEnabled = true;
+                projectViewModel.SelectedProject = (Project)LbProjects.SelectedItem;
+                projectViewModel.ProjectContacts!.Clear();
+
+                foreach (var contact in projectViewModel.SelectedProject.Contacts)
+                {
+                    projectViewModel.ProjectContacts.Add(contact);
+                }
+
+                SeeProjectData();
+
+                int projectId = projectViewModel.SelectedProject.Id;
+                ShowDocuments(projectId);
+            }
+            else
+            {
+                TabControlProject.IsEnabled = false;
+            }
+        }
+
+        private void CbFilterStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ProjectsView = CollectionViewSource.GetDefaultView(projectViewModel.Projects);
+
+            if (CbFilterStatus.SelectedIndex > 0)
+                ProjectsView.Filter = project => ((Project)project).State == CbFilterStatus.SelectedItem.ToString();
+            else
+                ProjectsView.Filter = null;
+
+            ProjectsView.Refresh();
+            LbProjects.ItemsSource = ProjectsView;
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            foreach (string path in documentViewModel.TempDocuments!)
+            {
+                documentViewModel.DeleteTemporalDocument(path);
+            }
+        }
+
+        // Métodos pestaña datos documento
         private void BtAddContact_Click(object sender, RoutedEventArgs e)
         {
             if (CbContacts.SelectedIndex > -1)
@@ -179,41 +229,6 @@ namespace BuildingProjectManagement.Views
             }
         }
 
-        private void LbProjects_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (LbProjects.SelectedItem is not null)
-            {
-                TabControlProject.IsEnabled = true;
-                projectViewModel.SelectedProject = (Project)LbProjects.SelectedItem;
-                projectViewModel.ProjectContacts!.Clear();
-
-                foreach (var contact in projectViewModel.SelectedProject.Contacts)
-                {
-                    projectViewModel.ProjectContacts.Add(contact);
-                }
-
-                SeeProjectData();
-
-                int projectId = projectViewModel.SelectedProject.Id;
-                ShowDocuments(projectId);
-            }
-            else
-            {
-                TabControlProject.IsEnabled = false;
-            }
-        }
-
-        private async void ShowDocuments(int projectId)
-        {
-            var response = await documentViewModel.GetProjectDocumentsResponse(projectId);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var documents = await documentViewModel.GetProjectDocuments(response);
-                documentViewModel.OrderDocuments(documents);
-            }
-        }
-
         private void SeeProjectData()
         {
             TbName.Text = projectViewModel.SelectedProject!.Name;
@@ -222,6 +237,16 @@ namespace BuildingProjectManagement.Views
             TbDescription.Text = projectViewModel.SelectedProject.Description;
             LbContacts.ItemsSource = projectViewModel.SelectedProject.Contacts;
             CbState.Text = projectViewModel.SelectedProject.State.ToString();
+        }
+
+        private void ClearForm()
+        {
+            TbName.Clear();
+            TbSite.Clear();
+            TbJobType.Clear();
+            TbDescription.Clear();
+            projectViewModel.ProjectContacts!.Clear();
+            CbContacts.SelectedIndex = 0;
         }
 
         private void BtUpdate_Click(object sender, RoutedEventArgs e)
@@ -328,6 +353,17 @@ namespace BuildingProjectManagement.Views
             projectViewModel.CleanCheckMessage();
         }
 
+        private void ChangeItemsVisibility()
+        {
+            TbName.IsReadOnly = !TbName.IsReadOnly;
+            TbSite.IsReadOnly = !TbSite.IsReadOnly;
+            TbJobType.IsReadOnly = !TbJobType.IsReadOnly;
+            TbDescription.IsReadOnly = !TbDescription.IsReadOnly;
+            CbState.IsEnabled = !CbState.IsEnabled;
+            LbProjects.IsEnabled = !LbProjects.IsEnabled;
+
+        }
+
         private void EditContactsPanelVisibility(bool visible)
         {
             if (visible)
@@ -350,38 +386,16 @@ namespace BuildingProjectManagement.Views
             }
         }
 
-        private void ChangeItemsVisibility()
+        // Métodos pestaña documentos
+        private async void ShowDocuments(int projectId)
         {
-            TbName.IsReadOnly = !TbName.IsReadOnly;
-            TbSite.IsReadOnly = !TbSite.IsReadOnly;
-            TbJobType.IsReadOnly = !TbJobType.IsReadOnly;
-            TbDescription.IsReadOnly = !TbDescription.IsReadOnly;
-            CbState.IsEnabled = !CbState.IsEnabled;
-            LbProjects.IsEnabled = !LbProjects.IsEnabled;
+            var response = await documentViewModel.GetProjectDocumentsResponse(projectId);
 
-        }
-
-        private void ClearForm()
-        {
-            TbName.Clear();
-            TbSite.Clear();
-            TbJobType.Clear();
-            TbDescription.Clear();
-            projectViewModel.ProjectContacts!.Clear();
-            CbContacts.SelectedIndex = 0;
-        }
-
-        private void CbFilterStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ProjectsView = CollectionViewSource.GetDefaultView(projectViewModel.Projects);
-
-            if (CbFilterStatus.SelectedIndex > 0)
-                ProjectsView.Filter = project => ((Project)project).State == CbFilterStatus.SelectedItem.ToString();
-            else
-                ProjectsView.Filter = null;
-
-            ProjectsView.Refresh();
-            LbProjects.ItemsSource = ProjectsView;
+            if (response.IsSuccessStatusCode)
+            {
+                var documents = await documentViewModel.GetProjectDocuments(response);
+                documentViewModel.OrderDocuments(documents);
+            }
         }
 
         private async void BtUploadDocument_Click(object sender, RoutedEventArgs e)
@@ -473,6 +487,8 @@ namespace BuildingProjectManagement.Views
             LbExecutionDocs.SelectedItem = null;
             LbFinalDocs.SelectedItem = null;
             LbOtherDocs.SelectedItem = null;
+            LbOrders.SelectedItem = null;
+            LbIncidences.SelectedItem = null;
             documentViewModel.SelectedDocument = (ProjectDocument)LbProjectDocs.SelectedItem;
             isSelectionActive = false;
         }
@@ -489,6 +505,8 @@ namespace BuildingProjectManagement.Views
             LbExecutionDocs.SelectedItem = null;
             LbFinalDocs.SelectedItem = null;
             LbOtherDocs.SelectedItem = null;
+            LbOrders.SelectedItem = null;
+            LbIncidences.SelectedItem = null;
             documentViewModel.SelectedDocument = (ProjectDocument)LbPreviousDocs.SelectedItem;
             isSelectionActive = false;
         }
@@ -505,6 +523,8 @@ namespace BuildingProjectManagement.Views
             LbPreviousDocs.SelectedItem = null;
             LbFinalDocs.SelectedItem = null;
             LbOtherDocs.SelectedItem = null;
+            LbOrders.SelectedItem = null;
+            LbIncidences.SelectedItem = null;
             documentViewModel.SelectedDocument = (ProjectDocument)LbExecutionDocs.SelectedItem;
             isSelectionActive = false;
         }
@@ -521,6 +541,8 @@ namespace BuildingProjectManagement.Views
             LbPreviousDocs.SelectedItem = null;
             LbExecutionDocs.SelectedItem = null;
             LbOtherDocs.SelectedItem = null;
+            LbOrders.SelectedItem = null;
+            LbIncidences.SelectedItem = null;
             documentViewModel.SelectedDocument = (ProjectDocument)LbFinalDocs.SelectedItem;
             isSelectionActive = false;
         }
@@ -537,23 +559,226 @@ namespace BuildingProjectManagement.Views
             LbPreviousDocs.SelectedItem = null;
             LbExecutionDocs.SelectedItem = null;
             LbFinalDocs.SelectedItem = null;
+            LbOrders.SelectedItem = null;
+            LbIncidences.SelectedItem = null;
             documentViewModel.SelectedDocument = (ProjectDocument)LbOtherDocs.SelectedItem;
             isSelectionActive = false;
         }
 
-        private void BtUCreateOrder_Click(object sender, RoutedEventArgs e)
+        private void LbOrders_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            documentViewModel.CreateDocumentPdf(TbOrderContent.Text);
+            documentViewModel.DocumentChecksMessage = string.Empty;
+
+            if (isSelectionActive)
+                return;
+
+            isSelectionActive = true;
+            LbProjectDocs.SelectedItem = null;
+            LbPreviousDocs.SelectedItem = null;
+            LbExecutionDocs.SelectedItem = null;
+            LbFinalDocs.SelectedItem = null;
+            LbOtherDocs.SelectedItem = null;
+            LbIncidences.SelectedItem = null;
+            documentViewModel.SelectedDocument = (ProjectDocument)LbOrders.SelectedItem;
+            isSelectionActive = false;
+        }
+
+        private void LbIncidences_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            documentViewModel.DocumentChecksMessage = string.Empty;
+
+            if (isSelectionActive)
+                return;
+
+            isSelectionActive = true;
+            LbProjectDocs.SelectedItem = null;
+            LbPreviousDocs.SelectedItem = null;
+            LbExecutionDocs.SelectedItem = null;
+            LbFinalDocs.SelectedItem = null;
+            LbOtherDocs.SelectedItem = null;
+            LbOrders.SelectedItem = null;
+            documentViewModel.SelectedDocument = (ProjectDocument)LbIncidences.SelectedItem;
+            isSelectionActive = false;
+        }
+
+        // Métodos pestaña órdenes
+        private async void BtCreateOrder_Click(object sender, RoutedEventArgs e)
+        {
+            Contact contact = (Contact)CbOrderContact.SelectedItem;
+            string contactName = string.Empty;
+
+            if (contact is not null)
+                contactName = contact.Name;
+
+            bool checkOrder = documentViewModel.CheckOrder(contactName, TbOrderTitle.Text, TbOrderContent.Text);
+
+            if (checkOrder)
+            {
+                DocumentPost? document = documentViewModel.CreateDocumentPdf(TbOrderTitle.Text, contactName, TbOrderContent.Text, 
+                    AppStrings.OrderCategory);
+                int projectId = projectViewModel.SelectedProject!.Id;
+
+                if (document is not null)
+                {
+                    var response = await documentViewModel.PostDocument(document, projectId);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ShowDocuments(projectId);
+                    }
+                    else
+                    {
+                        documentViewModel.DocumentChecksMessage = AppStrings.GenerateOrderError;
+                    }
+                }
+            }
         }
 
         private void BtOpenOrder_Click(object sender, RoutedEventArgs e)
         {
+            if (LbOrders.SelectedIndex > -1)
+            {
+                string url = documentViewModel.SelectedDocument!.DocumentPath;
+                try
+                {
+                    ProcessStartInfo process = new ProcessStartInfo
+                    {
+                        FileName = url,
+                        UseShellExecute = true
+                    };
 
+                    Process.Start(process);
+                }
+                catch (Exception)
+                {
+                    documentViewModel.DocumentChecksMessage = AppStrings.OpenDocumentError;
+                }
+            }
+            else
+            {
+                documentViewModel.DocumentChecksMessage = AppStrings.NoSelectedDocumentError;
+            }
         }
 
-        private void BtDeleteOrder_Click(object sender, RoutedEventArgs e)
+        private async void BtDeleteOrder_Click(object sender, RoutedEventArgs e)
         {
+            if (LbOrders.SelectedIndex > -1)
+            {
+                projectViewModel.ConfirmationTitle = AppStrings.DeleteDocumentConfirmationTitle;
+                projectViewModel.ConfirmationMessage = AppStrings.DeleteDocumentConfirmationMessage;
+                ProjectConfirmationWindow projectConfirmationWindow = new ProjectConfirmationWindow(projectViewModel);
+                projectConfirmationWindow.ShowDialog();
 
+                if (projectConfirmationWindow.DialogResult == true)
+                {
+                    int documentId = documentViewModel.SelectedDocument!.Id;
+                    int projectId = projectViewModel.SelectedProject!.Id;
+                    var response = await documentViewModel.DeleteDocument(documentId, projectId);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ShowDocuments(projectId);
+                    }
+                    else
+                    {
+                        documentViewModel.DocumentChecksMessage = AppStrings.DeleteDocumentError;
+                    }
+                }
+            }
+            else
+            {
+                documentViewModel.DocumentChecksMessage = AppStrings.NoSelectedDocumentError;
+            }
+        }
+
+        // Métodos pestaña incidencias
+        private async void BtCreateIncidence_Click(object sender, RoutedEventArgs e)
+        {
+            Contact contact = (Contact)CbIncidencesContact.SelectedItem;
+            string contactName = string.Empty;
+
+            if (contact is not null)
+                contactName = contact.Name;
+
+            bool checkOrder = documentViewModel.CheckOrder(contactName, TbIncidencesTitle.Text, TbIncidencesContent.Text);
+
+            if (checkOrder)
+            {
+                DocumentPost? document = documentViewModel.CreateDocumentPdf(TbIncidencesTitle.Text, contactName, TbIncidencesContent.Text, 
+                    AppStrings.IncidenceCategory);
+                int projectId = projectViewModel.SelectedProject!.Id;
+
+                if (document is not null)
+                {
+                    var response = await documentViewModel.PostDocument(document, projectId);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ShowDocuments(projectId);
+                    }
+                    else
+                    {
+                        documentViewModel.DocumentChecksMessage = AppStrings.GenerateOrderError;
+                    }
+                }
+            }
+        }
+
+        private void BtOpenIncidence_Click(object sender, RoutedEventArgs e)
+        {
+            if (LbIncidences.SelectedIndex > -1)
+            {
+                string url = documentViewModel.SelectedDocument!.DocumentPath;
+                try
+                {
+                    ProcessStartInfo process = new ProcessStartInfo
+                    {
+                        FileName = url,
+                        UseShellExecute = true
+                    };
+
+                    Process.Start(process);
+                }
+                catch (Exception)
+                {
+                    documentViewModel.DocumentChecksMessage = AppStrings.OpenDocumentError;
+                }
+            }
+            else
+            {
+                documentViewModel.DocumentChecksMessage = AppStrings.NoSelectedDocumentError;
+            }
+        }
+
+        private async void BtDeleteIncidence_Click(object sender, RoutedEventArgs e)
+        {
+            if (LbIncidences.SelectedIndex > -1)
+            {
+                projectViewModel.ConfirmationTitle = AppStrings.DeleteDocumentConfirmationTitle;
+                projectViewModel.ConfirmationMessage = AppStrings.DeleteDocumentConfirmationMessage;
+                ProjectConfirmationWindow projectConfirmationWindow = new ProjectConfirmationWindow(projectViewModel);
+                projectConfirmationWindow.ShowDialog();
+
+                if (projectConfirmationWindow.DialogResult == true)
+                {
+                    int documentId = documentViewModel.SelectedDocument!.Id;
+                    int projectId = projectViewModel.SelectedProject!.Id;
+                    var response = await documentViewModel.DeleteDocument(documentId, projectId);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ShowDocuments(projectId);
+                    }
+                    else
+                    {
+                        documentViewModel.DocumentChecksMessage = AppStrings.DeleteDocumentError;
+                    }
+                }
+            }
+            else
+            {
+                documentViewModel.DocumentChecksMessage = AppStrings.NoSelectedDocumentError;
+            }
         }
     }
 }

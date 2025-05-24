@@ -9,7 +9,7 @@
         xmlns:ViewModel="clr-namespace:BuildingProjectManagement.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="720" Width="1280" WindowStartupLocation="CenterScreen" WindowStyle="None" 
-        ResizeMode="CanResize" Background="Transparent" AllowsTransparency="True" Loaded="Window_Loaded">
+        ResizeMode="CanResize" Background="Transparent" AllowsTransparency="True" Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -265,9 +265,9 @@
                                         <RowDefinition Height="120"/>
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock Text="CONTACTO:" Grid.Row="0" Style="{StaticResource formTextBlock}"/>
+                                    <TextBlock Text="*CONTACTO:" Grid.Row="0" Style="{StaticResource formTextBlock}"/>
                                     <TextBlock Text="*TÍTULO:" Grid.Row="1" Style="{StaticResource formTextBlock}"/>
-                                    <TextBlock Text="CONTENIDO:" Grid.Row="2" Style="{StaticResource formTextBlock}" VerticalAlignment="Top"
+                                    <TextBlock Text="*CONTENIDO:" Grid.Row="2" Style="{StaticResource formTextBlock}" VerticalAlignment="Top"
                                                Margin="0,7,0,0"/>
                                     <TextBlock Text="ÓRDENES GUARDADAS:" Grid.Row="3" Style="{StaticResource formTextBlock}" VerticalAlignment="Top"
                                                Margin="0,7,0,0"/>
@@ -279,17 +279,20 @@
                                     <TextBox x:Name="TbOrderContent" Grid.Row="2" Grid.Column="1" Style="{StaticResource formTextBox}" Margin="2,5,0,5"
                                              Height="Auto" TextWrapping="Wrap" VerticalContentAlignment="Top" VerticalAlignment="Stretch"/>
                                     <ListBox x:Name="LbOrders" ItemContainerStyle="{StaticResource ItemList}" BorderThickness="0,0,0,0"
-                                             ItemsSource="{Binding ProjectOrdersDocumentList}" Grid.Column="1" Grid.Row="3" Margin="5"/>
+                                             ItemsSource="{Binding ProjectOrdersDocumentList}" Grid.Column="1" Grid.Row="3" Margin="5"
+                                             SelectionChanged="LbOrders_SelectionChanged"/>
 
 
                                 </Grid>
-                                <TextBlock Text="{Binding ProjectDocumentMessage}" Grid.Row="1" Grid.Column="1" Style="{StaticResource checkTextBlock}"/>
+                                <TextBlock x:Name="LabelOrderChecks" Text="{Binding DocumentChecksMessage}" Grid.Row="1" Grid.Column="1" 
+                                           Style="{StaticResource checkTextBlock}"/>
                             </Grid>
 
                             <Grid Grid.Row="2">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="180"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="38*"/>
+                                    <ColumnDefinition Width="169*"/>
                                     <ColumnDefinition Width="130"/>
                                     <ColumnDefinition Width="10"/>
                                     <ColumnDefinition Width="130"/>
@@ -297,16 +300,86 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Button x:Name="BtCreateOrder" Style="{StaticResource FormControlButton}" Content="CREAR ORDEN"
-                                        Margin="0,0,0,0" Click="BtUCreateOrder_Click" Grid.Column="0"/>
+                                        Margin="30,36,30,36" Click="BtCreateOrder_Click" Grid.Column="0"/>
                                 <Button x:Name="BtOpenOrder" Style="{StaticResource FormControlButton}" Content="ABRIR"
-                                        Margin="0,0,0,0" Click="BtOpenOrder_Click" Grid.Column="2"/>
+                                        Margin="5,36,5,36" Click="BtOpenOrder_Click" Grid.Column="3"/>
                                 <Button x:Name="BtDeleteOrder" Style="{StaticResource FormControlButton}" Content="BORRAR"
-                                        Margin="0,0,0,0" Click="BtDeleteOrder_Click" Grid.Column="4" Background="#FF585858"/>
+                                        Margin="5,36,5,36" Click="BtDeleteOrder_Click" Grid.Column="5" Background="#FF585858"/>
                             </Grid>
                         </Grid>
                     </TabItem>
 
-                    <TabItem x:Name="TabIncidents" Header="Incidencias"/>
+                    <TabItem x:Name="TabIncidences" Header="Incidencias">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="7*"/>
+                                <RowDefinition Height="1.5*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Incidencias" Grid.Row="0" FontSize="20" HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+
+                            <Grid Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="30"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Column="1" Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="3.5*"/>
+                                        <ColumnDefinition Width="0.25*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="40"/>
+                                        <RowDefinition Height="40"/>
+                                        <RowDefinition Height="120"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="*CONTACTO:" Grid.Row="0" Style="{StaticResource formTextBlock}"/>
+                                    <TextBlock Text="*TÍTULO:" Grid.Row="1" Style="{StaticResource formTextBlock}"/>
+                                    <TextBlock Text="*CONTENIDO:" Grid.Row="2" Style="{StaticResource formTextBlock}" VerticalAlignment="Top"
+                                               Margin="0,7,0,0"/>
+                                    <TextBlock Text="INCIDENCIAS GUARDADAS:" Grid.Row="3" Style="{StaticResource formTextBlock}" VerticalAlignment="Top"
+                                               Margin="0,7,0,0"/>
+
+                                    <ComboBox x:Name="CbIncidencesContact" Grid.Column="1" Grid.Row="0" Width="Auto" HorizontalAlignment="Stretch" 
+                                              Margin="2,0,0,0" ItemsSource="{Binding ProjectContacts}"/>
+                                    <TextBox x:Name="TbIncidencesTitle" Grid.Row="1" Grid.Column="1" Style="{StaticResource formTextBox}"
+                                             Margin="2,0,0,0" Height="25"/>
+                                    <TextBox x:Name="TbIncidencesContent" Grid.Row="2" Grid.Column="1" Style="{StaticResource formTextBox}" Margin="2,5,0,5"
+                                             Height="Auto" TextWrapping="Wrap" VerticalContentAlignment="Top" VerticalAlignment="Stretch"/>
+                                    <ListBox x:Name="LbIncidences" ItemContainerStyle="{StaticResource ItemList}" BorderThickness="0,0,0,0"
+                                             ItemsSource="{Binding ProjectIncidencesDocumentList}" Grid.Column="1" Grid.Row="3" Margin="5"
+                                             SelectionChanged="LbIncidences_SelectionChanged"/>
+
+
+                                </Grid>
+                                <TextBlock x:Name="LabelIncidencesChecks" Text="{Binding DocumentChecksMessage}" Grid.Row="1" Grid.Column="1" 
+                                           Style="{StaticResource checkTextBlock}"/>
+                            </Grid>
+
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="38*"/>
+                                    <ColumnDefinition Width="169*"/>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button x:Name="BtCreateIncidence" Style="{StaticResource FormControlButton}" Content="CREAR INCIDENCIA"
+                                        Margin="30,36,30,36" Click="BtCreateIncidence_Click" Grid.Column="0"/>
+                                <Button x:Name="BtOpenIncidence" Style="{StaticResource FormControlButton}" Content="ABRIR"
+                                        Margin="5,36,5,36" Click="BtOpenIncidence_Click" Grid.Column="3"/>
+                                <Button x:Name="BtDeleteIncidence" Style="{StaticResource FormControlButton}" Content="BORRAR"
+                                        Margin="5,36,5,36" Click="BtDeleteIncidence_Click" Grid.Column="5" Background="#FF585858"/>
+                            </Grid>
+                        </Grid>
+                    </TabItem>
                 </TabControl>
             </Grid>
         </Grid>

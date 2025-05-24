@@ -70,9 +70,24 @@ namespace BuildingProjectManagement.ViewModel
             }
         }
 
+        private List<string>? _tempDocuments;
+        public List<string>? TempDocuments
+        {
+            get => _tempDocuments;
+            set
+            {
+                if (_tempDocuments != value)
+                {
+                    _tempDocuments = value;
+                    OnPropertyChanged(nameof(TempDocuments));
+                }
+            }
+        }
+
         public DocumentViewModel()
         {
             DocumentToUpload = new DocumentPost(string.Empty, string.Empty, string.Empty);
+            TempDocuments = new List<string>();
         }
 
         public async Task<HttpResponseMessage> GetProjectDocumentsResponse(int projectId)
@@ -121,6 +136,8 @@ namespace BuildingProjectManagement.ViewModel
                 ExecutionDocumentList.Clear();
                 EndingDocumentList.Clear();
                 OtherDocumentList.Clear();
+                ProjectOrdersDocumentList.Clear();
+                ProjectIncidencesDocumentList.Clear();
 
                 foreach (var document in documents)
                 {
@@ -130,6 +147,8 @@ namespace BuildingProjectManagement.ViewModel
                         AppStrings.StartingProjectCategory => StartingDocumentList,
                         AppStrings.ExecutionProjectCategory => ExecutionDocumentList,
                         AppStrings.EndingProjectCategory => EndingDocumentList,
+                        AppStrings.OrderCategory => ProjectOrdersDocumentList,
+                        AppStrings.IncidenceCategory => ProjectIncidencesDocumentList,
                         _ => OtherDocumentList
                     };
 
@@ -216,11 +235,11 @@ namespace BuildingProjectManagement.ViewModel
             }
         }
 
-        public void CreateDocumentPdf(string content)
+        public DocumentPost? CreateDocumentPdf(string title, string contactName, string content, string category)
         {
-            string text = content;
-            string filePath = "Prueba.pdf";
             QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
+            string text = content;
+            string filePath = Path.Combine(Path.GetTempPath(), $"{title}_{Guid.NewGuid()}.pdf");
 
             try
             {
@@ -229,18 +248,91 @@ namespace BuildingProjectManagement.ViewModel
                     container.Page(page =>
                     {
                         page.Margin(40);
-                        page.Content().Text(text).FontSize(12).FontFamily("Arial");
+
+                        page.Content().Column(col =>
+                        {
+                            col.Item().Text(title)
+                                .FontSize(20)
+                                .SemiBold()
+                                .AlignCenter();
+
+                            col.Item().PaddingVertical(10).Text(AppStrings.OrderDocumentHeader + contactName)
+                                .FontSize(12)
+                                .AlignLeft();
+
+                            col.Item().PaddingVertical(10).Text(content)
+                                .FontSize(12)
+                                .Justify();
+
+                            col.Item().PaddingVertical(10).Text(AppStrings.OrderDocumentFooter)
+                                .FontSize(12)
+                                .AlignLeft();
+
+                            col.Item().PaddingVertical(10).Row(row =>
+                            {
+                                row.RelativeItem(1).Text(ActualSession.Session.LoggedInUser!.Name  +
+                                    ActualSession.Session.LoggedInUser!.Surname)
+                                    .FontSize(12)
+                                    .AlignCenter();
+                                row.RelativeItem(1).Text(contactName)
+                                    .FontSize(12)
+                                    .AlignCenter();
+                            });
+                        });
                     });
                 });
 
                 document.GeneratePdf(filePath);
-                MessageBox.Show("Pdf creado correctamente");
-                Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+                DocumentPost documentPost = new DocumentPost(title, category, filePath);
+                TempDocuments!.Add(filePath);
+                return documentPost;
+            }
+            catch (Exception)
+            {
+                DocumentChecksMessage = AppStrings.GenerateOrderError;
+                return null;
+            }
+        }
+
+        public void DeleteTemporalDocument(string filePath)
+        {
+            try
+            {
+                if (File.Exists(filePath))
+                    File.Delete(filePath);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                Console.WriteLine("Error: " + ex.Message);
             }
+        }
+
+        public bool CheckOrder(string contactName, string title, string content)
+        {
+            bool checks;
+
+            if (string.IsNullOrEmpty(contactName))
+            {
+                DocumentChecksMessage = AppStrings.NoSelectedContactError;
+                checks = false;
+            }
+            else if (string.IsNullOrEmpty(title))
+            {
+                DocumentChecksMessage = AppStrings.NoTitleError;
+                checks = false;
+            }
+            else if (string.IsNullOrEmpty(content))
+            {
+                DocumentChecksMessage = AppStrings.NoContentError;
+                checks = false;
+            }
+            else
+            {
+                DocumentChecksMessage = string.Empty;
+                checks = true;
+            }
+
+            return checks;
         }
     }
 }

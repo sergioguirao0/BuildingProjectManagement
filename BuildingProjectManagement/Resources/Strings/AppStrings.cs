@@ -63,6 +63,8 @@ namespace BuildingProjectManagement.Resources.Strings
         public static string[] CategoryItems = {ProjectCategory, StartingProjectCategory, ExecutionProjectCategory,
             EndingProjectCategory, OtherDocumentsCategory};
         public const string PdfFilter = "Archivos PDF (*.pdf)|*.pdf";
+        public const string OrderCategory = "ORDEN";
+        public const string IncidenceCategory = "INCIDENCIA";
 
         // Mensajes formulario proyectos
         public const string NoSelectedContactError = "No se ha seleccionado ningún contacto";
@@ -87,5 +89,10 @@ namespace BuildingProjectManagement.Resources.Strings
         public const string OpenDocumentError = "No se ha podido abrir el documento";
         public const string DeleteDocumentConfirmationTitle = "Eliminar documento";
         public const string DeleteDocumentConfirmationMessage = "Se va a eliminar el documento seleccionado";
+        public const string OrderDocumentHeader = "Orden dirigida a: ";
+        public const string IncidenceDocumentHeader = "Incidencia dirigida a: ";
+        public const string OrderDocumentFooter = "Firmado por: ";
+        public const string NoContentError = "El campo contenido no puede estar vacío";
+        public const string GenerateOrderError = "Error al generar el documento";
     }
 }
