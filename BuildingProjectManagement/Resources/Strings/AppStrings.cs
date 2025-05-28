@@ -8,8 +8,9 @@ namespace BuildingProjectManagement.Resources.Strings
 {
     public class AppStrings
     {
-        public const string ApiBaseUrl = "https://localhost:7269/";
-        
+        public const string ApiBaseUrl = "https://buildingprojectmanagementapi20250528194053-hra9b8gjewgra9h6.westeurope-01.azurewebsites.net";
+        //public const string ApiBaseUrl = "https://localhost:7269/";
+
         // Rutas
         public const string RegisterEndpoint = "api/users/register";
         public const string LoginEndpoint = "api/users/login";

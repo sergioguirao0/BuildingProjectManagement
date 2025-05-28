@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\Images\icono.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +15,10 @@
     <None Remove="Resources\Images\logo.png" />
     <None Remove="Resources\Images\padlock.png" />
     <None Remove="Resources\Images\user.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Images\icono.ico" />
   </ItemGroup>
 
   <ItemGroup>

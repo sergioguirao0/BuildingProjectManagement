@@ -8,6 +8,7 @@
         public const string ContactRoute = "api/contacts";
         public const string ProjectRoute = "api/projects";
         public const string DocumentRoute = "/documents";
+        public const string AllowedHosts = "buildingprojectmanagementapi20250528194053-hra9b8gjewgra9h6.westeurope-01.azurewebsites.net;localhost";
 
         // Control messages
         public const string StringLengthMessage = "El campo {0} debe tener {1} caracteres o menos";

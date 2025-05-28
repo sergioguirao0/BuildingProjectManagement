@@ -1,7 +1,9 @@
 using BuildingProjectManagementAPI.Data;
 using BuildingProjectManagementAPI.Model.Dao;
 using BuildingProjectManagementAPI.Model.Repositories;
+using BuildingProjectManagementAPI.Resources;
 using BuildingProjectManagementAPI.Services;
+using Microsoft.AspNetCore.HostFiltering;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -12,7 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(connectionString, new MySqlServerVersion(new Version(10, 4, 32))));
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
+    mySqlOptions => mySqlOptions.EnableRetryOnFailure()));
 
 builder.Services.AddAutoMapper(typeof(Program));
 
@@ -58,7 +61,23 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers().AddNewtonsoftJson();
 
+
+
+builder.Configuration["AllowedHosts"] = ApiStrings.AllowedHosts;
+
 var app = builder.Build();
+
+app.UseHostFiltering();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    if (dbContext.Database.IsRelational())
+    {
+        dbContext.Database.Migrate();
+    }
+}
 
 app.UseCors();
 app.MapControllers();
