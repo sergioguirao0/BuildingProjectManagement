@@ -1,0 +1,47 @@
+﻿<Window x:Class="BuildingProjectManagement.Views.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BuildingProjectManagement.Views"
+        mc:Ignorable="d"
+        Title="AboutWindow" Height="300" Width="480" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Dictionaries/WindowStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Border CornerRadius="10" BorderThickness="5" Style="{StaticResource BorderStyle}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" MouseDown="MoveWindow" Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Acerca de" Style="{StaticResource topBarText}"/>
+                <Button x:Name="BtClose" Grid.Column="1" Background="#FF2B2B2B" Content="X" 
+                        Style="{StaticResource TopBarButton}" Click="btClose_Click"/>
+            </Grid>
+            <TextBlock Text="Building Project Management" Grid.Row="1" Style="{StaticResource subtitleText}" HorizontalAlignment="Center"
+                       Margin="0,20,0,0" FontSize="24"/>
+            <TextBlock Text="Autor: Sergio Guirao Bernabé" Grid.Row="1" Style="{StaticResource subtitleText}" HorizontalAlignment="Left"
+                       Margin="20,60,0,0"/>
+            <TextBlock Text="Módulo de proyecto final de grado superior de desarrollo de aplicaciones multiplataforma" TextWrapping="Wrap"
+                       Grid.Row="1" Style="{StaticResource subtitleText}" HorizontalAlignment="Left" Margin="20,80,0,0"/>
+            <TextBlock Text="Versión 1.0" Grid.Row="1" Style="{StaticResource subtitleText}" HorizontalAlignment="Left" Margin="20,120,0,0"/>
+            <TextBlock Text="Proyecto que permite gestionar proyectos de construcción, con funciones para gestionar contactos, proyectos y su documentación." TextWrapping="Wrap" Grid.Row="1" Style="{StaticResource subtitleText}" 
+                       HorizontalAlignment="Left" Margin="20,140,20,0"/>
+            <Button x:Name="BtAccept" Content="ACEPTAR" Style="{StaticResource ControlButton}" Grid.Row="1" Margin="0,170,0,0"
+                    Click="BtAccept_Click"/>
+        </Grid>
+    </Border>
+</Window>

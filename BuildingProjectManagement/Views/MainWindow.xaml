@@ -64,8 +64,10 @@
                         Margin="5,0,0,0" Click="BtContacts_Click"/>
                 <ComboBox x:Name="CbFilterStatus" Grid.Column="2" Width="280" HorizontalAlignment="Center" 
                           SelectionChanged="CbFilterStatus_SelectionChanged"/>
+                <Button x:Name="BtAbout" Content="ACERCA DE" Style="{StaticResource ControlButton}" Grid.Column="4"
+                        Margin="5,0,0,0" Click="BtAbout_Click" Background="#FF585858"/>
                 <Button x:Name="BtCloseSession" Content="CERRAR SESIÓN" Style="{StaticResource ControlButton}" Grid.Column="5"
-                        Margin="5,0,0,0" Click="BtCloseSession_Click" Background="#FF585858"/>
+                        Margin="5,0,0,0" Click="BtCloseSession_Click" Background="#FF585858" HorizontalAlignment="Left"/>
             </Grid>
 
             <Grid Grid.Row="2">
@@ -187,33 +189,34 @@
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="30"/>
                                 </Grid.RowDefinitions>
+                                <ScrollViewer Grid.Column="1" Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                                    <StackPanel Grid.Column="1" Grid.Row="0">
+                                        <TextBlock Text="{x:Static resources:AppStrings.ProjectCategory}"/>
+                                        <Separator/>
+                                        <ListBox x:Name="LbProjectDocs" ItemContainerStyle="{StaticResource ItemList}" BorderThickness="0,0,0,0"
+                                                 ItemsSource="{Binding ProjectDocumentList}" SelectionChanged="LbProjectDocs_SelectionChanged"/>
 
-                                <StackPanel Grid.Column="1" Grid.Row="0">
-                                    <TextBlock Text="{x:Static resources:AppStrings.ProjectCategory}"/>
-                                    <Separator/>
-                                    <ListBox x:Name="LbProjectDocs" ItemContainerStyle="{StaticResource ItemList}" BorderThickness="0,0,0,0"
-                                             ItemsSource="{Binding ProjectDocumentList}" SelectionChanged="LbProjectDocs_SelectionChanged"/>
+                                        <TextBlock Text="{x:Static resources:AppStrings.StartingProjectCategory}" Margin="0,10,0,0"/>
+                                        <Separator/>
+                                        <ListBox x:Name="LbPreviousDocs" ItemContainerStyle="{StaticResource ItemList}" BorderThickness="0,0,0,0"
+                                                 ItemsSource="{Binding StartingDocumentList}" SelectionChanged="LbPreviousDocs_SelectionChanged"/>
 
-                                    <TextBlock Text="{x:Static resources:AppStrings.StartingProjectCategory}" Margin="0,10,0,0"/>
-                                    <Separator/>
-                                    <ListBox x:Name="LbPreviousDocs" ItemContainerStyle="{StaticResource ItemList}" BorderThickness="0,0,0,0"
-                                             ItemsSource="{Binding StartingDocumentList}" SelectionChanged="LbPreviousDocs_SelectionChanged"/>
+                                        <TextBlock Text="{x:Static resources:AppStrings.ExecutionProjectCategory}" Margin="0,10,0,0"/>
+                                        <Separator/>
+                                        <ListBox x:Name="LbExecutionDocs" ItemContainerStyle="{StaticResource ItemList}" BorderThickness="0,0,0,0"
+                                                 ItemsSource="{Binding ExecutionDocumentList}" SelectionChanged="LbExecutionDocs_SelectionChanged"/>
 
-                                    <TextBlock Text="{x:Static resources:AppStrings.ExecutionProjectCategory}" Margin="0,10,0,0"/>
-                                    <Separator/>
-                                    <ListBox x:Name="LbExecutionDocs" ItemContainerStyle="{StaticResource ItemList}" BorderThickness="0,0,0,0"
-                                             ItemsSource="{Binding ExecutionDocumentList}" SelectionChanged="LbExecutionDocs_SelectionChanged"/>
+                                        <TextBlock Text="{x:Static resources:AppStrings.EndingProjectCategory}" Margin="0,10,0,0"/>
+                                        <Separator/>
+                                        <ListBox x:Name="LbFinalDocs" ItemContainerStyle="{StaticResource ItemList}" BorderThickness="0,0,0,0"
+                                                 ItemsSource="{Binding EndingDocumentList}" SelectionChanged="LbFinalDocs_SelectionChanged"/>
 
-                                    <TextBlock Text="{x:Static resources:AppStrings.EndingProjectCategory}" Margin="0,10,0,0"/>
-                                    <Separator/>
-                                    <ListBox x:Name="LbFinalDocs" ItemContainerStyle="{StaticResource ItemList}" BorderThickness="0,0,0,0"
-                                             ItemsSource="{Binding EndingDocumentList}" SelectionChanged="LbFinalDocs_SelectionChanged"/>
-
-                                    <TextBlock Text="{x:Static resources:AppStrings.OtherDocumentsCategory}" Margin="0,10,0,0"/>
-                                    <Separator/>
-                                    <ListBox x:Name="LbOtherDocs" ItemContainerStyle="{StaticResource ItemList}" BorderThickness="0,0,0,0"
-                                             ItemsSource="{Binding OtherDocumentList}" SelectionChanged="LbOtherDocs_SelectionChanged"/>
-                                </StackPanel>
+                                        <TextBlock Text="{x:Static resources:AppStrings.OtherDocumentsCategory}" Margin="0,10,0,0"/>
+                                        <Separator/>
+                                        <ListBox x:Name="LbOtherDocs" ItemContainerStyle="{StaticResource ItemList}" BorderThickness="0,0,0,0"
+                                                 ItemsSource="{Binding OtherDocumentList}" SelectionChanged="LbOtherDocs_SelectionChanged"/>
+                                    </StackPanel>
+                                </ScrollViewer>
                                 <TextBlock Text="{Binding ProjectDocumentMessage}" Grid.Row="1" Grid.Column="1" Style="{StaticResource checkTextBlock}"/>
                             </Grid>
 

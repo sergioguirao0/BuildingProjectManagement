@@ -186,6 +186,12 @@ namespace BuildingProjectManagement.Views
             }
         }
 
+        private void BtAbout_Click(object sender, RoutedEventArgs e)
+        {
+            AboutWindow aboutWindow = new AboutWindow();
+            aboutWindow.ShowDialog();
+        }
+
         // Métodos pestaña datos documento
         private void BtAddContact_Click(object sender, RoutedEventArgs e)
         {
@@ -565,42 +571,6 @@ namespace BuildingProjectManagement.Views
             isSelectionActive = false;
         }
 
-        private void LbOrders_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            documentViewModel.DocumentChecksMessage = string.Empty;
-
-            if (isSelectionActive)
-                return;
-
-            isSelectionActive = true;
-            LbProjectDocs.SelectedItem = null;
-            LbPreviousDocs.SelectedItem = null;
-            LbExecutionDocs.SelectedItem = null;
-            LbFinalDocs.SelectedItem = null;
-            LbOtherDocs.SelectedItem = null;
-            LbIncidences.SelectedItem = null;
-            documentViewModel.SelectedDocument = (ProjectDocument)LbOrders.SelectedItem;
-            isSelectionActive = false;
-        }
-
-        private void LbIncidences_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            documentViewModel.DocumentChecksMessage = string.Empty;
-
-            if (isSelectionActive)
-                return;
-
-            isSelectionActive = true;
-            LbProjectDocs.SelectedItem = null;
-            LbPreviousDocs.SelectedItem = null;
-            LbExecutionDocs.SelectedItem = null;
-            LbFinalDocs.SelectedItem = null;
-            LbOtherDocs.SelectedItem = null;
-            LbOrders.SelectedItem = null;
-            documentViewModel.SelectedDocument = (ProjectDocument)LbIncidences.SelectedItem;
-            isSelectionActive = false;
-        }
-
         // Métodos pestaña órdenes
         private async void BtCreateOrder_Click(object sender, RoutedEventArgs e)
         {
@@ -625,6 +595,7 @@ namespace BuildingProjectManagement.Views
                     if (response.IsSuccessStatusCode)
                     {
                         ShowDocuments(projectId);
+                        CleanOrderForm();
                     }
                     else
                     {
@@ -660,6 +631,24 @@ namespace BuildingProjectManagement.Views
             }
         }
 
+        private void LbOrders_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            documentViewModel.DocumentChecksMessage = string.Empty;
+
+            if (isSelectionActive)
+                return;
+
+            isSelectionActive = true;
+            LbProjectDocs.SelectedItem = null;
+            LbPreviousDocs.SelectedItem = null;
+            LbExecutionDocs.SelectedItem = null;
+            LbFinalDocs.SelectedItem = null;
+            LbOtherDocs.SelectedItem = null;
+            LbIncidences.SelectedItem = null;
+            documentViewModel.SelectedDocument = (ProjectDocument)LbOrders.SelectedItem;
+            isSelectionActive = false;
+        }
+
         private async void BtDeleteOrder_Click(object sender, RoutedEventArgs e)
         {
             if (LbOrders.SelectedIndex > -1)
@@ -691,6 +680,14 @@ namespace BuildingProjectManagement.Views
             }
         }
 
+        private void CleanOrderForm()
+        {
+            CbOrderContact.SelectedItem = null;
+            TbOrderTitle.Text = string.Empty;
+            TbOrderContent.Text = string.Empty;
+            LabelOrderChecks.Text = string.Empty;
+        }
+
         // Métodos pestaña incidencias
         private async void BtCreateIncidence_Click(object sender, RoutedEventArgs e)
         {
@@ -715,6 +712,7 @@ namespace BuildingProjectManagement.Views
                     if (response.IsSuccessStatusCode)
                     {
                         ShowDocuments(projectId);
+                        CleanIncidencesForm();
                     }
                     else
                     {
@@ -779,6 +777,32 @@ namespace BuildingProjectManagement.Views
             {
                 documentViewModel.DocumentChecksMessage = AppStrings.NoSelectedDocumentError;
             }
+        }
+
+        private void LbIncidences_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            documentViewModel.DocumentChecksMessage = string.Empty;
+
+            if (isSelectionActive)
+                return;
+
+            isSelectionActive = true;
+            LbProjectDocs.SelectedItem = null;
+            LbPreviousDocs.SelectedItem = null;
+            LbExecutionDocs.SelectedItem = null;
+            LbFinalDocs.SelectedItem = null;
+            LbOtherDocs.SelectedItem = null;
+            LbOrders.SelectedItem = null;
+            documentViewModel.SelectedDocument = (ProjectDocument)LbIncidences.SelectedItem;
+            isSelectionActive = false;
+        }
+
+        private void CleanIncidencesForm()
+        {
+            CbIncidencesContact.SelectedItem = null;
+            TbIncidencesTitle.Text = string.Empty;
+            TbIncidencesContent.Text = string.Empty;
+            LabelIncidencesChecks.Text = string.Empty;
         }
     }
 }

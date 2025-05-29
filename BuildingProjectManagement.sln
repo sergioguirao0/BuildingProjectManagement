@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingProjectManagement",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingProjectManagementAPI", "BuildingProjectManagementAPI\BuildingProjectManagementAPI.csproj", "{0513F71E-A06A-495B-9327-C5B25776AC72}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BuildingProjectManagementSetup", "BuildingProjectManagementSetup\BuildingProjectManagementSetup.vdproj", "{195B6BC4-7BA8-B0A8-65FC-9E2F0D710632}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,8 @@ Global
 		{0513F71E-A06A-495B-9327-C5B25776AC72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0513F71E-A06A-495B-9327-C5B25776AC72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0513F71E-A06A-495B-9327-C5B25776AC72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{195B6BC4-7BA8-B0A8-65FC-9E2F0D710632}.Debug|Any CPU.ActiveCfg = Debug
+		{195B6BC4-7BA8-B0A8-65FC-9E2F0D710632}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
